@@ -32,10 +32,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     const endTime = new Date(endDateTime).toLocaleString();
 
     return (
-        <section className="bg-zinc-100 h-screen w-full min-w-[320px]">
+        <section className="bg-zinc-100 h-screen w-full min-w-[260px]">
             <div className="flex flex-col gap-0.1 py-3 bg-background-white w-full">
-                <h1 className="text-amber-500 w-[85%] min-w-[272px] mx-auto font-bold">{title}</h1>
-                <span className="text-zinc-400 w-[85%] min-w-[272px] mx-auto  text-sm">{location}</span>
+                <h1 className="text-amber-500 w-[85%] min-w-[240px] mx-auto font-bold">{title}</h1>
+                <span className="text-zinc-400 w-[85%] min-w-[240px] mx-auto  text-sm">{location}</span>
             </div>
             <div className="flex flex-col h-[calc(100%-68px)] justify-evenly">
                 <ProtestDetailInfo name={'시위 정보'} info={description} />
@@ -47,6 +47,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     latitude={locations[0].latitude}
                     longitude={locations[0].longitude}
                     w={'85%'}
+                    minW={'240px'}
                     h={'150px'}
                     l={3}
                 />

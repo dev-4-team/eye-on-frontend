@@ -4,12 +4,14 @@ export default function StaticKakakoMap({
     latitude,
     longitude,
     w,
+    minW,
     h,
     l,
 }: {
     latitude: number;
     longitude: number;
     w: string;
+    minW: string;
     h: string;
     l: number;
 }) {
@@ -23,6 +25,7 @@ export default function StaticKakakoMap({
                 margin: '0 auto',
                 width: w,
                 height: h,
+                minWidth: minW,
             }}
             marker={[
                 {
