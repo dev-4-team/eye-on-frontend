@@ -1,13 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 
+const setScreenSize = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
 export default function useViewportHeightSetter() {
-    const setScreenSize = () => {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isClient) return;
+
         setScreenSize();
 
         const handleResize = debounce(() => {
@@ -20,5 +28,5 @@ export default function useViewportHeightSetter() {
             window.removeEventListener('resize', handleResize);
             handleResize.cancel();
         };
-    }, []);
+    }, [isClient]);
 }
