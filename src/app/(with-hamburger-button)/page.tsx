@@ -7,7 +7,14 @@ export default async function Home() {
     const longitude = 127.00787604008;
     return (
         <div>
-            <KakaoMap latitude={latitude} longitude={longitude} w="100%" h="100vh" l={8} protests={protests} />
+            <KakaoMap
+                latitude={latitude}
+                longitude={longitude}
+                w="100%"
+                h="calc(var(--vh, 1vh) * 100)"
+                l={8}
+                protests={protests}
+            />
         </div>
     );
 }
