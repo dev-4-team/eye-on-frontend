@@ -48,7 +48,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     longitude={locations[0].longitude}
                     w={'85%'}
                     minW={'240px'}
-                    h={'150px'}
+                    h={'20%'}
+                    minH={'100px'}
                     l={3}
                 />
             </div>
