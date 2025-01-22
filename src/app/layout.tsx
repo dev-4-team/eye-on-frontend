@@ -1,10 +1,13 @@
 import Script from 'next/script';
 import './globals.css';
+import { ReactNode } from 'react';
 
 export default function RootLayout({
     children,
+    modal,
 }: Readonly<{
     children: React.ReactNode;
+    modal: ReactNode;
 }>) {
     const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
     return (
@@ -17,6 +20,7 @@ export default function RootLayout({
                 <div>
                     <main>{children}</main>
                 </div>
+                {modal}
             </body>
         </html>
     );
