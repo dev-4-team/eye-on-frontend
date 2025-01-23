@@ -2,8 +2,8 @@
 
 export default function KakaoLogin() {
     const onLoginClick = async () => {
-        const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-        const response = await fetch(`${SERVER_URL}/oauth2/authorization/kakao`);
+        // const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
+        const response = await fetch('/api/kakao');
 
         if (!response.ok) {
             console.error('오류:', response.status);
