@@ -1,7 +1,6 @@
 import Script from 'next/script';
 import './globals.css';
 import { ReactNode } from 'react';
-import HeightSetter from '@/components/HeightSetter';
 
 export default function RootLayout({
     children,
