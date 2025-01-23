@@ -34,7 +34,6 @@
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
-        --vh: 1vh;
     }
     .dark {
         --background: 222.2 84% 4.9%;
@@ -62,10 +61,6 @@
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
     }
-}
-
-body {
-    height: calc(var(--vh, 1vh) * 100);
 }
 
 @layer base {
