@@ -1,6 +1,6 @@
 'use client';
 
-import { Circle, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Circle, Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,6 +22,20 @@ const getStrokeColorBySize = (participants: number) => {
     } else {
         return '#FF3333';
     }
+};
+
+const getCircleRadius = (participants: number) => {
+    const minRadius = 200;
+    const maxRadius = 500;
+    const minParticipants = 100;
+    const maxParticipants = 500000;
+
+    const logParticipants = Math.log10(participants) - Math.log10(minParticipants);
+    const logRange = Math.log10(maxParticipants) - Math.log10(minParticipants);
+
+    const normalizedValue = logParticipants / logRange;
+
+    return minRadius + normalizedValue * (maxRadius - minRadius);
 };
 
 export default function KakaoMap({
@@ -96,7 +110,7 @@ export default function KakaoMap({
                             lat: protest.locations[0].latitude,
                             lng: protest.locations[0].longitude,
                         }}
-                        radius={protest.declaredParticipants * 0.05}
+                        radius={getCircleRadius(protest.declaredParticipants)}
                         strokeWeight={2}
                         strokeColor={getStrokeColorBySize(protest.declaredParticipants)}
                         strokeOpacity={0.1}
@@ -106,6 +120,8 @@ export default function KakaoMap({
                     />
                 </div>
             ))}
+            <MapTypeControl position={'TOPLEFT'} />
+            <ZoomControl position={'LEFT'} />
         </Map>
     );
 }
