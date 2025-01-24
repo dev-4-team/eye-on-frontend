@@ -2,23 +2,12 @@
 
 export default function KakaoLogin() {
     const onLoginClick = async () => {
-        // const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-        const response = await fetch('/api/kakao');
+        const previous_page = window.location.href;
+        localStorage.setItem('previous_page', previous_page);
 
-        if (!response.ok) {
-            console.error('오류:', response.status);
-            return <div>오류 발생</div>;
-        }
+        const LOCAL_DEV_URL = process.env.NEXT_PUBLIC_LOCAL_DEV_URL;
 
-        const authorizationHeader = response.headers.get('Authorization');
-
-        if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
-            const accessToken = authorizationHeader.split(' ')[1];
-            console.log('Access Token: ', accessToken);
-            localStorage.setItem('accessToken', accessToken);
-        } else {
-            console.error('Access token not found in header');
-        }
+        window.location.replace(`${LOCAL_DEV_URL}/oauth2/authorization/kakao`);
     };
 
     return (
