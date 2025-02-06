@@ -1,7 +1,7 @@
 'use client';
 
+import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function Page() {
     const router = useRouter();
@@ -9,7 +9,6 @@ export default function Page() {
 
     useEffect(() => {
         const previous_page = localStorage.getItem('previous_page');
-
         const accessToken = searchParams.get('access_token');
 
         if (accessToken) {
@@ -18,7 +17,11 @@ export default function Page() {
         } else {
             console.error('Access token not found');
         }
-    }, []);
+    }, [searchParams, router]);
 
-    return <div>로그인 처리 중..</div>;
+    return (
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <div>로그인 처리 중..</div>
+        </Suspense>
+    );
 }
