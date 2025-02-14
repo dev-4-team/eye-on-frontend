@@ -36,12 +36,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
     return (
         <section className="bg-zinc-100 h-[100dvh] w-full min-w-[260px]">
-            <div className="flex bg-background-white">
-                <div className="flex flex-col gap-0.1 py-3 bg-background-white w-[80%]">
+            <div className="flex justify-center bg-background-white w-[100%]">
+                <div className="flex flex-col gap-0.1 py-3 bg-background-white">
                     <h1 className="text-[#D44646] w-[85%] min-w-[240px] mx-auto font-bold">{title}</h1>
                     <span className="text-zinc-400 w-[85%] min-w-[240px] mx-auto  text-sm">{location}</span>
                 </div>
-                <div className="w-[20%]">
+                <div className="flex justify-center items-center">
                     <Verification paramId={paramId} />
                 </div>
             </div>

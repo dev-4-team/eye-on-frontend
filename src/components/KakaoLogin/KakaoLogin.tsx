@@ -1,6 +1,10 @@
 'use client';
 
+import useUserInfo from '@/hooks/useUserInfo';
+
 export default function KakaoLogin() {
+    const { userInfo } = useUserInfo();
+
     const onLoginClick = async () => {
         const previous_page = window.location.href;
         localStorage.setItem('previous_page', previous_page);
@@ -11,10 +15,16 @@ export default function KakaoLogin() {
     };
 
     return (
-        <div className="absolute bottom-0 right-0 z-50">
-            <button onClick={onLoginClick} className="p-5 bg-yellow-500">
-                login
-            </button>
+        <div className="absolute top-0 right-0 z-50">
+            {userInfo ? (
+                <button onClick={onLoginClick} className="p-2 text-[#D44646]">
+                    login
+                </button>
+            ) : (
+                <button onClick={onLoginClick} className="p-2 text-[#D44646]">
+                    logout
+                </button>
+            )}
         </div>
     );
 }
