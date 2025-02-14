@@ -18,9 +18,10 @@ export default function RootLayout({
             <body>
                 <Header />
                 <Script
-                    strategy='beforeInteractive'
+                    strategy="lazyOnload"
                     src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
-                ></Script>
+                />
+                <Script strategy="lazyOnload" src="https://unpkg.com/heatmap.js" />
                 <main>{children}</main>
                 {modal}
                 <Footer />

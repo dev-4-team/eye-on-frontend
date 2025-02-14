@@ -14,4 +14,5 @@ export interface ProtestData {
     organizer: string;
     declaredParticipants: number;
     locations: ProtestLocations[];
+    radius: number;
 }
