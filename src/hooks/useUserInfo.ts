@@ -9,7 +9,7 @@ interface UserInfoState {
 }
 
 interface UserInfoActions {
-    setUserInfo: (userinfo: userInfoType) => void;
+    setUserInfo: (userInfo: userInfoType) => void;
     deleteUserInfo: () => void;
 }
 
