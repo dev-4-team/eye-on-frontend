@@ -2,19 +2,20 @@ export default async function VerifyLocation({
     paramId,
     longitude,
     latitude,
+    accessToken,
 }: {
     paramId: string;
     longitude: number;
     latitude: number;
+    accessToken: string;
 }) {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const accessToken = localStorage.getItem('access_token');
     try {
         const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({ longitude, latitude }),
         });

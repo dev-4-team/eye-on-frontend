@@ -14,6 +14,7 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from '@/components/ui/drawer';
+import useUserInfo from '@/hooks/useUserInfo';
 
 interface VerificationResult {
     success: boolean;
@@ -25,6 +26,7 @@ export default function Verification({ paramId }: { paramId: string }) {
     const [open, setOpen] = useState(false);
     const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
+    const accessToken = useUserInfo((state) => state.userInfo.accessToken);
 
     const onVerificationClick = () => {
         setOpen(true);
@@ -43,6 +45,7 @@ export default function Verification({ paramId }: { paramId: string }) {
                 paramId: paramId,
                 longitude: curLocation.longitude,
                 latitude: curLocation.latitude,
+                accessToken: accessToken,
             });
             setVerificationResult(result);
         };
