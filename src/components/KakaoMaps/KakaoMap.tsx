@@ -1,10 +1,11 @@
 'use client';
 
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProtestData } from '@/types';
+import VerificationBadge from '../Protest/verification-badge';
 
 export default function KakaoMap({
     latitude,
@@ -101,8 +102,8 @@ export default function KakaoMap({
 
             const heatmap = (window as any).h337.create({
                 container,
-                maxOpacity: 0.6,
-                minOpacity: 0.2,
+                maxOpacity: 0.4,
+                minOpacity: 0.1,
                 blur: 0.95,
             });
 
@@ -165,6 +166,15 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
+                        <CustomOverlayMap
+                            position={{
+                                lat: protest.locations[0].latitude,
+                                lng: protest.locations[0].longitude,
+                            }}
+                            yAnchor={3}
+                        >
+                            <VerificationBadge protestId={protest.id} />
+                        </CustomOverlayMap>
                         <MapMarker
                             position={{
                                 lat: protest.locations[0].latitude,
@@ -185,6 +195,7 @@ export default function KakaoMap({
                         />
                     </div>
                 ))}
+
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
             </Map>
