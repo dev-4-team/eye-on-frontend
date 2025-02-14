@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 export default async function ProtestInfos({ date }: { date: string }) {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=2025-03-15`, { cache: 'force-cache' });
+    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { cache: 'force-cache' });
 
     if (!response.ok) {
         if (response.status === 404) {
