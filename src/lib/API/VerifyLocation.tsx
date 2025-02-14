@@ -8,12 +8,12 @@ export default async function VerifyLocation({
     latitude: number;
 }) {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-
+    const accessToken = localStorage.getItem('access_token');
     try {
         const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
             method: 'POST',
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJleWUtb24iLCJpYXQiOjE3MzkwNjcxMDQsInN1YiI6IjEiLCJ0eXBlIjoiQUNDRVNTX1RPS0VOIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MjA5OTA2NzEwNH0.vMA_V9j_7-B-GDkk_Cwkr4mXgCJ9U-5lB7y0sxYtiXE`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ longitude, latitude }),
