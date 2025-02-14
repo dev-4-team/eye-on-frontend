@@ -17,7 +17,7 @@ export default async function VerifyLocation({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`,
             },
-            body: JSON.stringify({ longitude, latitude }),
+            body: JSON.stringify({ latitude, longitude }),
         });
         if (!response.ok) {
             console.log(response);
