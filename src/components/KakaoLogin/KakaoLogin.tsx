@@ -4,6 +4,7 @@ import useUserInfo from '@/hooks/useUserInfo';
 
 export default function KakaoLogin() {
     const accessToken = useUserInfo((state) => state.userInfo.accessToken);
+    const { deleteUserInfo } = useUserInfo();
 
     const onLoginClick = async () => {
         const previous_page = window.location.href;
@@ -12,6 +13,10 @@ export default function KakaoLogin() {
         const LOCAL_DEV_URL = process.env.NEXT_PUBLIC_LOCAL_DEV_URL;
 
         window.location.replace(`${LOCAL_DEV_URL}/oauth2/authorization/kakao`);
+    };
+
+    const onLogoutClick = () => {
+        deleteUserInfo();
     };
 
     console.log(accessToken);
@@ -23,7 +28,7 @@ export default function KakaoLogin() {
                     login
                 </button>
             ) : (
-                <button onClick={onLoginClick} className="p-2 text-[#D44646]">
+                <button onClick={onLogoutClick} className="p-2 text-[#D44646]">
                     logout
                 </button>
             )}
