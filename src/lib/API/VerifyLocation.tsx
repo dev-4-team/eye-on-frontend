@@ -19,6 +19,7 @@ export default async function VerifyLocation({
             body: JSON.stringify({ longitude, latitude }),
         });
         if (!response.ok) {
+            console.log(response);
             throw new Error('서버 요청 실패');
         }
         const verification = await response.json();
