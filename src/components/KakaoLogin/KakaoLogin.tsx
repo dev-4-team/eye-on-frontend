@@ -1,10 +1,12 @@
 'use client';
 
 import useUserInfo from '@/hooks/useUserInfo';
+import { useRouter } from 'next/navigation';
 
 export default function KakaoLogin() {
     const accessToken = useUserInfo((state) => state.userInfo.accessToken);
     const { deleteUserInfo } = useUserInfo();
+    const router = useRouter();
 
     const onLoginClick = async () => {
         const previous_page = window.location.href;
@@ -17,6 +19,7 @@ export default function KakaoLogin() {
 
     const onLogoutClick = () => {
         deleteUserInfo();
+        router.push('/');
     };
 
     console.log(accessToken);
