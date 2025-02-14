@@ -2,7 +2,18 @@
 
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import VerifyLocation from '@/lib/API/VerifyLocation';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+} from '@/components/ui/drawer';
 
 interface VerificationResult {
     success: boolean;
@@ -11,11 +22,17 @@ interface VerificationResult {
 
 export default function Verification({ paramId }: { paramId: string }) {
     const [agreed, setAgreed] = useState(false);
+    const [open, setOpen] = useState(false);
     const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
+
     const onVerificationClick = () => {
-        console.log('동의한대');
+        setOpen(true);
+    };
+
+    const handleAgree = () => {
         setAgreed(true);
+        setOpen(false);
     };
 
     useEffect(() => {
@@ -32,19 +49,34 @@ export default function Verification({ paramId }: { paramId: string }) {
         verifyUserLocation();
     }, [agreed, curLocation]);
 
-    if (agreed && isLoading) {
-        return <div>Loading...</div>;
-    }
-
     if (agreed && errorMsg) {
         return <div>{errorMsg}</div>;
     }
 
-    console.log(verificationResult);
-
     return (
         <div>
-            <button onClick={onVerificationClick}>인증하기</button>
+            <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
+                {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
+            </Button>
+            <Drawer open={open} onOpenChange={setOpen}>
+                {open && (
+                    <DrawerContent>
+                        <DrawerHeader>
+                            <DrawerTitle>위치동의 drawer</DrawerTitle>
+                            <DrawerDescription>위치 인증 동의 여부를 묻습니다</DrawerDescription>
+                        </DrawerHeader>
+                        <div className="p-4 flex justify-center gap-4">
+                            <Button variant={'signature'} onClick={handleAgree}>
+                                동의
+                            </Button>
+                            <DrawerClose asChild>
+                                <Button variant="outline">취소</Button>
+                            </DrawerClose>
+                        </div>
+                        <DrawerFooter className="hidden">footer</DrawerFooter>
+                    </DrawerContent>
+                )}
+            </Drawer>
         </div>
     );
 }
