@@ -3,7 +3,7 @@
 import useUserInfo from '@/hooks/useUserInfo';
 
 export default function KakaoLogin() {
-    const { userInfo } = useUserInfo();
+    const accessToken = useUserInfo((state) => state.userInfo.accessToken);
 
     const onLoginClick = async () => {
         const previous_page = window.location.href;
@@ -14,9 +14,11 @@ export default function KakaoLogin() {
         window.location.replace(`${LOCAL_DEV_URL}/oauth2/authorization/kakao`);
     };
 
+    console.log(accessToken);
+
     return (
         <div className="absolute top-0 right-0 z-50">
-            {userInfo ? (
+            {accessToken === '' ? (
                 <button onClick={onLoginClick} className="p-2 text-[#D44646]">
                     login
                 </button>
