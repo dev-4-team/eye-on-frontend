@@ -26,6 +26,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     const { id: paramId } = await params;
 
     const protest = await ProtestDetail({ id: `${paramId}` });
+    console.log(protest);
 
     const { id, title, description, startDateTime, endDateTime, location, organizer, declaredParticipants, locations } =
         protest;

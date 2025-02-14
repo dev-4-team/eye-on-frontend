@@ -7,12 +7,11 @@ import { useEffect } from 'react';
 
 export default async function ProtestList() {
     const protests = await ProtestInfos({ date: '123' });
-    console.log(protests);
 
     return (
         <div>
             <Sheet>
-                <SheetTrigger className='absolute top-4 right-0 p-2 rounded-s-md bg-amber-500 text-2xl text-background-white z-10'>
+                <SheetTrigger className='absolute top-12 right-0 p-2 rounded-s-md bg-amber-500 text-2xl text-background-white z-10'>
                     <GiHamburgerMenu />
                 </SheetTrigger>
                 <SheetContent className='w-[80%] p-3 bg-transparent border-transparent overflow-auto'>
