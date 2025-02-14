@@ -7,7 +7,7 @@ export default function ProtestCard({ id, title, description, location }: Protes
         <Link href={`/protest/${id}`}>
             <div className="flex flex-col gap-0.5 text-start bg-background-white rounded-md p-3">
                 <div className="flex justify-between">
-                    <h1 className="text-amber-500 font-bold">{title}</h1>
+                    <h1 className="text-[#D44646] font-bold">{title}</h1>
                     <MdArrowOutward />
                 </div>
                 <p className="text-[11px] text-zinc-400">{location}</p>

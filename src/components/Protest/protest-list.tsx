@@ -11,13 +11,13 @@ export default async function ProtestList() {
     return (
         <div>
             <Sheet>
-                <SheetTrigger className='absolute top-12 right-0 p-2 rounded-s-md bg-amber-500 text-2xl text-background-white z-10'>
+                <SheetTrigger className="absolute top-12 right-0 p-2 rounded-s-md bg-[#D44646] text-2xl text-background-white z-10">
                     <GiHamburgerMenu />
                 </SheetTrigger>
-                <SheetContent className='w-[80%] p-3 bg-transparent border-transparent overflow-auto'>
-                    <SheetHeader className='mt-11 gap-1 '>
-                        <SheetTitle className='hidden'>ProtestList</SheetTitle>
-                        <SheetDescription className='hidden'>ProtestList</SheetDescription>
+                <SheetContent className="w-[80%] p-3 bg-transparent border-transparent overflow-auto">
+                    <SheetHeader className="mt-11 gap-1 ">
+                        <SheetTitle className="hidden">ProtestList</SheetTitle>
+                        <SheetDescription className="hidden">ProtestList</SheetDescription>
                         {protests?.map((protest: ProtestData, idx: number) => (
                             <ProtestCard key={idx} {...protest} />
                         ))}
