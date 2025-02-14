@@ -6,7 +6,8 @@ import { ProtestData } from '@/types';
 import { useEffect } from 'react';
 
 export default async function ProtestList() {
-    const protests = await ProtestInfos({ date: '123' });
+    const date = new Date().toISOString().split('T')[0];
+    const protests = await ProtestInfos({ date: date });
 
     return (
         <div>
