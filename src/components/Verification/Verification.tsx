@@ -15,16 +15,13 @@ import {
     DrawerTitle,
 } from '@/components/ui/drawer';
 import useUserInfo from '@/hooks/useUserInfo';
-
-interface VerificationResult {
-    success: boolean;
-    message: string;
-}
+import { toast } from 'sonner';
+import { VerificationResponse } from '@/lib/API/VerifyLocation';
 
 export default function Verification({ paramId }: { paramId: string }) {
     const [agreed, setAgreed] = useState(false);
     const [open, setOpen] = useState(false);
-    const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
+    const [verificationResult, setVerificationResult] = useState<VerificationResponse | null>(null);
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
     const accessToken = useUserInfo((state) => state.userInfo.accessToken);
 
@@ -48,6 +45,7 @@ export default function Verification({ paramId }: { paramId: string }) {
                 accessToken: accessToken,
             });
             setVerificationResult(result);
+            toast(result.message);
         };
         verifyUserLocation();
     }, [agreed, curLocation]);
@@ -58,6 +56,15 @@ export default function Verification({ paramId }: { paramId: string }) {
 
     return (
         <div>
+            {/* {verificationResult ? (
+                <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
+                    {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
+                </Button>
+            ) : (
+                <Button disabled variant={'signature'} size={'sm'} onClick={onVerificationClick}>
+                    인증완료
+                </Button>
+            )} */}
             <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
                 {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
             </Button>
