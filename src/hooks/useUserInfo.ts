@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface userInfoType {
     accessToken: string;
@@ -15,14 +16,22 @@ interface UserInfoActions {
 
 const defaultState = { accessToken: '' };
 
-const useUserInfo = create<UserInfoState & UserInfoActions>((set) => ({
-    userInfo: defaultState,
-    setUserInfo: (userInfo: userInfoType) => {
-        set({ userInfo });
-    },
-    deleteUserInfo: () => {
-        set({ userInfo: defaultState });
-    },
-}));
+const useUserInfo = create<UserInfoState & UserInfoActions>()(
+    persist(
+        (set) => ({
+            userInfo: defaultState,
+            setUserInfo: (userInfo: userInfoType) => {
+                set({ userInfo });
+            },
+            deleteUserInfo: () => {
+                set({ userInfo: defaultState });
+            },
+        }),
+        {
+            name: 'accessToken',
+            storage: createJSONStorage(() => localStorage),
+        }
+    )
+);
 
 export default useUserInfo;
