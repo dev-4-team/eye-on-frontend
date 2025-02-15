@@ -14,7 +14,6 @@ export default function Login() {
         const accessToken = searchParams.get('access_token');
 
         if (accessToken) {
-            localStorage.setItem('access_token', accessToken);
             setUserInfo({ accessToken });
             router.replace(previous_page!);
         } else {
