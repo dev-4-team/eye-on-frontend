@@ -4,6 +4,7 @@ import ProtestDetail from '@/lib/API/ProtestDetail';
 import { ProtestData } from '@/types';
 import { formatDate } from '@/lib/utils';
 import Verification from '@/components/Verification/Verification';
+import { Metadata } from 'next';
 
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
@@ -23,11 +24,26 @@ export async function generateStaticParams() {
     }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+
+    const protest = await ProtestDetail({ id });
+
+    return {
+        title: `${protest.title}`,
+        description: `${protest.title}의 상세정보 페이지 입니다`,
+        openGraph: {
+            title: `${protest.title}`,
+            description: `${protest.title}의 상세정보 페이지 입니다`,
+            images: ['/images/thumbnail.png'],
+        },
+    };
+}
+
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id: paramId } = await params;
 
     const protest = await ProtestDetail({ id: `${paramId}` });
-    console.log(protest);
 
     const { id, title, description, startDateTime, endDateTime, location, organizer, declaredParticipants, locations } =
         protest;
