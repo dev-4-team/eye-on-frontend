@@ -8,7 +8,7 @@ import Verification from '@/components/Verification/Verification';
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { cache: 'force-cache' });
+    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
 
     if (!response.ok) {
         throw new Error(response.statusText);

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 export default async function ProtestDetail({ id }: { id: string }) {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest/${id}`, { cache: 'force-cache' });
+    const response = await fetch(`${SERVER_URL}/api/protest/${id}`, { next: { revalidate: 3600 } });
 
     if (!response.ok) {
         if (response.status === 404) {
