@@ -8,7 +8,7 @@
     color: #333;
     font-size: clamp(0.7rem, 1vw, 1.3rem);
     text-align: center;
-    height: 40px;
+    height: clamp(40px, 6vh, 60px);
 }
 
 .link {

@@ -23,7 +23,7 @@ export default function KakaoLogin() {
     };
 
     return (
-        <div className='absolute top-0 right-0 z-50'>
+        <div className='absolute top-2 right-0 z-50'>
             {accessToken === '' ? (
                 <button onClick={onLoginClick} className='p-2 text-[#D44646]'>
                     login
