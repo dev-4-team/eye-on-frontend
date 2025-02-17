@@ -42,41 +42,41 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id: paramId } = await params;
-
     const protest = await ProtestDetail({ id: `${paramId}` });
 
-    const { id, title, description, startDateTime, endDateTime, location, organizer, declaredParticipants, locations } =
+    const { title, description, startDateTime, endDateTime, location, organizer, declaredParticipants, locations } =
         protest;
 
     const startTime = formatDate(startDateTime);
     const endTime = formatDate(endDateTime);
 
     return (
-        <section className='bg-zinc-100 h-[100dvh] w-full min-w-[260px]'>
-            <div className='flex justify-center bg-background-white w-[100%]'>
-                <div className='flex flex-col gap-0.1 py-3 bg-background-white'>
-                    <h1 className='text-[#D44646] w-[85%] min-w-[240px] mx-auto font-bold'>{title}</h1>
-                    <span className='text-zinc-400 w-[85%] min-w-[240px] mx-auto  text-sm'>{location}</span>
+        <section className='w-full min-w-[240px] break-words flex flex-col'>
+            <div className='flex justify-between items-center bg-white px-4 py-3 shadow-md'>
+                <div className='flex flex-col'>
+                    <h1 className='text-[#D44646] text-lg sm:text-xl font-bold'>{title}</h1>
+                    <span className='text-zinc-400 text-sm sm:text-base'>{location}</span>
                 </div>
-                <div className='flex justify-center items-center'>
-                    <Verification paramId={paramId} />
-                </div>
+                <Verification paramId={paramId} />
             </div>
-            <div className='flex flex-col h-[calc(100%-68px)] justify-evenly'>
-                <ProtestDetailInfo name={'시위 정보'} info={description} />
-                <ProtestDetailInfo name={'시작 일시'} info={startTime} />
-                <ProtestDetailInfo name={'종료 일시'} info={endTime} />
-                <ProtestDetailInfo name={'주최자'} info={organizer} />
-                <ProtestDetailInfo name={'예상 참가 인원'} info={`${declaredParticipants.toLocaleString()}명`} />
-                <StaticKakakoMap
-                    latitude={locations[0].latitude}
-                    longitude={locations[0].longitude}
-                    w={'85%'}
-                    minW={'240px'}
-                    h={'20%'}
-                    minH={'100px'}
-                    l={3}
-                />
+
+            <div className='flex flex-col flex-grow gap-3 py-5 '>
+                <ProtestDetailInfo name='시위 정보' info={description} />
+                <ProtestDetailInfo name='시작 일시' info={startTime} />
+                <ProtestDetailInfo name='종료 일시' info={endTime} />
+                <ProtestDetailInfo name='주최자' info={organizer} />
+                <ProtestDetailInfo name='예상 참가 인원' info={`${declaredParticipants.toLocaleString()}명`} />
+                <div className='flex justify-center p-4'>
+                    <StaticKakakoMap
+                        latitude={locations[0].latitude}
+                        longitude={locations[0].longitude}
+                        w='100%'
+                        h='250px'
+                        minW='240px'
+                        minH='150px'
+                        l={3}
+                    />
+                </div>
             </div>
         </section>
     );
