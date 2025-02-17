@@ -22,16 +22,14 @@ export default function KakaoLogin() {
         router.push('/');
     };
 
-    console.log(accessToken);
-
     return (
-        <div className="absolute top-0 right-0 z-50">
+        <div className='absolute top-0 right-0 z-50'>
             {accessToken === '' ? (
-                <button onClick={onLoginClick} className="p-2 text-[#D44646]">
+                <button onClick={onLoginClick} className='p-2 text-[#D44646]'>
                     login
                 </button>
             ) : (
-                <button onClick={onLogoutClick} className="p-2 text-[#D44646]">
+                <button onClick={onLogoutClick} className='p-2 text-[#D44646]'>
                     logout
                 </button>
             )}
