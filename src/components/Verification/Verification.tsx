@@ -65,8 +65,8 @@ export default function Verification({ paramId }: { paramId: string }) {
                     인증완료
                 </Button>
             )} */}
-            <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
-                {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
+            <Button variant={'signature'} size={'sm'} onClick={onVerificationClick} disabled={!accessToken}>
+                {isLoading ? <Loader2 className='animate-spin' /> : <div>인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
@@ -75,15 +75,15 @@ export default function Verification({ paramId }: { paramId: string }) {
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
                             <DrawerDescription>위치 인증 동의 여부를 묻습니다</DrawerDescription>
                         </DrawerHeader>
-                        <div className="p-4 flex justify-center gap-4">
+                        <div className='p-4 flex justify-center gap-4'>
                             <Button variant={'signature'} onClick={handleAgree}>
                                 동의
                             </Button>
                             <DrawerClose asChild>
-                                <Button variant="outline">취소</Button>
+                                <Button variant='outline'>취소</Button>
                             </DrawerClose>
                         </div>
-                        <DrawerFooter className="hidden">footer</DrawerFooter>
+                        <DrawerFooter className='hidden'>footer</DrawerFooter>
                     </DrawerContent>
                 )}
             </Drawer>
