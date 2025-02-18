@@ -24,9 +24,10 @@ export default function Verification({ paramId }: { paramId: string }) {
     const [verificationResult, setVerificationResult] = useState<VerificationResponse | null>(null);
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
     const accessToken = useUserInfo((state) => state.userInfo.accessToken);
-
     const onVerificationClick = () => {
-        setOpen(true);
+        if (!accessToken)
+            window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
+        else setOpen(true);
     };
 
     const handleAgree = () => {
@@ -65,7 +66,7 @@ export default function Verification({ paramId }: { paramId: string }) {
                     인증완료
                 </Button>
             )} */}
-            <Button variant={'signature'} size={'sm'} onClick={onVerificationClick} disabled={!accessToken}>
+            <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
                 {isLoading ? <Loader2 className='animate-spin' /> : <div>인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
