@@ -5,6 +5,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/sonner';
 import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    verification: {
+        google: 'C7IMZBZEv09U',
+    },
+};
 
 export default function RootLayout({
     children,
