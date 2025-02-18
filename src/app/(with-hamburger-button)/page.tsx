@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: '주변 시위 Now',
         description: '주변 시위 정보를 지도로 한 눈에 볼 수 있도록 제공하는 서비스 입니다',
-        images: ['/images/thumbnail.png'],
+        images: [`${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/images/thumbnail.png`],
     },
     icons: {
         icon: '/images/favicon.ico',
