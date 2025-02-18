@@ -55,7 +55,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <section className='w-full min-w-[240px] break-words flex flex-col'>
             <div className='flex justify-between items-center bg-white px-4 py-3 shadow-md'>
                 <div className='flex flex-col'>
-                    <h1 className='text-[#D44646] text-lg sm:text-xl font-bold'>{title}</h1>
+                    <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
                     <span className='text-zinc-400 text-sm sm:text-base'>{location}</span>
                 </div>
                 <Verification paramId={paramId} />
