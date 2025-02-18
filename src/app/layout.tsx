@@ -9,7 +9,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     verification: {
-        google: 'C7IMZBZEv09U',
+        google: 'C7IMZBZEv09U7b7X4-rcEn7Fe1hpK5yE0EfGgNgxRPE',
     },
 };
 
