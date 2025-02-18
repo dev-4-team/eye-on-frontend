@@ -64,7 +64,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             <div className='flex flex-col flex-grow gap-3 py-5 items-center justify-center'>
                 <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>시위정보</p>
                 <MarkdownWrapper content={description} />
-                <ProtestDetailInfo name='시위 정보' info={description} />
                 <ProtestDetailInfo name='시작 일시' info={startTime} />
                 <ProtestDetailInfo name='종료 일시' info={endTime} />
                 <ProtestDetailInfo name='주최자' info={organizer} />
