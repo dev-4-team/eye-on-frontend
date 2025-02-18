@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/sonner';
+import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics';
 
 export default function RootLayout({
     children,
@@ -17,6 +18,9 @@ export default function RootLayout({
     return (
         <html lang="kr">
             <body>
+                {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+                    <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+                )}
                 <Header />
                 <Script
                     strategy="lazyOnload"
