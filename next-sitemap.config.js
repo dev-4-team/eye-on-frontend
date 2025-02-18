@@ -1,6 +1,4 @@
-import type { IConfig, ISitemapField } from 'next-sitemap';
-
-const config: IConfig = {
+const config = {
     siteUrl: process.env.NEXT_PUBLIC_SERVER_DEV_URL || 'https://eye-on.kr/',
     generateRobotsTxt: true,
     sitemapSize: 5000,
@@ -21,17 +19,17 @@ const config: IConfig = {
             const protestsData = await response.json();
             const protests = protestsData.data;
 
-            const paths: ISitemapField[] = [
+            const paths = [
                 {
                     loc: '/',
                     lastmod: new Date().toISOString(),
-                    changefreq: 'daily' as const,
+                    changefreq: 'daily',
                     priority: 1.0,
                 },
-                ...protests.map((protest: any) => ({
+                ...protests.map((protest) => ({
                     loc: `/protests/${protest.id}`,
                     lastmod: new Date().toISOString(),
-                    changefreq: 'daily' as const,
+                    changefreq: 'daily',
                     priority: 0.7,
                 })),
             ];
@@ -44,4 +42,4 @@ const config: IConfig = {
     },
 };
 
-export default config;
+module.exports = config;
