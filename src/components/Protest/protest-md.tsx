@@ -9,7 +9,7 @@ interface MarkdownWrapperProps {
 
 const MarkdownWrapper = ({ content }: MarkdownWrapperProps) => {
     return (
-        <div className='px-2 py-4 shadow-md mx-auto rounded-md w-[85%] min-w-[240px] flex items-center justify-center'>
+        <div className='px-2 py-2 shadow-md mx-auto rounded-md w-[85%] min-w-[240px] flex items-center justify-center'>
             <MarkdownPreview
                 source={content}
                 style={{ backgroundColor: 'white', color: 'black', fontSize: '12px', width: '90%' }}
