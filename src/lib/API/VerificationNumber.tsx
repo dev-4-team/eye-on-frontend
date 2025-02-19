@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 export default async function VerificationNumber({ protestId, date }: { protestId: string; date: string }) {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=2025-03-15`, {
+    const response = await fetch(`${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=${date}`, {
         cache: 'no-store',
     });
 
