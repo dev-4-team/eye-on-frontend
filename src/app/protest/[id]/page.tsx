@@ -58,7 +58,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
                     <span className='text-zinc-400 text-sm sm:text-base'>{location}</span>
                 </div>
-                <Verification paramId={paramId} />
             </div>
 
             <div className='flex flex-col flex-grow gap-3 py-5 items-center justify-center'>
@@ -79,6 +78,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                         l={3}
                     />
                 </div>
+                <Verification paramId={paramId} />
             </div>
         </section>
     );
