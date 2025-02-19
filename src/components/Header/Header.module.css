@@ -4,7 +4,7 @@
     padding-left: 14px;
     background-color: white;
     color: #d44646;
-    height: 40px;
+    height: clamp(40px, 6vh, 60px);
 }
 
 .logo {
