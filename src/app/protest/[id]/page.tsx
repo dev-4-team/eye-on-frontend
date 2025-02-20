@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 <MarkdownWrapper content={description} />
                 <ProtestDetailInfo name='시작 일시' info={startTime} />
                 <ProtestDetailInfo name='종료 일시' info={endTime} />
-                {/* <ProtestDetailInfo name='주최자' info={organizer} /> */}
+                <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>주최자</p>
                 <MarkdownWrapper content={organizer} />
                 <ProtestDetailInfo name='예상 참가 인원' info={`${declaredParticipants.toLocaleString()}명`} />
                 <div className='flex justify-center p-4'>
