@@ -56,7 +56,7 @@ export default function Verification({ paramId }: { paramId: string }) {
     }
 
     return (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-3/5 flex flex-col items-center max-w-md'>
             {/* {verificationResult ? (
                 <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
                     {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
@@ -66,8 +66,8 @@ export default function Verification({ paramId }: { paramId: string }) {
                     인증완료
                 </Button>
             )} */}
-            <Button variant={'signature'} className='w-4/5' onClick={onVerificationClick}>
-                {isLoading ? <Loader2 className='animate-spin' /> : <div>인증하기</div>}
+            <Button variant={'signature'} className='w-full' onClick={onVerificationClick}>
+                {isLoading ? <Loader2 className='animate-spin' /> : <div>시위참여 인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
