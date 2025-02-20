@@ -66,7 +66,7 @@ export default function Verification({ paramId }: { paramId: string }) {
                     인증완료
                 </Button>
             )} */}
-            <Button variant={'signature'} className='w-4/5' onClick={onVerificationClick}>
+            <Button variant={'signature'} className='w-full' onClick={onVerificationClick}>
                 {isLoading ? <Loader2 className='animate-spin' /> : <div>인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
