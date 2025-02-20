@@ -10,7 +10,7 @@ import MarkdownWrapper from '@/components/Protest/protest-md';
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
+    const response = await fetch(`${SERVER_URL}/api/protest?date=2025-03-15`, { next: { revalidate: 3600 } });
 
     if (!response.ok) {
         throw new Error(response.statusText);
@@ -65,7 +65,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 <MarkdownWrapper content={description} />
                 <ProtestDetailInfo name='시작 일시' info={startTime} />
                 <ProtestDetailInfo name='종료 일시' info={endTime} />
-                <ProtestDetailInfo name='주최자' info={organizer} />
+                {/* <ProtestDetailInfo name='주최자' info={organizer} /> */}
+                <MarkdownWrapper content={organizer} />
                 <ProtestDetailInfo name='예상 참가 인원' info={`${declaredParticipants.toLocaleString()}명`} />
                 <div className='flex justify-center p-4'>
                     <StaticKakakoMap
