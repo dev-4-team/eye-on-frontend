@@ -72,9 +72,16 @@ export default function Verification({ paramId }: { paramId: string }) {
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
                     <DrawerContent>
-                        <DrawerHeader>
+                        <DrawerHeader className='p-0 flex items-center justify-center flex-col text-center'>
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
-                            <DrawerDescription>위치 인증 동의 여부를 묻습니다</DrawerDescription>
+                            <DrawerDescription className='whitespace-pre-line'>
+                                시위 참여 인증을 위해 동의를 눌러주세요.
+                                <br />
+                                위치정보는 DB에 저장되지 않습니다.
+                                <br />
+                                신원을 특정할 수 없는 유저정보만
+                                <br /> 부정인증 방지를 위해 DB에 저장됩니다.
+                            </DrawerDescription>
                         </DrawerHeader>
                         <div className='p-4 flex justify-center gap-4'>
                             <Button variant={'signature'} onClick={handleAgree}>
