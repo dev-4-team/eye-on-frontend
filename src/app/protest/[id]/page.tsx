@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         openGraph: {
             title: `${protest.title}`,
             description: `${protest.title}의 상세정보 페이지 입니다`,
-            images: ['/images/thumbnail.png'],
+            images: [`${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/images/thumbnail.png`],
         },
     };
 }
