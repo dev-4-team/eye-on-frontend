@@ -17,6 +17,7 @@ import {
 import useUserInfo from '@/hooks/useUserInfo';
 import { toast } from 'sonner';
 import { VerificationResponse } from '@/lib/API/VerifyLocation';
+import { getIsMobile, isDesktopOS } from '@/lib/utils';
 
 export default function Verification({ paramId }: { paramId: string }) {
     const [agreed, setAgreed] = useState(false);
@@ -24,7 +25,12 @@ export default function Verification({ paramId }: { paramId: string }) {
     const [verificationResult, setVerificationResult] = useState<VerificationResponse | null>(null);
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
     const accessToken = useUserInfo((state) => state.userInfo.accessToken);
+    const isMobile = getIsMobile() && !isDesktopOS();
     const onVerificationClick = () => {
+        if (!isMobile) {
+            alert('모바일에서만 인증이 가능합니다.');
+            return;
+        }
         if (!accessToken)
             window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
         else setOpen(true);
