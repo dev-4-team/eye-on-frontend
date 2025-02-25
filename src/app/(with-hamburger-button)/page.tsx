@@ -2,6 +2,26 @@ import KakaoMap from '@/components/KakaoMaps/KakaoMap';
 import ProtestInfos from '@/lib/API/ProtestInfos';
 import { Metadata } from 'next';
 
+const keywords = [
+    '집회',
+    '서울 집회',
+    '오늘 집회 일정',
+    '광화문 집회',
+    '여의도 집회',
+    '국회의사당 집회',
+    '헌법재판소 집회',
+    '촛불집회',
+    '시위',
+    '서울 시위',
+    '오늘 시위 일정',
+    '광화문 시위',
+    '여의도 시위',
+    '국회의사당 시위',
+    '헌법재판소 시위',
+    '촛불시위',
+    '오늘의 집회/시위',
+].join(', ');
+
 export const metadata: Metadata = {
     title: '주변 시위 Now',
     description: '주변 시위 정보를 지도로 한 눈에 볼 수 있도록 제공하는 서비스 입니다',
@@ -13,6 +33,7 @@ export const metadata: Metadata = {
     icons: {
         icon: '/images/favicon.ico',
     },
+    keywords,
 };
 
 export default async function Home() {
@@ -25,8 +46,8 @@ export default async function Home() {
             <KakaoMap
                 latitude={latitude}
                 longitude={longitude}
-                w='100%'
-                h='calc(100dvh - clamp(80px, 12vh, 120px))'
+                w="100%"
+                h="calc(100dvh - clamp(80px, 12vh, 120px))"
                 l={8}
                 protests={protests}
             />

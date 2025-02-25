@@ -31,6 +31,26 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
     const protest = await ProtestDetail({ id });
 
+    const keywords = [
+        '집회',
+        '서울 집회',
+        '오늘 집회 일정',
+        '광화문 집회',
+        '여의도 집회',
+        '국회의사당 집회',
+        '헌법재판소 집회',
+        '촛불집회',
+        '시위',
+        '서울 시위',
+        '오늘 시위 일정',
+        '광화문 시위',
+        '여의도 시위',
+        '국회의사당 시위',
+        '헌법재판소 시위',
+        '촛불시위',
+        '오늘의 집회/시위',
+    ].join(', ');
+
     return {
         title: `${protest.title}`,
         description: `${protest.title}의 상세정보 페이지 입니다`,
@@ -39,6 +59,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             description: `${protest.title}의 상세정보 페이지 입니다`,
             images: [`${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/images/thumbnail.png`],
         },
+        icons: {
+            icon: '/images/favicon.ico',
+        },
+        keywords,
     };
 }
 
@@ -62,6 +86,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </div>
 
             <div className="flex flex-col flex-grow gap-3 py-5 items-center justify-center">
+                <h2 className="mx-auto mb-1 font-bold w-[85%] min-w-[240px] text-zinc-600 text-lx">
+                    오늘의 집회 및 시위 일정
+                </h2>
                 <p className="mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs">시위정보</p>
                 <MarkdownWrapper content={description} />
                 <ProtestDetailInfo name="시작 일시" info={startTime} />
