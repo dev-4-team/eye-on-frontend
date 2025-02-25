@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     ].join(', ');
 
     return {
-        title: `${protest.title}`,
+        title: `${protest.title} | 오늘의 시위 정보와 집회 정보`,
         description: `${protest.title}의 상세정보 페이지 입니다`,
         openGraph: {
             title: `${protest.title}`,

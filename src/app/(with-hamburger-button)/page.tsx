@@ -23,10 +23,10 @@ const keywords = [
 ].join(', ');
 
 export const metadata: Metadata = {
-    title: '주변 시위 Now',
+    title: '주변 시위 Now | 오늘의 시위 정보와 집회 정보',
     description: '주변 시위 정보를 지도로 한 눈에 볼 수 있도록 제공하는 서비스 입니다',
     openGraph: {
-        title: '주변 시위 Now',
+        title: '주변 시위 Now | 오늘의 시위, 집회 정보',
         description: '주변 시위 정보를 지도로 한 눈에 볼 수 있도록 제공하는 서비스 입니다',
         images: [`${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/images/thumbnail.png`],
     },
