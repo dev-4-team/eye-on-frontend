@@ -1,3 +1,5 @@
+// 'use client';
+
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -19,17 +21,16 @@ export const formatDate = (isoString: string) => {
     return `${month}월 ${day}일 ${weekday} ${hours}시 ${minutes}분 `;
 };
 
-export const isDesktopOS = () => {
-    return (
-        'win16|win32|win64|windows|mac|macintel|linux|freebsd|openbsd|sunos'.indexOf(
-            navigator.platform.toLowerCase()
-        ) >= 0
-    );
-};
+// export const isDesktopOS = () => {
+//     return (
+//         'win16|win32|win64|windows|mac|macintel|linux|freebsd|openbsd|sunos'.indexOf(
+//             navigator.platform.toLowerCase()
+//         ) >= 0
+//     );
+// };
 
-export const getIsMobile = () => {
-    const userAgent = window.navigator.userAgent;
-    const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    return isMobile;
-};
+// export const getIsMobile = () => {
+//     const userAgent = window.navigator.userAgent;
+//     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+//     return isMobile;
+// };
