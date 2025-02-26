@@ -12,6 +12,5 @@ export default async function ProtestInfos({ date }: { date: string }) {
     }
 
     const protests = await response.json();
-    console.log(protests);
     return protests.data;
 }
