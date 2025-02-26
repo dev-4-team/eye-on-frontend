@@ -1,0 +1,59 @@
+name: Node.js CI/CD to EC2
+
+on:
+    push:
+        branches: ['dev']
+    pull_request:
+        branches: ['dev']
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [22.x]
+        steps:
+            # 1. 리포지토리 코드 체크아웃
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            # # 2. pnpm 설치 (버전 9.15.4)
+            # - name: Set up pnpm
+            #   uses: pnpm/action-setup@v2
+            #   with:
+            #       version: 9.15.4
+
+            # # 3. Node.js 환경 설정 (노드 버전 '22.x', pnpm 캐싱 사용)
+            # - name: Set up Node.js
+            #   uses: actions/setup-node@v4
+            #   with:
+            #       node-version: '22.x'
+            #       cache: 'pnpm'
+            #       cache-dependency-path: ./package-lock.json
+
+            # 4. 프론트엔드 폴더에서 의존성 설치
+            - name: Install dependencies in frontend
+              run: pnpm install
+
+            # 5. 프론트엔드 폴더에서 빌드 실행
+            - name: Build frontend
+              run: pnpm build
+
+            # 6. SSH 키 설정 (GitHub Secrets에서 SSH Private Key 가져오기)
+            - name: Set up SSH key
+              run: |
+                  echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
+                  chmod 600 ~/.ssh/ec2_key.pem
+
+            # 7. EC2 서버로 빌드된 파일 업로드
+            - name: Deploy to EC2
+              run: |
+                  scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem -r /next ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/eye-on-frontend
+
+            # 8. EC2 서버에서 배포 스크립트 실행
+            - name: Restart application on EC2
+              run: |
+                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+                  cd /home/ubuntu/eye-on-frontend
+                  pm2 restart frontend || pm2 start pnpm --name "frontend" -- start
+                  EOF
