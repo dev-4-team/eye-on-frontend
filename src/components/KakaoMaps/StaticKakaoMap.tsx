@@ -1,6 +1,10 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { StaticMap } from 'react-kakao-maps-sdk';
 
-export default function StaticKakakoMap({
+export default function StaticKakaoMap({
     latitude,
     longitude,
     w,
@@ -17,6 +21,30 @@ export default function StaticKakakoMap({
     minH: string;
     l: number;
 }) {
+    const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
+
+    useEffect(() => {
+        const checkKakao = () => {
+            if (window.kakao && window.kakao.maps) {
+                setIsKakaoLoaded(true);
+            } else {
+                setTimeout(checkKakao, 100);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            if (window.kakao && window.kakao.maps) {
+                setIsKakaoLoaded(true);
+            } else {
+                checkKakao();
+            }
+        }
+    }, []);
+
+    if (!isKakaoLoaded) {
+        return <Skeleton className="w-[240px] h-[250px]" />;
+    }
+
     return (
         <StaticMap
             center={{
