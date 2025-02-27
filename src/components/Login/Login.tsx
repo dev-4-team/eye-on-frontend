@@ -16,7 +16,10 @@ export default function Login() {
         if (accessToken) {
             setUserInfo({ accessToken });
             router.replace('/');
-            router.replace(previous_page!);
+
+            setTimeout(() => {
+                router.push(previous_page!);
+            }, 200);
         } else {
             console.error('Access token not found');
         }
