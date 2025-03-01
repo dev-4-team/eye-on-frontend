@@ -39,21 +39,14 @@ jobs:
             - name: Build frontend
               run: pnpm build
 
-            # 6. SSH 키 설정 (GitHub Secrets에서 SSH Private Key 가져오기)
-            - name: Set up SSH key
+            - name: Setup SSH and Deploy
               run: |
-                  echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
-                  chmod 600 ~/.ssh/ec2_key.pem
-
-            # 7. EC2 서버로 빌드된 파일 업로드
-            - name: Deploy to EC2
-              run: |
-                  scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem -r /next ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/eye-on-frontend
-
-            # 8. EC2 서버에서 배포 스크립트 실행
-            - name: Restart application on EC2
-              run: |
-                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-                  cd /home/ubuntu/eye-on-frontend
-                  pm2 restart frontend || pm2 start pnpm --name "frontend" -- start
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+                    cd ~/eyeonfrontend
+                    pnpm install
+                    pnpm run build
+                    pm2 restart "eye on frontend" || pm2 start pnpm --name "eye on frontend" -- run start
                   EOF
