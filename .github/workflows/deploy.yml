@@ -28,7 +28,7 @@ jobs:
               run: |
                   echo "NEXT_PUBLIC_KAKAO_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_API_KEY }}" > .env
                   echo "NEXT_PUBLIC_SERVER_DEV_URL=${{ secrets.NEXT_PUBLIC_SERVER_DEV_URL }}" >> .env
-                  echo "NEXT_PUBLIC_LOCAL_DEV_URL=${{ secrets.NEXT_PUBLIC_LOCAL_DEV_URL }}" > .env
+                  echo "NEXT_PUBLIC_LOCAL_DEV_URL=${{ secrets.NEXT_PUBLIC_LOCAL_DEV_URL }}" >> .env 
                   echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
 
             # 4. 의존성 설치 & 빌드
