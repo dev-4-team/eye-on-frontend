@@ -1,4 +1,4 @@
-name: Node.js CI/CD to EC2
+name: CI/CD to EC2
 
 on:
     push:
@@ -9,40 +9,30 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [22.x]
+
         steps:
-            # 1. 리포지토리 코드 체크아웃
+            # 1. 리포지토리 체크아웃
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            # 2. pnpm 설치 (버전 9.15.4)
+            # 2. pnpm 설치
             - name: Set up pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 9.15.4
+              run: npm install -g pnpm
 
-            # 3. Node.js 환경 설정 (노드 버전 '22.x', pnpm 캐싱 사용)
+            # 3. Node.js 환경 설정
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: '22.x'
-                  cache: 'pnpm'
-                  cache-dependency-path: ./eye-on-frontend/pnpm-lock.yml
 
-            - name: Install pnpm
-              run: npm install -g pnpm
+            # 4. 의존성 설치 & 빌드
+            - name: Install dependencies & Build
+              run: |
+                  pnpm install
+                  pnpm build
 
-            # 4. 프론트엔드 폴더에서 의존성 설치
-            - name: Install dependencies in frontend
-              run: pnpm install
-
-            # 5. 프론트엔드 폴더에서 빌드 실행
-            - name: Build frontend
-              run: pnpm build
-
-            - name: Setup SSH and Deploy
+            # 5. SSH로 EC2 접속 후 배포
+            - name: Deploy to EC2
               run: |
                   mkdir -p ~/.ssh
                   echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
