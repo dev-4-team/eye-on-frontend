@@ -32,8 +32,8 @@ jobs:
                   echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
                   echo "NEXT_PUBLIC_KAKAO_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_API_KEY }}" >> .env
 
-            - name: Verify .env file
-              run: cat .env
+            # - name: Verify .env file
+            #   run: cat .env
 
             # 6. 의존성 설치 & 빌드
             - name: Install dependencies & Build
