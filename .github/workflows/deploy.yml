@@ -45,7 +45,7 @@ jobs:
                   mkdir -p ~/.ssh
                   echo "${{ secrets.EC2_SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
-            # 7. EC2로 배포
+            # 7. EC2로 배포.
             - name: Deploy to EC2
               run: |
                   ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
