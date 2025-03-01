@@ -39,8 +39,8 @@ jobs:
                   pnpm install
                   pnpm build
 
-            # 6. SSH 키 복원 및 연결 테스트
-            - name: Decode SSH Key & Test Connection
+            # 6. SSH 키 복원 및 테스트
+            - name: Decode SSH Key & Set Permissions
               run: |
                   mkdir -p ~/.ssh
                   echo "${{ secrets.EC2_SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_rsa
@@ -50,7 +50,7 @@ jobs:
                   ssh-keygen -l -f ~/.ssh/id_rsa || (echo "❌ SSH Key Error: Invalid Key Format" && exit 1)
 
                   # SSH 접속 테스트
-                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "echo '✅ SSH Connection Successful!'"
+                  ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "echo '✅ SSH Connection Successful!'"
 
             # 7. EC2로 배포
             - name: Deploy to EC2
