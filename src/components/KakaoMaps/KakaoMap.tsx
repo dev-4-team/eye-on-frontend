@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { CustomOverlayMap, Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
@@ -151,7 +152,7 @@ export default function KakaoMap({
     return (
         <div>
             <Map
-                id="map"
+                id='map'
                 center={{
                     lat: latitude,
                     lng: longitude,
