@@ -46,8 +46,8 @@ export default async function Home() {
             <KakaoMap
                 latitude={latitude}
                 longitude={longitude}
-                w="100%"
-                h="calc(100dvh - clamp(80px, 12vh, 120px))"
+                w='100%'
+                h='calc(100dvh - 14vh)'
                 l={8}
                 protests={protests}
             />

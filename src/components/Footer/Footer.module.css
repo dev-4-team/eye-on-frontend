@@ -8,7 +8,7 @@
     color: #333;
     font-size: clamp(0.7rem, 1vw, 1.3rem);
     text-align: center;
-    height: clamp(4프0px, 6vh, 100px);
+    height: 8vh;
 }
 
 .h2 {
