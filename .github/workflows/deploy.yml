@@ -24,20 +24,26 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '22.x'
+
+            # 4. 환경 변수 적용 (.env 파일 생성)
             - name: Create .env file
               run: |
-                  echo "NEXT_PUBLIC_KAKAO_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_API_KEY }}" > .env
+                  echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" > .env
                   echo "NEXT_PUBLIC_SERVER_DEV_URL=${{ secrets.NEXT_PUBLIC_SERVER_DEV_URL }}" >> .env
-                  echo "NEXT_PUBLIC_LOCAL_DEV_URL=${{ secrets.NEXT_PUBLIC_LOCAL_DEV_URL }}" >> .env 
+                  echo "NEXT_PUBLIC_LOCAL_DEV_URL=${{ secrets.NEXT_PUBLIC_LOCAL_DEV_URL }}" >> .env
                   echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
 
-            # 4. 의존성 설치 & 빌드
+            # 5. .env 파일 내용 확인 (디버깅)
+            - name: Verify .env file
+              run: cat .env
+
+            # 6. 의존성 설치 & 빌드
             - name: Install dependencies & Build
               run: |
                   pnpm install
                   pnpm build
 
-            # 5. SSH로 EC2 접속 후 배포
+            # 7. SSH로 EC2 접속 후 배포
             - name: Deploy to EC2
               run: |
                   mkdir -p ~/.ssh
