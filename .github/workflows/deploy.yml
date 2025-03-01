@@ -28,7 +28,6 @@ jobs:
             # 4. .env 파일 생성
             - name: Create .env file
               run: |
-                  cd ./eye-on-frontend
                   echo "NEXT_PUBLIC_SERVER_DEV_URL=${{ secrets.NEXT_PUBLIC_SERVER_DEV_URL }}" >> .env
                   echo "NEXT_PUBLIC_LOCAL_DEV_URL=${{ secrets.NEXT_PUBLIC_LOCAL_DEV_URL }}" >> .env
                   echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
@@ -46,17 +45,11 @@ jobs:
                   mkdir -p ~/.ssh
                   echo "${{ secrets.EC2_SSH_PRIVATE_KEY_B64 }}" | base64 --decode > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
-
-                  # SSH 키 검증
-                  ssh-keygen -l -f ~/.ssh/id_rsa || (echo "❌ SSH Key Error: Invalid Key Format" && exit 1)
-
-                  # SSH 접속 테스트
-                  ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "echo '✅ SSH Connection Successful!'"
-
             # 7. EC2로 배포
             - name: Deploy to EC2
               run: |
                   ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+                    cd ~/eye-on-frontend
                     pnpm install
                     pnpm run build
                     pm2 restart "eye on frontend" || pm2 start pnpm --name "eye on frontend" -- run start
