@@ -19,9 +19,9 @@ export default function VerificationBadge({ protestId }: { protestId: string }) 
     }, []);
 
     return (
-        <div className="flex gap-1 text-[#D44646] items-center">
+        <div className='flex gap-1 text-[#D44646] items-center'>
             <IoPerson />
-            <Badge variant={'destructive'} className="">
+            <Badge variant={'destructive'} className=''>
                 {verifiedNumber}
             </Badge>
         </div>

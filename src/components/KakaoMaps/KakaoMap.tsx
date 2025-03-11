@@ -41,7 +41,6 @@ export default function KakaoMap({
 
     const updateHeatmap = useCallback(() => {
         if (!heatmapInstance || !mapInstance) return;
-
         isUpdatingRef.current = true;
 
         if (animationFrameRef.current) {
@@ -51,30 +50,36 @@ export default function KakaoMap({
         animationFrameRef.current = requestAnimationFrame(() => {
             const projection = mapInstance.getProjection();
             const bounds = mapInstance.getBounds();
+            const zoomLevel = mapInstance.getLevel();
+            const zoomScale = Math.pow(2, zoomLevel - 3);
 
-            const heatmapData = protests
-                .map((protest) => {
-                    const latLng = new window.kakao.maps.LatLng(
-                        protest.locations[0].latitude,
-                        protest.locations[0].longitude
-                    );
+            const heatmapData = protests.map((protest) => {
+                const latLng = new window.kakao.maps.LatLng(
+                    protest.locations[0].latitude,
+                    protest.locations[0].longitude
+                );
 
-                    const pixel = projection.pointFromCoords(latLng);
-
-                    return {
-                        x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
-                        y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
-                        value: protest.declaredParticipants,
-                        radius: protest.radius * 0.1,
-                    };
-                })
-                .filter(Boolean);
+                const pixel = projection.pointFromCoords(latLng);
+                return {
+                    x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
+                    y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
+                    value: protest.declaredParticipants,
+                    radius: Math.max((protest.radius * 0.5) / zoomScale, 6),
+                };
+            });
 
             heatmapInstance.setData({
                 max: 10000,
                 min: 100,
                 data: heatmapData,
             });
+            const canvas = heatmapInstance._renderer.canvas;
+            if (canvas) {
+                canvas.style.display = 'block';
+                canvas.style.opacity = '1';
+                canvas.style.zIndex = '10';
+                canvas.style.pointerEvents = 'none';
+            }
         });
 
         isUpdatingRef.current = false;
@@ -83,8 +88,17 @@ export default function KakaoMap({
     const registerMapEvents = useCallback(() => {
         if (!mapInstance) return;
 
-        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', updateHeatmap);
-        window.kakao.maps.event.addListener(mapInstance, 'center_changed', updateHeatmap);
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
+            updateHeatmap();
+        });
     }, [mapInstance, updateHeatmap]);
 
     useEffect(() => {
