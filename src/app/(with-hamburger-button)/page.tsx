@@ -42,12 +42,12 @@ export default async function Home() {
     const latitude = 37.539581447331;
     const longitude = 127.00787604008;
     return (
-        <div>
+        <div className="relative">
             <KakaoMap
                 latitude={latitude}
                 longitude={longitude}
-                w='100%'
-                h='calc(100dvh - 14vh)'
+                w="100%"
+                h="calc(100dvh - 14vh)"
                 l={8}
                 protests={protests}
             />
