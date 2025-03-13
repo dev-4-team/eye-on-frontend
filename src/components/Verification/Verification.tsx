@@ -28,13 +28,14 @@ export default function Verification({ paramId }: { paramId: string }) {
     const isMobile = getIsMobile() && !isDesktopOS();
 
     const onVerificationClick = () => {
-        if (!isMobile) {
-            alert('모바일에서만 인증이 가능합니다.');
-            return;
-        }
-        if (!accessToken)
-            window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
-        else setOpen(true);
+        // if (!isMobile) {
+        //     alert('모바일에서만 인증이 가능합니다.');
+        //     return;
+        // }
+        // if (!accessToken)
+        //     window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
+        // else setOpen(true);
+        setOpen(true);
     };
 
     const handleAgree = () => {
@@ -84,10 +85,10 @@ export default function Verification({ paramId }: { paramId: string }) {
                             <DrawerDescription className='whitespace-pre-line'>
                                 시위 참여 인증을 위해 동의를 눌러주세요.
                                 <br />
-                                위치정보는 DB에 저장되지 않습니다.
+                                현재 위치는 실시간 확인용이며, 저장되지 않습니다.
                                 <br />
-                                신원을 특정할 수 없는 유저정보만
-                                <br /> 부정인증 방지를 위해 DB에 저장됩니다.
+                                어떤 시위에 참여했는지 알 수 없도록 암호화해 처리됩니다.
+                                <br /> 신원을 특정할 수 없는 정보만 부정 인증 방지를 위해 저장됩니다.
                             </DrawerDescription>
                         </DrawerHeader>
                         <div className='p-4 flex justify-center gap-4'>
