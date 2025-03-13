@@ -59,7 +59,6 @@ export default function KakaoMap({
 
     const updateHeatmap = useCallback(() => {
         if (!heatmapInstance || !mapInstance) return;
-
         isUpdatingRef.current = true;
 
         if (animationFrameRef.current) {
@@ -70,9 +69,6 @@ export default function KakaoMap({
             const projection = mapInstance.getProjection();
             const bounds = mapInstance.getBounds();
             const zoomLevel = mapInstance.getLevel();
-
-            console.log('현재 줌 레벨:', zoomLevel);
-
             const zoomFactor = Math.pow(2, 10 - zoomLevel);
 
             const heatmapData = protests
@@ -98,6 +94,13 @@ export default function KakaoMap({
                 min: 100,
                 data: heatmapData,
             });
+            const canvas = heatmapInstance._renderer.canvas;
+            if (canvas) {
+                canvas.style.display = 'block';
+                canvas.style.opacity = '1';
+                canvas.style.zIndex = '10';
+                canvas.style.pointerEvents = 'none';
+            }
         });
 
         isUpdatingRef.current = false;
@@ -106,8 +109,17 @@ export default function KakaoMap({
     const registerMapEvents = useCallback(() => {
         if (!mapInstance) return;
 
-        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', updateHeatmap);
-        window.kakao.maps.event.addListener(mapInstance, 'center_changed', updateHeatmap);
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
+            updateHeatmap();
+        });
     }, [mapInstance, updateHeatmap]);
 
     useEffect(() => {

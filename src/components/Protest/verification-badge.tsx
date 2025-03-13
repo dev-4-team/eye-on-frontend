@@ -26,9 +26,17 @@ export default function VerificationBadge({ protestId }: { protestId: string }) 
     const dynamicZIndex = Math.min(maxZIndex, baseZIndex + (verifiedNumber / maxVerified) * maxZIndex);
 
     return (
+<<<<<<< HEAD
         <div className={clsx('flex gap-1 text-[#D44646] items-center', ` z-${dynamicZIndex}`)}>
             <IoPerson />
             <Badge variant={'destructive'}>{verifiedNumber}</Badge>
+=======
+        <div className='flex gap-1 text-[#D44646] items-center'>
+            <IoPerson />
+            <Badge variant={'destructive'} className=''>
+                {verifiedNumber}
+            </Badge>
+>>>>>>> f4b966fbadc7f8147cda116331b02682e03007e5
         </div>
     );
 }

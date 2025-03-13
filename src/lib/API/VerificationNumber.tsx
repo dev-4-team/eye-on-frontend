@@ -14,6 +14,5 @@ export default async function VerificationNumber({ protestId, date }: { protestI
     }
 
     const protests = await response.json();
-
     return protests.data[0];
 }

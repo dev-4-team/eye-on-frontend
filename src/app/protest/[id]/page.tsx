@@ -11,7 +11,11 @@ import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
+<<<<<<< HEAD
     const response = await fetch(`${SERVER_URL}/api/protest?date=2025-03-15`, { next: { revalidate: 3600 } });
+=======
+    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
+>>>>>>> f4b966fbadc7f8147cda116331b02682e03007e5
     if (!response.ok) {
         throw new Error(response.statusText);
     }
