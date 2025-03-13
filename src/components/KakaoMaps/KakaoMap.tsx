@@ -31,6 +31,24 @@ export default function KakaoMap({
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
 
+    console.log('protests', protests);
+
+    const [verifiedNumbers, setVerifiedNumbers] = useState(0);
+    const date = new Date().toISOString().split('T')[0];
+
+    useEffect(() => {
+        const promises = [];
+        protests.forEach((protest) => {
+            const verifyNumber = async () => {
+                const result = await VerificationNumbers({
+                    protestId: protest.id,
+                    date: date,
+                });
+                promises.push(result);
+            };
+        });
+    }, [protests]);
+
     const onMarkerClick = (id: string, lat: number, long: number) => {
         if (mapInstance) {
             const destLatLng = new kakao.maps.LatLng(lat, long);
@@ -51,6 +69,11 @@ export default function KakaoMap({
         animationFrameRef.current = requestAnimationFrame(() => {
             const projection = mapInstance.getProjection();
             const bounds = mapInstance.getBounds();
+            const zoomLevel = mapInstance.getLevel();
+
+            console.log('현재 줌 레벨:', zoomLevel);
+
+            const zoomFactor = Math.pow(2, 10 - zoomLevel);
 
             const heatmapData = protests
                 .map((protest) => {
@@ -65,7 +88,7 @@ export default function KakaoMap({
                         x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
                         y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
                         value: protest.declaredParticipants,
-                        radius: protest.radius * 0.1,
+                        radius: protest.radius * zoomFactor * 0.005,
                     };
                 })
                 .filter(Boolean);
@@ -173,6 +196,7 @@ export default function KakaoMap({
                                 lng: protest.locations[0].longitude,
                             }}
                             yAnchor={3}
+                            zIndex={Number(protest.id)}
                         >
                             <VerificationBadge protestId={protest.id} />
                         </CustomOverlayMap>
@@ -196,10 +220,12 @@ export default function KakaoMap({
                         />
                     </div>
                 ))}
-
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
             </Map>
         </div>
     );
+}
+function VerificationNumbers(arg0: { protestId: any; date: string }) {
+    throw new Error('Function not implemented.');
 }
