@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { CustomOverlayMap, Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import useKakaoLoader from '@/hooks/useKakaoLoader';
+import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
 import { ProtestData } from '@/types';
-import VerificationBadge from '../Protest/verification-badge';
 
 export default function KakaoMap({
     latitude,
@@ -30,32 +30,6 @@ export default function KakaoMap({
     const router = useRouter();
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
-
-    console.log('protests', protests);
-
-    const [verifiedNumbers, setVerifiedNumbers] = useState(0);
-    const date = new Date().toISOString().split('T')[0];
-
-    useEffect(() => {
-        const promises = [];
-        protests.forEach((protest) => {
-            const verifyNumber = async () => {
-                const result = await VerificationNumbers({
-                    protestId: protest.id,
-                    date: date,
-                });
-                promises.push(result);
-            };
-        });
-    }, [protests]);
-
-    const onMarkerClick = (id: string, lat: number, long: number) => {
-        if (mapInstance) {
-            const destLatLng = new kakao.maps.LatLng(lat, long);
-            mapInstance.panTo(destLatLng);
-        }
-        router.push(`/protest/${id}`);
-    };
 
     const updateHeatmap = useCallback(() => {
         if (!heatmapInstance || !mapInstance) return;
@@ -202,34 +176,7 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
-                        <CustomOverlayMap
-                            position={{
-                                lat: protest.locations[0].latitude,
-                                lng: protest.locations[0].longitude,
-                            }}
-                            yAnchor={3}
-                            zIndex={Number(protest.id)}
-                        >
-                            <VerificationBadge protestId={protest.id} />
-                        </CustomOverlayMap>
-                        <MapMarker
-                            position={{
-                                lat: protest.locations[0].latitude,
-                                lng: protest.locations[0].longitude,
-                            }}
-                            image={{
-                                src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-                                size: {
-                                    width: 24,
-                                    height: 35,
-                                },
-                            }}
-                            title={protest.title}
-                            clickable={true}
-                            onClick={() =>
-                                onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
-                            }
-                        />
+                        <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
                 <MapTypeControl position={'TOPLEFT'} />
@@ -237,7 +184,4 @@ export default function KakaoMap({
             </Map>
         </div>
     );
-}
-function VerificationNumbers(arg0: { protestId: any; date: string }) {
-    throw new Error('Function not implemented.');
 }
