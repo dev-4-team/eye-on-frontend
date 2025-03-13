@@ -28,13 +28,14 @@ export default function Verification({ paramId }: { paramId: string }) {
     const isMobile = getIsMobile() && !isDesktopOS();
 
     const onVerificationClick = () => {
-        if (!isMobile) {
-            alert('모바일에서만 인증이 가능합니다.');
-            return;
-        }
-        if (!accessToken)
-            window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
-        else setOpen(true);
+        // if (!isMobile) {
+        //     alert('모바일에서만 인증이 가능합니다.');
+        //     return;
+        // }
+        // if (!accessToken)
+        //     window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
+        // else setOpen(true);
+        setOpen(true);
     };
 
     const handleAgree = () => {
@@ -81,13 +82,10 @@ export default function Verification({ paramId }: { paramId: string }) {
                     <DrawerContent>
                         <DrawerHeader className='p-0 flex items-center justify-center flex-col text-center'>
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
-                            <DrawerDescription className='whitespace-pre-line'>
-                                시위 참여 인증을 위해 동의를 눌러주세요.
+                            <DrawerDescription className='whitespace-pre-line text-center'>
+                                <span className="text-center">시위 참여 인증을 위해 현재 위치 정보 사용 동의를 눌러주세요.</span>
                                 <br />
-                                현재 위치는 실시간 확인용이며, 저장되지 않습니다.
-                                <br />
-                                어떤 시위에 참여했는지 알 수 없도록 암호화해 처리됩니다.
-                                <br /> 신원을 특정할 수 없는 정보만 부정 인증 방지를 위해 저장됩니다.
+                                <span className="text-center">아래의 정보만 부정인증 방지를 위해 저장되며, 다음날 00시에 삭제됩니다.</span>
                             </DrawerDescription>
                         </DrawerHeader>
                         <div className='p-4 flex justify-center gap-4'>
