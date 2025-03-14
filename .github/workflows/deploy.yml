@@ -50,7 +50,8 @@ jobs:
               run: |
                   ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
                     cd ~/eye-on-frontend
+                    pm2 delete "eye on frontend"
                     pnpm install
                     pnpm run build
-                    pm2 restart "eye on frontend" || pm2 start pnpm --name "eye on frontend" -- run start
+                    pm2 start pnpm --name "eye on frontend" -- run start
                   EOF
