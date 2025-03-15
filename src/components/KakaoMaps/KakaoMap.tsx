@@ -7,6 +7,7 @@ import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
 import { ProtestData } from '@/types';
+import { calculateRealDistanceOnePixel } from '@/lib/utils';
 
 export default function KakaoMap({
     latitude,
@@ -30,9 +31,20 @@ export default function KakaoMap({
     const router = useRouter();
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
+    const [realXDistance, setRealXDistance] = useState<number | null>();
+
+    useEffect(() => {
+        if (!mapInstance) return;
+        const updateBounds = () => {
+            const { ha, qa, oa, pa } = mapInstance.getBounds();
+            const d = calculateRealDistanceOnePixel(qa, ha, qa, oa) / window.innerWidth;
+            setRealXDistance(d);
+        };
+        window.kakao.maps.event.addListener(mapInstance, 'bounds_changed', updateBounds);
+    }, [mapInstance]);
 
     const updateHeatmap = useCallback(() => {
-        if (!heatmapInstance || !mapInstance) return;
+        if (!heatmapInstance || !mapInstance || !realXDistance) return;
         isUpdatingRef.current = true;
 
         if (animationFrameRef.current) {
@@ -43,7 +55,6 @@ export default function KakaoMap({
             const projection = mapInstance.getProjection();
             const bounds = mapInstance.getBounds();
             const zoomLevel = mapInstance.getLevel();
-            const zoomFactor = Math.pow(2, 10 - zoomLevel);
 
             const heatmapData = protests
                 .map((protest) => {
@@ -53,12 +64,11 @@ export default function KakaoMap({
                     );
 
                     const pixel = projection.pointFromCoords(latLng);
-
                     return {
                         x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
                         y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
                         value: protest.declaredParticipants,
-                        radius: protest.radius * zoomFactor * 0.005,
+                        radius: Math.floor(protest.radius / realXDistance),
                     };
                 })
                 .filter(Boolean);
@@ -78,7 +88,7 @@ export default function KakaoMap({
         });
 
         isUpdatingRef.current = false;
-    }, [heatmapInstance, mapInstance, protests]);
+    }, [heatmapInstance, mapInstance, protests, realXDistance]);
 
     const registerMapEvents = useCallback(() => {
         if (!mapInstance) return;
