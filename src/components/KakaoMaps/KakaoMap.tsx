@@ -34,14 +34,21 @@ export default function KakaoMap({
     const [realXDistance, setRealXDistance] = useState<number | null>();
 
     useEffect(() => {
-        if (!mapInstance) return;
+        if (!mapInstance || !protests) return;
+
         const updateBounds = () => {
             const { ha, qa, oa, pa } = mapInstance.getBounds();
-            const d = calculateRealDistanceOnePixel(qa, ha, qa, oa) / window.innerWidth;
-            setRealXDistance(d);
+            const d = calculateRealDistanceOnePixel(ha, qa, oa, pa) / window.innerWidth;
+            setRealXDistance((prev) => {
+                if (prev === d) return prev;
+                return d;
+            });
         };
         window.kakao.maps.event.addListener(mapInstance, 'bounds_changed', updateBounds);
-    }, [mapInstance]);
+        return () => {
+            window.kakao.maps.event.removeListener(mapInstance, 'bounds_changed', updateBounds);
+        };
+    }, [mapInstance, protests]);
 
     const updateHeatmap = useCallback(() => {
         if (!heatmapInstance || !mapInstance || !realXDistance) return;
@@ -54,7 +61,6 @@ export default function KakaoMap({
         animationFrameRef.current = requestAnimationFrame(() => {
             const projection = mapInstance.getProjection();
             const bounds = mapInstance.getBounds();
-            const zoomLevel = mapInstance.getLevel();
 
             const heatmapData = protests
                 .map((protest) => {
@@ -68,7 +74,8 @@ export default function KakaoMap({
                         x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
                         y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
                         value: protest.declaredParticipants,
-                        radius: Math.floor(protest.radius / realXDistance),
+                        // radius: protest.radius / realXDistance,
+                        radius: protest.radius / realXDistance,
                     };
                 })
                 .filter(Boolean);
@@ -104,7 +111,7 @@ export default function KakaoMap({
         window.kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
             updateHeatmap();
         });
-    }, [mapInstance, updateHeatmap]);
+    }, [mapInstance, updateHeatmap, realXDistance]);
 
     useEffect(() => {
         setIsClient(true);
