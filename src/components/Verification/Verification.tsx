@@ -28,13 +28,13 @@ export default function Verification({ paramId }: { paramId: string }) {
     const isMobile = getIsMobile() && !isDesktopOS();
 
     const onVerificationClick = () => {
-        // if (!isMobile) {
-        //     alert('모바일에서만 인증이 가능합니다.');
-        //     return;
-        // }
-        // if (!accessToken)
-        //     window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
-        // else setOpen(true);
+        if (!isMobile) {
+            alert('모바일에서만 인증이 가능합니다.');
+            return;
+        }
+        if (!accessToken)
+            window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
+        else setOpen(true);
         setOpen(true);
     };
 
@@ -83,9 +83,13 @@ export default function Verification({ paramId }: { paramId: string }) {
                         <DrawerHeader className='p-0 flex items-center justify-center flex-col text-center'>
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
                             <DrawerDescription className='whitespace-pre-line text-center'>
-                                <span className="text-center">시위 참여 인증을 위해 현재 위치 정보 사용 동의를 눌러주세요.</span>
+                                <span className='text-center'>
+                                    시위 참여 인증을 위해 현재 위치 정보 사용 동의를 눌러주세요.
+                                </span>
                                 <br />
-                                <span className="text-center">아래의 정보만 부정인증 방지를 위해 저장되며, 다음날 00시에 삭제됩니다.</span>
+                                <span className='text-center'>
+                                    아래의 정보만 부정인증 방지를 위해 저장되며, 다음날 00시에 삭제됩니다.
+                                </span>
                             </DrawerDescription>
                         </DrawerHeader>
                         <div className='p-4 flex justify-center gap-4'>

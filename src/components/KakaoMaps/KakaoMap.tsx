@@ -35,7 +35,6 @@ export default function KakaoMap({
 
     useEffect(() => {
         if (!mapInstance || !protests) return;
-
         const updateBounds = () => {
             const { ha, qa, oa, pa } = mapInstance.getBounds();
             const d = calculateRealDistanceOnePixel(ha, qa, oa, pa) / window.innerWidth;
@@ -44,6 +43,7 @@ export default function KakaoMap({
                 return d;
             });
         };
+        updateBounds();
         window.kakao.maps.event.addListener(mapInstance, 'bounds_changed', updateBounds);
         return () => {
             window.kakao.maps.event.removeListener(mapInstance, 'bounds_changed', updateBounds);
@@ -74,7 +74,6 @@ export default function KakaoMap({
                         x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
                         y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
                         value: protest.declaredParticipants,
-                        // radius: protest.radius / realXDistance,
                         radius: protest.radius / realXDistance,
                     };
                 })
