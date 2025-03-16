@@ -36,8 +36,12 @@ export default function KakaoMap({
     useEffect(() => {
         if (!mapInstance || !protests) return;
         const updateBounds = () => {
+            const SEOUL_CENTER_LONGITUDE = 127.0016985;
+
             const { ha, qa, oa, pa } = mapInstance.getBounds();
-            const d = calculateRealDistanceOnePixel(ha, qa, oa, pa) / window.innerWidth;
+            const d =
+                calculateRealDistanceOnePixel(ha, SEOUL_CENTER_LONGITUDE, oa, SEOUL_CENTER_LONGITUDE) /
+                window.innerWidth;
             setRealXDistance((prev) => {
                 if (prev === d) return prev;
                 return d;
