@@ -16,12 +16,15 @@ const buttonVariants = cva(
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 signature: 'bg-[#D44646] text-white shadow-sm hover:bg-destructive/90',
                 link: 'text-primary underline-offset-4 hover:underline',
+                gps: 'bg-white text-destructive drop-shadow-xl hover:bg-destructive hover:text-white',
+                reset: 'bg-destructive text-white drop-shadow-xl hover:bg-white hover:text-destructive',
             },
             size: {
                 default: 'h-9 px-4 py-2',
                 sm: 'h-8 rounded-md px-3 text-xs',
                 lg: 'h-10 rounded-md px-8',
                 icon: 'h-9 w-9',
+                gps: 'p-3 rounded-[50%]',
             },
         },
         defaultVariants: {
