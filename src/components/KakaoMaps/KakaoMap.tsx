@@ -39,6 +39,7 @@ export default function KakaoMap({
     const [agreed, setAgreed] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [typeOfButton, setTypeOfButton] = useState('');
+    const [currentPositionMarker, setCurrentPositionMarker] = useState(false);
     const router = useRouter();
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
@@ -68,12 +69,14 @@ export default function KakaoMap({
         if (!isLoading && curLocation && mapInstance) {
             if (typeOfButton === 'gps') {
                 const destLatLng = new kakao.maps.LatLng(curLocation.latitude, curLocation.longitude);
-
+                setCurrentPositionMarker(true);
+                mapInstance.setLevel(2);
                 mapInstance.panTo(destLatLng);
                 setAgreed(false);
                 setButtonClicked(false);
             } else {
                 const destLatLng = new kakao.maps.LatLng(37.539581447331, 127.00787604008);
+                setCurrentPositionMarker(false);
                 mapInstance.setLevel(7);
                 mapInstance.panTo(destLatLng);
                 setButtonClicked(false);
@@ -311,6 +314,10 @@ export default function KakaoMap({
                           />
                       ))
                     : null}
+
+                {currentPositionMarker ? (
+                    <MapMarker position={{ lat: curLocation!.latitude, lng: curLocation!.longitude }} />
+                ) : null}
 
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
