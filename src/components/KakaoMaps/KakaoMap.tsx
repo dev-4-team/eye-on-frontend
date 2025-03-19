@@ -198,7 +198,7 @@ export default function KakaoMap({
     }, [heatmapInstance, mapInstance, updateHeatmap]);
 
     const fetchRoute = async (start: string, goal: string, waypoints?: string) => {
-        const url = new URL(`/api/directions/route`, window.location.origin);
+        const url = new URL(`/next-api/directions/route`, window.location.origin);
         url.searchParams.append('start', start);
         url.searchParams.append('goal', goal);
 
