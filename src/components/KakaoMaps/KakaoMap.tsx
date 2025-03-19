@@ -61,8 +61,6 @@ export default function KakaoMap({
             } else {
                 setTypeOfButton('reset');
             }
-            const destLatLng = new kakao.maps.LatLng(latitude, longitude);
-            mapInstance.panTo(destLatLng);
         }
     };
 
@@ -70,11 +68,13 @@ export default function KakaoMap({
         if (!isLoading && curLocation && mapInstance) {
             if (typeOfButton === 'gps') {
                 const destLatLng = new kakao.maps.LatLng(curLocation.latitude, curLocation.longitude);
+
                 mapInstance.panTo(destLatLng);
                 setAgreed(false);
                 setButtonClicked(false);
             } else {
                 const destLatLng = new kakao.maps.LatLng(37.539581447331, 127.00787604008);
+                mapInstance.setLevel(7);
                 mapInstance.panTo(destLatLng);
                 setButtonClicked(false);
             }
@@ -217,11 +217,11 @@ export default function KakaoMap({
                     const goal = `${locations[locations.length - 1].longitude},${
                         locations[locations.length - 1].latitude
                     }`;
+
                     const waypoints =
-                        locations
-                            .slice(1, -1)
-                            .map((loc) => `${loc.longitude},${loc.latitude}`)
-                            .join('|') || undefined;
+                        Array.from(
+                            new Set(locations.slice(1, -1).map((loc) => `${loc.longitude},${loc.latitude}`))
+                        ).join('|') || undefined;
 
                     return fetchRoute(start, goal, waypoints);
                 })
