@@ -290,7 +290,7 @@ export default function KakaoMap({
     if (!routeData) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div className='relative'>
             <Map
                 id='map'
                 center={{
