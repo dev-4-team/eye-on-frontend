@@ -3,11 +3,18 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { MdGpsFixed } from 'react-icons/md';
+import { BiReset } from 'react-icons/bi';
+import { useGeoLocation } from '@/hooks/useGeoLocation';
+import { Loader2 } from 'lucide-react';
+
+type RouteData = [number, number][];
 
 export default function KakaoMap({
     latitude,
@@ -28,10 +35,17 @@ export default function KakaoMap({
     const [loading, error] = useKakaoLoader();
     const [heatmapInstance, setHeatmapInstance] = useState<any>(null);
     const [mapInstance, setMapInstance] = useState<any>(null);
+    const [routeData, setRouteData] = useState<any>(null);
+    const [currentLevel, setCurrentLevel] = useState<number>(0);
+    const [agreed, setAgreed] = useState(false);
+    const [buttonClicked, setButtonClicked] = useState(false);
+    const [typeOfButton, setTypeOfButton] = useState('');
+    const [currentPositionMarker, setCurrentPositionMarker] = useState(false);
     const router = useRouter();
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
     const [realXDistance, setRealXDistance] = useState<number | null>();
+    const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
 
     useEffect(() => {
         if (!mapInstance || !protests) return;
@@ -54,8 +68,42 @@ export default function KakaoMap({
         };
     }, [mapInstance, protests]);
 
+    const onButtonClick = (type: string) => {
+        setButtonClicked(true);
+        if (mapInstance) {
+            if (type === 'gps') {
+                setAgreed(true);
+                setTypeOfButton('gps');
+            } else {
+                setTypeOfButton('reset');
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (!isLoading && curLocation && mapInstance) {
+            if (typeOfButton === 'gps') {
+                const destLatLng = new kakao.maps.LatLng(curLocation.latitude, curLocation.longitude);
+                setCurrentPositionMarker(true);
+                mapInstance.setLevel(2);
+                mapInstance.panTo(destLatLng);
+                setAgreed(false);
+                setButtonClicked(false);
+            } else {
+                const destLatLng = new kakao.maps.LatLng(37.539581447331, 127.00787604008);
+                setCurrentPositionMarker(false);
+                mapInstance.setLevel(7);
+                mapInstance.panTo(destLatLng);
+                setButtonClicked(false);
+            }
+        }
+    }, [agreed, isLoading, curLocation, mapInstance, buttonClicked]);
+
     const updateHeatmap = useCallback(() => {
         if (!heatmapInstance || !mapInstance || !realXDistance) return;
+
+        setCurrentLevel(mapInstance.getLevel());
+
         isUpdatingRef.current = true;
 
         if (animationFrameRef.current) {
@@ -121,6 +169,11 @@ export default function KakaoMap({
     }, []);
 
     useEffect(() => {
+        if (!mapInstance) return;
+        setCurrentLevel(mapInstance.getLevel());
+    }, [mapInstance]);
+
+    useEffect(() => {
         if (!mapInstance || heatmapInstance) return;
 
         const script = document.createElement('script');
@@ -174,9 +227,67 @@ export default function KakaoMap({
         }
     }, [heatmapInstance, mapInstance, updateHeatmap]);
 
+    const fetchRoute = async (start: string, goal: string, waypoints?: string) => {
+        const url = new URL(`/next-api/directions/route`, window.location.origin);
+        url.searchParams.append('start', start);
+        url.searchParams.append('goal', goal);
+
+        if (waypoints) {
+            url.searchParams.append('waypoints', waypoints);
+        }
+        try {
+            const res = await fetch(url.toString());
+            const data = await res.json();
+            if (data.code === 0) {
+                return data.route ? data.route.trafast[0].path : [];
+            }
+            if (data.code === 1) {
+                return [];
+            }
+        } catch (e) {
+            return [];
+        }
+    };
+
+    const fetchMultipleRoutes = async (protests: ProtestData[]) => {
+        const results = await Promise.all(
+            protests
+                .filter(({ locations }) => locations.length >= 2)
+                .map(({ locations }) => {
+                    const start = `${locations[0].longitude},${locations[0].latitude}`;
+                    const goal = `${locations[locations.length - 1].longitude},${
+                        locations[locations.length - 1].latitude
+                    }`;
+                    const waypoints =
+                        Array.from(
+                            new Set(locations.slice(1, -1).map((loc) => `${loc.longitude},${loc.latitude}`))
+                        ).join('|') || undefined;
+                    return fetchRoute(start, goal, waypoints);
+                })
+        );
+        return results;
+    };
+
+    const handleFetchRoutes = async () => {
+        const routes = await fetchMultipleRoutes(protests);
+        setRouteData(routes);
+    };
+
+    const generateColorFromIndex = (index: number): string => {
+        const r = (index * 50) % 256;
+        const g = (index * 100) % 256;
+        const b = (index * 150) % 256;
+        return `rgb(${r}, ${g}, ${b})`;
+    };
+
+    useEffect(() => {
+        handleFetchRoutes();
+    }, [protests]);
+
     if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
     if (error) return <div>Loading ... error</div>;
+    if (!routeData) return <div>Loading...</div>;
 
     return (
         <div>
@@ -199,9 +310,44 @@ export default function KakaoMap({
                         <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
+
+                {currentLevel <= 8
+                    ? routeData.map((data: RouteData, index: number) => (
+                          <Polyline
+                              key={index}
+                              endArrow={true}
+                              path={data.map(([lng, lat]) => ({ lat, lng }))}
+                              strokeWeight={5}
+                              strokeColor={generateColorFromIndex(index)}
+                              strokeOpacity={0.7}
+                              strokeStyle='solid'
+                          />
+                      ))
+                    : null}
+
+                {currentPositionMarker ? (
+                    <MapMarker position={{ lat: curLocation!.latitude, lng: curLocation!.longitude }} />
+                ) : null}
+
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
             </Map>
+            <Button
+                className='absolute bottom-7 left-3 z-30'
+                variant={'gps'}
+                size={'gps'}
+                onClick={() => onButtonClick('gps')}
+            >
+                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
+            </Button>
+            <Button
+                className='absolute bottom-20 left-3 z-30'
+                variant={'reset'}
+                size={'gps'}
+                onClick={() => onButtonClick('reset')}
+            >
+                <BiReset />{' '}
+            </Button>
         </div>
     );
 }
