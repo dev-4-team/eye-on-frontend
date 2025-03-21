@@ -35,6 +35,7 @@ export default function Verification({ paramId }: { paramId: string }) {
         if (!accessToken)
             window.location.replace(`${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`);
         else setOpen(true);
+        setOpen(true);
     };
 
     const handleAgree = () => {
@@ -63,7 +64,7 @@ export default function Verification({ paramId }: { paramId: string }) {
     }
 
     return (
-        <div className="w-3/5 flex flex-col items-center max-w-md">
+        <div className='w-3/5 flex flex-col items-center max-w-md'>
             {/* {verificationResult ? (
                 <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
                     {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
@@ -73,32 +74,33 @@ export default function Verification({ paramId }: { paramId: string }) {
                     인증완료
                 </Button>
             )} */}
-            <Button variant={'signature'} className="w-full" onClick={onVerificationClick}>
-                {isLoading ? <Loader2 className="animate-spin" /> : <div>시위참여 인증하기</div>}
+            <Button variant={'signature'} className='w-full' onClick={onVerificationClick}>
+                {isLoading ? <Loader2 className='animate-spin' /> : <div>시위참여 인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
                     <DrawerContent>
-                        <DrawerHeader className="p-0 flex items-center justify-center flex-col text-center">
+                        <DrawerHeader className='p-0 flex items-center justify-center flex-col text-center'>
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
-                            <DrawerDescription className="whitespace-pre-line">
-                                시위 참여 인증을 위해 동의를 눌러주세요.
+                            <DrawerDescription className='whitespace-pre-line text-center'>
+                                <span className='text-center'>
+                                    시위 참여 인증을 위해 현재 위치 정보 사용 동의를 눌러주세요.
+                                </span>
                                 <br />
-                                위치정보는 DB에 저장되지 않습니다.
-                                <br />
-                                신원을 특정할 수 없는 유저정보만
-                                <br /> 부정인증 방지를 위해 DB에 저장됩니다.
+                                <span className='text-center'>
+                                    아래의 정보만 부정인증 방지를 위해 저장되며, 다음날 00시에 삭제됩니다.
+                                </span>
                             </DrawerDescription>
                         </DrawerHeader>
-                        <div className="p-4 flex justify-center gap-4">
+                        <div className='p-4 flex justify-center gap-4'>
                             <Button variant={'signature'} onClick={handleAgree}>
                                 동의
                             </Button>
                             <DrawerClose asChild>
-                                <Button variant="outline">취소</Button>
+                                <Button variant='outline'>취소</Button>
                             </DrawerClose>
                         </div>
-                        <DrawerFooter className="hidden">footer</DrawerFooter>
+                        <DrawerFooter className='hidden'>footer</DrawerFooter>
                     </DrawerContent>
                 )}
             </Drawer>

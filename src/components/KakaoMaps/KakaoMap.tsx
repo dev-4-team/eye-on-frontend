@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { CustomOverlayMap, Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
+import useKakaoLoader from '@/hooks/useKakaoLoader';
+import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
 import { ProtestData } from '@/types';
-import VerificationBadge from '../Protest/verification-badge';
+import { calculateRealDistanceOnePixel } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { MdGpsFixed } from 'react-icons/md';
 import { BiReset } from 'react-icons/bi';
@@ -43,15 +44,29 @@ export default function KakaoMap({
     const router = useRouter();
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
+    const [realXDistance, setRealXDistance] = useState<number | null>();
     const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
 
-    const onMarkerClick = (id: string, lat: number, long: number) => {
-        if (mapInstance) {
-            const destLatLng = new kakao.maps.LatLng(lat, long);
-            mapInstance.panTo(destLatLng);
-        }
-        router.push(`/protest/${id}`);
-    };
+    useEffect(() => {
+        if (!mapInstance || !protests) return;
+        const updateBounds = () => {
+            const SEOUL_CENTER_LONGITUDE = 127.0016985;
+
+            const { ha, qa, oa, pa } = mapInstance.getBounds();
+            const d =
+                calculateRealDistanceOnePixel(ha, SEOUL_CENTER_LONGITUDE, oa, SEOUL_CENTER_LONGITUDE) /
+                window.innerWidth;
+            setRealXDistance((prev) => {
+                if (prev === d) return prev;
+                return d;
+            });
+        };
+        updateBounds();
+        window.kakao.maps.event.addListener(mapInstance, 'bounds_changed', updateBounds);
+        return () => {
+            window.kakao.maps.event.removeListener(mapInstance, 'bounds_changed', updateBounds);
+        };
+    }, [mapInstance, protests]);
 
     const onButtonClick = (type: string) => {
         setButtonClicked(true);
@@ -85,7 +100,7 @@ export default function KakaoMap({
     }, [agreed, isLoading, curLocation, mapInstance, buttonClicked]);
 
     const updateHeatmap = useCallback(() => {
-        if (!heatmapInstance || !mapInstance) return;
+        if (!heatmapInstance || !mapInstance || !realXDistance) return;
 
         setCurrentLevel(mapInstance.getLevel());
 
@@ -107,12 +122,11 @@ export default function KakaoMap({
                     );
 
                     const pixel = projection.pointFromCoords(latLng);
-
                     return {
                         x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
                         y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
                         value: protest.declaredParticipants,
-                        radius: protest.radius * 0.1,
+                        radius: protest.radius / realXDistance,
                     };
                 })
                 .filter(Boolean);
@@ -122,17 +136,33 @@ export default function KakaoMap({
                 min: 100,
                 data: heatmapData,
             });
+            const canvas = heatmapInstance._renderer.canvas;
+            if (canvas) {
+                canvas.style.display = 'block';
+                canvas.style.opacity = '1';
+                canvas.style.zIndex = '10';
+                canvas.style.pointerEvents = 'none';
+            }
         });
 
         isUpdatingRef.current = false;
-    }, [heatmapInstance, mapInstance, protests]);
+    }, [heatmapInstance, mapInstance, protests, realXDistance]);
 
     const registerMapEvents = useCallback(() => {
         if (!mapInstance) return;
 
-        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', updateHeatmap);
-        window.kakao.maps.event.addListener(mapInstance, 'center_changed', updateHeatmap);
-    }, [mapInstance, updateHeatmap]);
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
+            updateHeatmap();
+        });
+
+        window.kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
+            updateHeatmap();
+        });
+    }, [mapInstance, updateHeatmap, realXDistance]);
 
     useEffect(() => {
         setIsClient(true);
@@ -205,10 +235,18 @@ export default function KakaoMap({
         if (waypoints) {
             url.searchParams.append('waypoints', waypoints);
         }
-
-        const res = await fetch(url.toString());
-        const data = await res.json();
-        return data.route.trafast[0].path;
+        try {
+            const res = await fetch(url.toString());
+            const data = await res.json();
+            if (data.code === 0) {
+                return data.route ? data.route.trafast[0].path : [];
+            }
+            if (data.code === 1) {
+                return [];
+            }
+        } catch (e) {
+            return [];
+        }
     };
 
     const fetchMultipleRoutes = async (protests: ProtestData[]) => {
@@ -220,12 +258,10 @@ export default function KakaoMap({
                     const goal = `${locations[locations.length - 1].longitude},${
                         locations[locations.length - 1].latitude
                     }`;
-
                     const waypoints =
                         Array.from(
                             new Set(locations.slice(1, -1).map((loc) => `${loc.longitude},${loc.latitude}`))
                         ).join('|') || undefined;
-
                     return fetchRoute(start, goal, waypoints);
                 })
         );
@@ -254,9 +290,9 @@ export default function KakaoMap({
     if (!routeData) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div className='relative'>
             <Map
-                id="map"
+                id='map'
                 center={{
                     lat: latitude,
                     lng: longitude,
@@ -271,33 +307,7 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
-                        <CustomOverlayMap
-                            position={{
-                                lat: protest.locations[0].latitude,
-                                lng: protest.locations[0].longitude,
-                            }}
-                            yAnchor={3}
-                        >
-                            <VerificationBadge protestId={protest.id} />
-                        </CustomOverlayMap>
-                        <MapMarker
-                            position={{
-                                lat: protest.locations[0].latitude,
-                                lng: protest.locations[0].longitude,
-                            }}
-                            image={{
-                                src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-                                size: {
-                                    width: 24,
-                                    height: 35,
-                                },
-                            }}
-                            title={protest.title}
-                            clickable={true}
-                            onClick={() =>
-                                onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
-                            }
-                        />
+                        <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
 
@@ -310,7 +320,7 @@ export default function KakaoMap({
                               strokeWeight={5}
                               strokeColor={generateColorFromIndex(index)}
                               strokeOpacity={0.7}
-                              strokeStyle="solid"
+                              strokeStyle='solid'
                           />
                       ))
                     : null}
@@ -323,15 +333,15 @@ export default function KakaoMap({
                 <ZoomControl position={'LEFT'} />
             </Map>
             <Button
-                className="absolute bottom-7 left-3 z-30"
+                className='absolute bottom-7 left-3 z-30'
                 variant={'gps'}
                 size={'gps'}
                 onClick={() => onButtonClick('gps')}
             >
-                {isLoading ? <Loader2 className="animate-spin" /> : <MdGpsFixed />}
+                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
             </Button>
             <Button
-                className="absolute bottom-20 left-3 z-30"
+                className='absolute bottom-20 left-3 z-30'
                 variant={'reset'}
                 size={'gps'}
                 onClick={() => onButtonClick('reset')}

@@ -7,7 +7,6 @@ import { ProtestData } from '@/types';
 export default async function ProtestList() {
     const date = new Date().toISOString().split('T')[0];
     const protests = await ProtestInfos({ date: date });
-
     return (
         <div>
             <Sheet>
