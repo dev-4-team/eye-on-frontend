@@ -290,9 +290,9 @@ export default function KakaoMap({
     if (!routeData) return <div>Loading...</div>;
 
     return (
-        <div className='relative'>
+        <div className="relative">
             <Map
-                id='map'
+                id="map"
                 center={{
                     lat: latitude,
                     lng: longitude,
@@ -320,7 +320,7 @@ export default function KakaoMap({
                               strokeWeight={5}
                               strokeColor={generateColorFromIndex(index)}
                               strokeOpacity={0.7}
-                              strokeStyle='solid'
+                              strokeStyle="solid"
                           />
                       ))
                     : null}
@@ -333,20 +333,20 @@ export default function KakaoMap({
                 <ZoomControl position={'LEFT'} />
             </Map>
             <Button
-                className='absolute bottom-7 left-3 z-30'
+                className="absolute bottom-7 left-3 z-30"
                 variant={'gps'}
                 size={'gps'}
                 onClick={() => onButtonClick('gps')}
             >
-                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
+                {isLoading ? <Loader2 className="animate-spin" /> : <MdGpsFixed />}
             </Button>
             <Button
-                className='absolute bottom-20 left-3 z-30'
+                className="absolute bottom-20 left-3 z-30"
                 variant={'reset'}
                 size={'gps'}
                 onClick={() => onButtonClick('reset')}
             >
-                <BiReset />{' '}
+                <BiReset />
             </Button>
         </div>
     );
