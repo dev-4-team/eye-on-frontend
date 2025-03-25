@@ -42,6 +42,8 @@ export default function ProtestVerificationBadge({
         router.push(`/protest/${id}`);
     };
 
+    console.log('마커 위치', protest.locations[0]);
+
     return (
         <>
             <CustomOverlayMap
