@@ -8,11 +8,11 @@ import useKakaoLoader from '@/hooks/useKakaoLoader';
 import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
-import { Button } from '../ui/button';
 import { MdGpsFixed } from 'react-icons/md';
 import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type RouteData = [number, number][];
 
