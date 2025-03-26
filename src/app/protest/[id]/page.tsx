@@ -7,11 +7,12 @@ import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
 import MarkdownWrapper from '@/components/Protest/protest-md';
 import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
+import { ProtestCheeringButton } from '@/components/Protest/ProtestCheeringButton';
 
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
+    const response = await fetch(`${SERVER_URL}/api/protest?date=2025-03-15`, { next: { revalidate: 3600 } });
     if (!response.ok) {
         throw new Error(response.statusText);
     }
@@ -104,6 +105,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                         l={3}
                     />
                 </div>
+                <ProtestCheeringButton />
                 <div className='flex w-full items-center justify-center gap-4 px-4'>
                     <Verification paramId={paramId} />
                     <ProtestShareButton />
