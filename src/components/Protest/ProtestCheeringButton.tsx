@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
-import { useSendCheer } from '../../hooks/useSendCheer';
-import { WebSocketContext } from '../../hooks/WebSocketContext';
+import { useSendCheer } from '@/hooks/useSendCheer';
+import { WebSocketContext } from '@/hooks/WebSocketContext';
 import { useContext } from 'react';
 
 export const ProtestCheeringButton = () => {

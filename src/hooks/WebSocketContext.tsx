@@ -14,27 +14,22 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     const [connect, setConnect] = useState(false);
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
     useEffect(() => {
-        const socket = new SockJS(`${SERVER_URL}/api/ws`);
-        const StompClient = StompJs.Stomp.over(socket);
-
-        StompClient.connect(
-            {},
-            function (frame: StompJs.Frame) {
-                console.log(`웹소켓 연결 성공 ${frame}`);
-                client.current = StompClient;
+        const StompClient = new StompJs.Client({
+            webSocketFactory: () => {
+                return new SockJS(`${SERVER_URL}/api/ws`!);
+            },
+            onConnect: () => {
+                console.log('소켓 연결 성공');
                 setConnect(true);
                 StompClient.subscribe('/topic/cheer', (message) => {
-                    if (message.body) {
-                        console.log('브로커가 보내준 메세지');
-                    } else {
-                        console.log('빈 값입니다.');
-                    }
+                    console.log(`received : ${message}`);
                 });
+                client.current = StompClient;
             },
-            function (error: unknown) {
-                console.log(`connect error ${error}`);
-            }
-        );
+            onStompError: (error) => {
+                console.log(`소켓 연결 실패 ${error}`);
+            },
+        });
         StompClient.activate();
         return () => {
             if (client.current) {
