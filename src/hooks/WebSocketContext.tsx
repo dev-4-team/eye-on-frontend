@@ -23,12 +23,20 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
                 setConnect(true);
                 client.current = StompClient;
                 try {
-                    const subscription = StompClient.subscribe('/topic/cheer', (message) => {
-                        console.log('메시지 수신:', message.body);
+                    const cheerSubScription = StompClient.subscribe('/topic/cheer', (message) => {
+                        console.log('서버에서 보낸 응원하기 데이터:', message.body);
                     });
-                    console.log('구독 성공, ID:', subscription);
+                    console.log('응원하기 토픽 구독 성공, ID:', cheerSubScription);
                 } catch (error) {
-                    console.error('구독 실패:', error);
+                    console.error('시위 응원하기 구독 실패:', error);
+                }
+                try {
+                    const logSubScription = StompClient.subscribe('/user/queue/errors', (message) => {
+                        console.log('서버에서 보낸 에러 로그', message);
+                    });
+                    console.log('에러 토픽 구독 성공', logSubScription);
+                } catch (e) {
+                    console.log(`에러 토픽 구독 실패 ${e}`);
                 }
             },
             onStompError: (error) => {
