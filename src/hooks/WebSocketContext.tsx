@@ -21,10 +21,15 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
             onConnect: () => {
                 console.log('소켓 연결 성공');
                 setConnect(true);
-                StompClient.subscribe('/topic/cheer', (message) => {
-                    console.log(`received : ${message}`);
-                });
                 client.current = StompClient;
+                try {
+                    const subscription = StompClient.subscribe('/topic/cheer', (message) => {
+                        console.log('메시지 수신:', message.body);
+                    });
+                    console.log('구독 성공, ID:', subscription);
+                } catch (error) {
+                    console.error('구독 실패:', error);
+                }
             },
             onStompError: (error) => {
                 console.log(`소켓 연결 실패 ${error}`);

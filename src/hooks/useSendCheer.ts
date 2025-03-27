@@ -3,10 +3,13 @@ export const useSendCheer = ({ client, protestId }: { client: StompJs.Client | n
     const sendCheer = () => {
         if (!client || !protestId) return;
         const destiantion = `/app/cheer/protest/${protestId}`;
-        client.publish({
-            destination: destiantion,
-            body: JSON.stringify({ protestId }),
-        });
+        try {
+            client.publish({
+                destination: destiantion,
+            });
+        } catch (error) {
+            console.error('전송 실패:', error);
+        }
     };
     return { sendCheer };
 };
