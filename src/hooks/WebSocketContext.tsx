@@ -24,7 +24,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
                 client.current = StompClient;
                 try {
                     const cheerSubScription = StompClient.subscribe('/topic/cheer', (message) => {
-                        console.log('서버에서 보낸 응원하기 데이터:', message.body);
+                        const response = JSON.parse(message.body);
+                        console.log('서버에서 보낸 응원하기 데이터:', response);
                     });
                     console.log('응원하기 토픽 구독 성공, ID:', cheerSubScription);
                 } catch (error) {
