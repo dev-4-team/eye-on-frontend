@@ -7,6 +7,7 @@ import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
 import MarkdownWrapper from '@/components/Protest/protest-md';
 import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
+import { ProtestCheeringButton } from '@/components/Protest/ProtestCheeringButton';
 
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
@@ -104,6 +105,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                         l={3}
                     />
                 </div>
+                <ProtestCheeringButton />
                 <div className='flex w-full items-center justify-center gap-4 px-4'>
                     <Verification paramId={paramId} />
                     <ProtestShareButton />
