@@ -1,38 +1,54 @@
-// import SockJS from 'sockjs-client';
-// import * as StompJs from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import * as StompJs from '@stomp/stompjs';
 
-// const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
 
-// export class SocketManager {
-//     private static instance: SocketManager;
-//     private stompClient: StompJs.Client | null = null;
-//     constructor() {}
+export class StompSocket {
+    private static instance: StompSocket;
+    private socket: StompJs.Client;
 
-//     async initialLizeSocket() {
-//         return new Promise((resolve, reject) => {
-//             if (!SERVER_URL) return;
-//             this.stompClient = new StompJs.Client({
-//                 webSocketFactory: () => {
-//                     new SockJS(SERVER_URL);
-//                 },
-//             });
-//             this.stompClient.activate();
+    private constructor() {
+        const socket = new StompJs.Client({
+            webSocketFactory: () => {
+                return new SockJS(`${SERVER_URL}/api/ws`);
+            },
+        });
+        this.socket = socket;
+    }
 
-//             this.stompClient.onConnect = (frame) => {
-//                 console.log('소켓 연결 성공');
-//                 resolve(frame);
-//             };
-//             this.stompClient.onStompError = (frame) => {
-//                 console.log('소켓 연결 실패');
-//                 reject('실패');
-//             };
-//         });
-//     }
+    public static getInstance() {
+        if (!StompSocket.instance) {
+            StompSocket.instance = new StompSocket();
+        }
+        return StompSocket.instance;
+    }
 
-//     static getInstance() {
-//         if (!SocketManager.instance) {
-//             SocketManager.instance = new SocketManager();
-//         }
-//         return SocketManager.instance;
-//     }
-// }
+    public connect() {
+        return new Promise((resolve, reject) => {
+            this.socket.onConnect = () => {
+                console.log('socket 연결 성공');
+                resolve(true);
+            };
+            this.socket.onStompError = () => {
+                console.log('socket 연결 실패');
+                reject(false);
+            };
+            this.socket.activate();
+        });
+    }
+    public disconnect() {
+        this.socket.deactivate();
+    }
+
+    public isConnected() {
+        return this.socket.connected;
+    }
+
+    public subscribe(topic: string, callback: (message: StompJs.IFrame) => void) {
+        this.socket.subscribe(topic, callback);
+    }
+
+    public send(topic: string, message?: string) {
+        this.socket.publish({ destination: topic, body: message });
+    }
+}

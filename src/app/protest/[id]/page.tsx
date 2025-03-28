@@ -12,7 +12,7 @@ import { ProtestCheeringButton } from '@/components/Protest/ProtestCheeringButto
 export async function generateStaticParams() {
     const date = new Date().toISOString().split('T')[0];
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
+    const response = await fetch(`${SERVER_URL}/api/protest?date=2025-03-15`, { next: { revalidate: 3600 } });
     if (!response.ok) {
         throw new Error(response.statusText);
     }

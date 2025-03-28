@@ -13,6 +13,8 @@ import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { StompSocket } from '@/lib/socket';
+import { useSocketStore } from '@/store/useSocketStore';
 
 type RouteData = [number, number][];
 
@@ -283,6 +285,30 @@ export default function KakaoMap({
     useEffect(() => {
         handleFetchRoutes();
     }, [protests]);
+
+    const { setConnected } = useSocketStore();
+
+    useEffect(() => {
+        const connectedSocket = async () => {
+            const socket = StompSocket.getInstance();
+            if (socket) {
+                try {
+                    await socket.connect();
+                    setConnected(true);
+                    console.log('소켓 연결 성공', socket.isConnected());
+                    socket.subscribe('/topic/cheer', (message) => {
+                        const response = JSON.parse(message.body);
+                        console.log('서버에서 보낸 응원하기 데이터:', response);
+                    });
+                } catch (e) {
+                    console.log('소켓 연결 실패', e);
+                    setConnected(false);
+                }
+            }
+        };
+
+        connectedSocket();
+    }, []);
 
     if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
