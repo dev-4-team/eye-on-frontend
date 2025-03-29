@@ -286,28 +286,29 @@ export default function KakaoMap({
         handleFetchRoutes();
     }, [protests]);
 
-    const { setConnected } = useSocketStore();
+    const { connect, disconnect, subscribe } = useSocketStore();
 
     useEffect(() => {
         const connectedSocket = async () => {
-            const socket = StompSocket.getInstance();
-            if (socket) {
+            await connect();
+            subscribe('/topic/cheer', (message) => {
+                const response = JSON.parse(message.body);
+                console.log('서버에서 보낸 응원하기 데이터', response);
+            });
+            subscribe('/user/queue/errors', (message) => {
                 try {
-                    await socket.connect();
-                    setConnected(true);
-                    console.log('소켓 연결 성공', socket.isConnected());
-                    socket.subscribe('/topic/cheer', (message) => {
-                        const response = JSON.parse(message.body);
-                        console.log('서버에서 보낸 응원하기 데이터:', response);
-                    });
+                    const response = JSON.parse(message.body);
+                    console.log('에러 발생', JSON.stringify(response), error);
                 } catch (e) {
-                    console.log('소켓 연결 실패', e);
-                    setConnected(false);
+                    console.log('메세지 파싱 오류', e);
                 }
-            }
+            });
         };
 
         connectedSocket();
+        return () => {
+            disconnect();
+        };
     }, []);
 
     if (!isClient) return <div>Loading ...</div>;
