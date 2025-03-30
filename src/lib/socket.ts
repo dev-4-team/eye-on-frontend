@@ -27,9 +27,9 @@ export class StompSocket {
                 console.log('socket 연결 성공');
                 resolve(true);
             };
-            this.client.onStompError = () => {
-                console.log('socket 연결 실패');
-                reject(false);
+            this.client.onStompError = (error) => {
+                console.log('socket 연결 실패', error);
+                reject(error);
             };
             this.client.activate();
         });

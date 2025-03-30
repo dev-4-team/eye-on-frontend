@@ -19,6 +19,7 @@ export const useSocketStore = create<SocketStore>()((set, get) => ({
         } catch (e) {
             set({ isStompSocketIsReady: false });
             console.log('에상치 못한 소켓 연결 에러', e);
+            throw e;
         }
     },
     disconnect: () => {
