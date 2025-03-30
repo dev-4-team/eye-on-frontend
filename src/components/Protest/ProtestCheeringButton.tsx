@@ -7,13 +7,13 @@ import { useSocketStore } from '@/store/useSocketStore';
 export const ProtestCheeringButton = () => {
     const params = useParams();
     const protestId = params.id;
-    const destiantion = `/app/cheer/protest/${protestId}`;
+    const cheerDestination = `/app/cheer/protest/${protestId}`;
     const { publish } = useSocketStore();
 
     return (
         <Button
             onClick={() => {
-                publish(destiantion);
+                publish(cheerDestination);
             }}
         >
             응원하기

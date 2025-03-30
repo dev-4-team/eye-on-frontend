@@ -36,31 +36,27 @@ export class StompSocket {
     }
 
     public deactivate() {
-        if (!this.checkIsConnected()) return;
+        if (!this.isConnected()) return;
 
         this.client?.deactivate();
     }
 
     public subscribe(topic: string, callback: (message: StompJs.IFrame) => void) {
-        if (!this.checkIsConnected()) return;
+        if (!this.isConnected()) return;
 
         this.client?.subscribe(topic, callback);
     }
 
     public publish(topic: string, message?: string) {
-        if (!this.checkIsConnected()) return;
+        if (!this.isConnected()) return;
         this.client?.publish({
             destination: topic,
             body: message ? message : undefined,
         });
     }
 
-    private checkIsConnected() {
-        if (!this.client || !this.client?.connected) {
-            console.log('소컷 연결이 안됬습니다.');
-            return false;
-        }
-        return true;
+    private isConnected() {
+        return this.client?.connected ?? false;
     }
 }
 
