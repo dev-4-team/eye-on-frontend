@@ -13,6 +13,7 @@ import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSocketConnection } from '@/hooks/useSocketConnection';
 
 type RouteData = [number, number][];
 
@@ -283,6 +284,8 @@ export default function KakaoMap({
     useEffect(() => {
         handleFetchRoutes();
     }, [protests]);
+
+    useSocketConnection();
 
     if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
