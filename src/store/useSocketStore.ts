@@ -1,35 +1,37 @@
 import { create } from 'zustand';
 import { StompSocket } from '@/lib/socket';
-import { IFrame } from '@stomp/stompjs';
+import { ISocket } from '@/lib/ISoket';
 
 interface SocketStore {
-    isStompSocketIsReady: boolean;
+    socketIsReady: boolean;
+    socket: ISocket;
     connect: () => void;
     disconnect: () => void;
-    subscribe: (topic: string, callback: (message: IFrame) => void) => void;
-    publish: (topic: string, message?: string | undefined) => void;
+    join: (topic: string, callback: (message: unknown) => void) => void;
+    sendMessage: (topic: string, message?: string | undefined) => void;
 }
 
 export const useSocketStore = create<SocketStore>()((set, get) => ({
-    isStompSocketIsReady: false,
+    socketIsReady: false,
+    socket: StompSocket.getInstance(),
     connect: async () => {
         try {
-            await StompSocket.getInstance().connect();
-            set({ isStompSocketIsReady: true });
+            await get().socket.connect();
+            set({ socketIsReady: true });
         } catch (e) {
-            set({ isStompSocketIsReady: false });
+            set({ socketIsReady: false });
             console.log('에상치 못한 소켓 연결 에러', e);
             throw e;
         }
     },
     disconnect: () => {
-        StompSocket.getInstance().deactivate();
-        set({ isStompSocketIsReady: false });
+        get().socket.disconnect();
+        set({ socketIsReady: false });
     },
-    subscribe: (topic, callback) => {
-        StompSocket.getInstance().subscribe(topic, callback);
+    join: (topic, callback) => {
+        get().socket.join(topic, callback);
     },
-    publish: (topic: string, message: string | undefined) => {
-        StompSocket.getInstance().publish(topic, message);
+    sendMessage: (topic: string, message: string | undefined) => {
+        get().socket.sendMessage(topic, message);
     },
 }));

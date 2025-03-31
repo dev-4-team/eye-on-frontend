@@ -8,12 +8,12 @@ export const ProtestCheeringButton = () => {
     const params = useParams();
     const protestId = params.id;
     const cheerDestination = `/app/cheer/protest/${protestId}`;
-    const { publish } = useSocketStore();
+    const { sendMessage } = useSocketStore();
 
     return (
         <Button
             onClick={() => {
-                publish(cheerDestination);
+                sendMessage(cheerDestination);
             }}
         >
             응원하기
