@@ -1,16 +1,41 @@
 import { useSocketStore } from '@/store/useSocketStore';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useProtestCheerStore } from '@/store/useProtestCheerStore';
+import { ProtestsCheerCount } from '@/lib/API/ProtestCheerCount';
 
 export const useSocketConnection = () => {
     const { connect, disconnect, join } = useSocketStore();
+    const { addRealtimeCheer, clearRealtimeCheer } = useProtestCheerStore();
+    const { setCheerList } = useProtestCheerStore();
+    const cheerListRef = useRef<any[]>([]);
 
     useEffect(() => {
         const connectedSocket = async () => {
             try {
                 await connect();
+                const response = await ProtestsCheerCount();
+                cheerListRef.current = response.data;
+                setCheerList(response.data);
                 join('/topic/cheer', (message: any) => {
-                    const response = JSON.parse(message.body);
-                    console.log('서버에서 보낸 응원하기 데이터', response);
+                    try {
+                        const response = JSON.parse(message.body);
+                        console.log('실시간 응원 이벤트:', response);
+
+                        addRealtimeCheer(response.protestId);
+                        const updatedList = cheerListRef.current.map((cheer) =>
+                            cheer.protestId === response.protestId
+                                ? { ...cheer, cheerCount: response.cheerCount }
+                                : cheer
+                        );
+                        cheerListRef.current = updatedList;
+                        setCheerList(updatedList);
+                        // 1초 후 실시간 응원 표시 제거
+                        setTimeout(() => {
+                            clearRealtimeCheer(response.protestId);
+                        }, 1000);
+                    } catch (e) {
+                        console.error('응원 메시지 파싱 오류:', e);
+                    }
                 });
                 join('/user/queue/errors', (message: any) => {
                     try {
@@ -21,11 +46,6 @@ export const useSocketConnection = () => {
                     }
                 });
             } catch (e) {
-                /* 
-                소켓 연결이 실패했을때 어떻게 해야할지 고민중
-                    1. 소켓이 연결되지 않으면 아에 에러처리
-                    2. 응원하기 기능만 사용 못하게 ex) : 응원하기 버튼만 못쓰게 또는 안보이게처리
-             */
                 console.log('소켓 연결 실패', e);
             }
         };

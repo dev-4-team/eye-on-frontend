@@ -4,6 +4,10 @@ import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { VerificationBadge } from '@/components/Protest/VerificationBadge';
+import { useSocketStore } from '@/store/useSocketStore';
+import { UseProtestCheerCount } from '@/lib/API/ProtestCheerCount';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { useProtestCheerStore } from '@/store/useProtestCheerStore';
 
 export default function ProtestVerificationBadge({
     protest,
@@ -16,6 +20,10 @@ export default function ProtestVerificationBadge({
 }) {
     const [verifiedNumber, setVerifiedNumber] = useState(0);
     const date = new Date().toISOString().split('T')[0];
+    const { socketIsReady } = useSocketStore();
+    const { data } = UseProtestCheerCount(protest.id, socketIsReady);
+    const { effect } = useCheerEffect(data);
+    const { cheerList, realtimeCheerIds } = useProtestCheerStore();
 
     useEffect(() => {
         const verifyNumber = async () => {
@@ -27,6 +35,9 @@ export default function ProtestVerificationBadge({
         };
         verifyNumber();
     }, [protest]);
+
+    // 실시간 응원 여부 확인
+    const isRealtimeCheer = realtimeCheerIds.has(protest.id);
 
     const maxVerified = 5000;
     const baseZIndex = 10;
@@ -41,6 +52,9 @@ export default function ProtestVerificationBadge({
         }
         router.push(`/protest/${id}`);
     };
+    const cheerCountCalculater = socketIsReady
+        ? cheerList.find((cheer) => cheer.protestId === protest.id)?.cheerCount
+        : data?.cheerCount;
 
     return (
         <>
@@ -52,6 +66,14 @@ export default function ProtestVerificationBadge({
                 yAnchor={3}
                 zIndex={dynamicZIndex}
             >
+                {cheerCountCalculater && (
+                    <div className='flex flex-col justify-center items-center'>
+                        {(effect || isRealtimeCheer) && (
+                            <div className={`animate-bounce ${isRealtimeCheer ? 'text-red-500' : ''}`}>🔥</div>
+                        )}
+                        <div>{cheerCountCalculater}</div>
+                    </div>
+                )}
                 <VerificationBadge verifiedNumber={verifiedNumber} />
             </CustomOverlayMap>
             <MapMarker

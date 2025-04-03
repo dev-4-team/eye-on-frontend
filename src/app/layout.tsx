@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/sonner';
 import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics';
 import { Metadata } from 'next';
+import TanStackProvider from '@/app/providers/TanStackProvider';
+import { SocketProvider } from '@/app/providers/SocketProvider';
 
 export const metadata: Metadata = {
     verification: {
@@ -37,9 +39,13 @@ export default function RootLayout({
                     src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
                 />
                 <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
-                <main>{children}</main>
-                {modal}
-                <Toaster />
+                <TanStackProvider>
+                    <SocketProvider>
+                        <main>{children}</main>
+                        {modal}
+                        <Toaster />
+                    </SocketProvider>
+                </TanStackProvider>
                 <Footer />
             </body>
         </html>
