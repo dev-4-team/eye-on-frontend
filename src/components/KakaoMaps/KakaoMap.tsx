@@ -216,6 +216,7 @@ export default function KakaoMap({
             if (mapInstance) {
                 window.kakao.maps.event.removeListener(mapInstance, 'zoom_start', updateHeatmap);
                 window.kakao.maps.event.removeListener(mapInstance, 'center_changed', updateHeatmap);
+                window.kakao.maps.event.removeListener(mapInstance, 'zoom_changed', updateHeatmap);
                 if (animationFrameRef.current) {
                     cancelAnimationFrame(animationFrameRef.current);
                 }
