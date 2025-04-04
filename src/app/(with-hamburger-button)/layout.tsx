@@ -1,4 +1,3 @@
-import KakaoLogin from '@/components/KakaoLogin/KakaoLogin';
 import ProtestList from '@/components/Protest/protest-list';
 import { ReactNode } from 'react';
 

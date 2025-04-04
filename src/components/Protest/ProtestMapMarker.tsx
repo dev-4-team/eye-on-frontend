@@ -1,11 +1,12 @@
-import VerificationNumber from '@/lib/API/VerificationNumber';
 import { useEffect, useState } from 'react';
 import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { VerificationBadge } from '@/components/Protest/VerificationBadge';
+import { ProtestCheerBadge } from '@/components/Protest/ProtestCheerBadge';
+import { getVerificationNumber } from '@/apis/verification';
 
-export default function ProtestVerificationBadge({
+export default function ProtestMapMarker({
     protest,
     mapInstance,
     router,
@@ -15,14 +16,10 @@ export default function ProtestVerificationBadge({
     router: AppRouterInstance;
 }) {
     const [verifiedNumber, setVerifiedNumber] = useState(0);
-    const date = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         const verifyNumber = async () => {
-            const result = await VerificationNumber({
-                protestId: protest.id,
-                date: date,
-            });
+            const result = await getVerificationNumber(protest.id);
             setVerifiedNumber(result.verifiedNum);
         };
         verifyNumber();
@@ -52,6 +49,7 @@ export default function ProtestVerificationBadge({
                 yAnchor={3}
                 zIndex={dynamicZIndex}
             >
+                <ProtestCheerBadge protestId={protest.id} />
                 <VerificationBadge verifiedNumber={verifiedNumber} />
             </CustomOverlayMap>
             <MapMarker

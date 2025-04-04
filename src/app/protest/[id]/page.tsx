@@ -1,23 +1,16 @@
 import StaticKakakoMap from '@/components/KakaoMaps/StaticKakaoMap';
 import ProtestDetailInfo from '@/components/Protest/protest-detail-info';
-import ProtestDetail from '@/lib/API/ProtestDetail';
 import { ProtestData } from '@/types';
 import { formatDate } from '@/lib/utils';
 import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
 import MarkdownWrapper from '@/components/Protest/protest-md';
 import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
+import { ProtestCheeringButton } from '@/components/Protest/ProtestCheeringButton';
+import { getProtestDetail, getProtestList } from '@/apis/protest';
 
 export async function generateStaticParams() {
-    const date = new Date().toISOString().split('T')[0];
-    const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-    const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, { next: { revalidate: 3600 } });
-    if (!response.ok) {
-        throw new Error(response.statusText);
-    }
-
-    const protestsData = await response.json();
-    const protests: ProtestData[] = protestsData.data;
+    const protests: ProtestData[] = await getProtestList();
     return protests.map((protest) => ({
         id: protest.id.toString(),
     }));
@@ -25,8 +18,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;
-
-    const protest = await ProtestDetail({ id });
+    const protest = await getProtestDetail(id);
 
     const keywords = [
         '집회',
@@ -65,7 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id: paramId } = await params;
-    const protest = await ProtestDetail({ id: `${paramId}` });
+    const protest = await getProtestDetail(paramId);
 
     const { title, description, startDateTime, endDateTime, location, organizer, declaredParticipants, locations } =
         protest;
@@ -104,6 +96,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                         l={3}
                     />
                 </div>
+                <ProtestCheeringButton />
                 <div className='flex w-full items-center justify-center gap-4 px-4'>
                     <Verification paramId={paramId} />
                     <ProtestShareButton />

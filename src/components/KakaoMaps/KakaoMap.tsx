@@ -5,14 +5,14 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
+import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
-import { Button } from '../ui/button';
 import { MdGpsFixed } from 'react-icons/md';
 import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type RouteData = [number, number][];
 
@@ -291,9 +291,9 @@ export default function KakaoMap({
     if (!routeData) return <div>Loading...</div>;
 
     return (
-        <div className="relative">
+        <div className='relative'>
             <Map
-                id="map"
+                id='map'
                 center={{
                     lat: latitude,
                     lng: longitude,
@@ -308,7 +308,7 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
-                        <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
+                        <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
 
@@ -321,7 +321,7 @@ export default function KakaoMap({
                               strokeWeight={5}
                               strokeColor={generateColorFromIndex(index)}
                               strokeOpacity={0.7}
-                              strokeStyle="solid"
+                              strokeStyle='solid'
                           />
                       ))
                     : null}
@@ -334,15 +334,15 @@ export default function KakaoMap({
                 <ZoomControl position={'LEFT'} />
             </Map>
             <Button
-                className="absolute bottom-7 left-3 z-30"
+                className='absolute bottom-7 left-3 z-30'
                 variant={'gps'}
                 size={'gps'}
                 onClick={() => onButtonClick('gps')}
             >
-                {isLoading ? <Loader2 className="animate-spin" /> : <MdGpsFixed />}
+                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
             </Button>
             <Button
-                className="absolute bottom-20 left-3 z-30"
+                className='absolute bottom-20 left-3 z-30'
                 variant={'reset'}
                 size={'gps'}
                 onClick={() => onButtonClick('reset')}

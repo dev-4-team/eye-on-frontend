@@ -42,7 +42,7 @@ export default function StaticKakaoMap({
     }, []);
 
     if (!isKakaoLoaded) {
-        return <Skeleton className="w-[240px] h-[250px]" />;
+        return <Skeleton className='w-[240px] h-[250px]' />;
     }
 
     return (

@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/sonner';
 import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics';
 import { Metadata } from 'next';
+import TanStackProvider from '@/app/providers/TanStackProvider';
+import { SocketProvider } from '@/app/providers/SocketProvider';
 
 export const metadata: Metadata = {
     verification: {
@@ -26,20 +28,24 @@ export default function RootLayout({
     const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
 
     return (
-        <html lang="kr">
+        <html lang='kr'>
             <body>
                 {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
                     <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
                 )}
                 <Header />
                 <Script
-                    strategy="lazyOnload"
+                    strategy='lazyOnload'
                     src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
                 />
-                <Script strategy="lazyOnload" src="https://unpkg.com/heatmap.js" />
-                <main>{children}</main>
-                {modal}
-                <Toaster />
+                <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
+                <TanStackProvider>
+                    <SocketProvider>
+                        <main>{children}</main>
+                        {modal}
+                        <Toaster />
+                    </SocketProvider>
+                </TanStackProvider>
                 <Footer />
             </body>
         </html>
