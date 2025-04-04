@@ -23,8 +23,11 @@ export const ProtestShareButton = () => {
     };
 
     return (
-        <Button className='flex w-2/5 bg-transparent text-black hover:bg-white max-w-xs' onClick={handleCopyUrl}>
-            <span>공유하기</span> <IoIosLink />
+        <Button
+            className="flex w-9 bg-transparent text-black hover:bg-white max-w-xs  rounded-[50%]"
+            onClick={handleCopyUrl}
+        >
+            <IoIosLink />
         </Button>
     );
 };

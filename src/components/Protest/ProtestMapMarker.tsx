@@ -58,9 +58,9 @@ export default function ProtestMapMarker({
                     lng: protest.locations[0].longitude,
                 }}
                 image={{
-                    src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+                    src: '/images/marker.png',
                     size: {
-                        width: 24,
+                        width: 30,
                         height: 35,
                     },
                 }}

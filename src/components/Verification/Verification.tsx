@@ -64,43 +64,34 @@ export default function Verification({ paramId }: { paramId: string }) {
     }
 
     return (
-        <div className='w-3/5 flex flex-col items-center max-w-md'>
-            {/* {verificationResult ? (
-                <Button variant={'signature'} size={'sm'} onClick={onVerificationClick}>
-                    {isLoading ? <Loader2 className="animate-spin" /> : <div>인증하기</div>}
-                </Button>
-            ) : (
-                <Button disabled variant={'signature'} size={'sm'} onClick={onVerificationClick}>
-                    인증완료
-                </Button>
-            )} */}
-            <Button variant={'signature'} className='w-full' onClick={onVerificationClick}>
-                {isLoading ? <Loader2 className='animate-spin' /> : <div>시위참여 인증하기</div>}
+        <div className="w-['45%'] flex flex-col items-center max-w-md">
+            <Button variant={'signature'} className="w-full" onClick={onVerificationClick}>
+                {isLoading ? <Loader2 className="animate-spin" /> : <div>시위참여 인증하기</div>}
             </Button>
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
                     <DrawerContent>
-                        <DrawerHeader className='p-0 flex items-center justify-center flex-col text-center'>
+                        <DrawerHeader className="p-0 flex items-center justify-center flex-col text-center">
                             <DrawerTitle>위치동의 drawer</DrawerTitle>
-                            <DrawerDescription className='whitespace-pre-line text-center'>
-                                <span className='text-center'>
+                            <DrawerDescription className="whitespace-pre-line text-center">
+                                <span className="text-center">
                                     시위 참여 인증을 위해 현재 위치 정보 사용 동의를 눌러주세요.
                                 </span>
                                 <br />
-                                <span className='text-center'>
+                                <span className="text-center">
                                     아래의 정보만 부정인증 방지를 위해 저장되며, 다음날 00시에 삭제됩니다.
                                 </span>
                             </DrawerDescription>
                         </DrawerHeader>
-                        <div className='p-4 flex justify-center gap-4'>
+                        <div className="p-4 flex justify-center gap-4">
                             <Button variant={'signature'} onClick={handleAgree}>
                                 동의
                             </Button>
                             <DrawerClose asChild>
-                                <Button variant='outline'>취소</Button>
+                                <Button variant="outline">취소</Button>
                             </DrawerClose>
                         </div>
-                        <DrawerFooter className='hidden'>footer</DrawerFooter>
+                        <DrawerFooter className="hidden">footer</DrawerFooter>
                     </DrawerContent>
                 )}
             </Drawer>
