@@ -42,11 +42,8 @@ export const useGeoLocation = (permissionStatus: boolean) => {
 
     useEffect(() => {
         if (!permissionStatus) return;
-
         const { geolocation } = navigator;
-
         if (!geolocation) return;
-
         setIsLoading(true);
 
         geolocation.getCurrentPosition(

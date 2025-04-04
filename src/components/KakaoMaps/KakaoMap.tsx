@@ -3,18 +3,17 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
-import { MdGpsFixed } from 'react-icons/md';
-import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
+import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
+import { NavigationRouteLines } from '@/components/NaverDirections/NavigationRouteLines';
+import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList';
 
-type RouteData = [number, number][];
+export type RouteData = [number, number][];
 
 export default function KakaoMap({
     latitude,
@@ -31,7 +30,6 @@ export default function KakaoMap({
     l: number;
     protests: ProtestData[];
 }) {
-    const [isClient, setIsClient] = useState(false);
     const [loading, error] = useKakaoLoader();
     const [heatmapInstance, setHeatmapInstance] = useState<any>(null);
     const [mapInstance, setMapInstance] = useState<any>(null);
@@ -45,7 +43,7 @@ export default function KakaoMap({
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
     const [realXDistance, setRealXDistance] = useState<number | null>();
-    const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
+    const { curLocation, isLoading } = useGeoLocation(agreed);
 
     useEffect(() => {
         if (!mapInstance || !protests) return;
@@ -165,10 +163,6 @@ export default function KakaoMap({
     }, [mapInstance, updateHeatmap, realXDistance]);
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    useEffect(() => {
         if (!mapInstance) return;
         setCurrentLevel(mapInstance.getLevel());
     }, [mapInstance]);
@@ -274,18 +268,10 @@ export default function KakaoMap({
         setRouteData(routes);
     };
 
-    const generateColorFromIndex = (index: number): string => {
-        const r = (index * 50) % 256;
-        const g = (index * 100) % 256;
-        const b = (index * 150) % 256;
-        return `rgb(${r}, ${g}, ${b})`;
-    };
-
     useEffect(() => {
         handleFetchRoutes();
     }, [protests]);
 
-    if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
     if (error) return <div>Loading ... error</div>;
     if (!routeData) return <div>Loading...</div>;
@@ -306,49 +292,16 @@ export default function KakaoMap({
                 level={l}
                 onCreate={setMapInstance}
             >
-                {protests.map((protest) => (
-                    <div key={protest.id}>
-                        <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
-                    </div>
-                ))}
-
-                {currentLevel <= 8
-                    ? routeData.map((data: RouteData, index: number) => (
-                          <Polyline
-                              key={index}
-                              endArrow={true}
-                              path={data.map(([lng, lat]) => ({ lat, lng }))}
-                              strokeWeight={5}
-                              strokeColor={generateColorFromIndex(index)}
-                              strokeOpacity={0.7}
-                              strokeStyle='solid'
-                          />
-                      ))
-                    : null}
-
-                {currentPositionMarker ? (
+                {currentLevel <= 8 && <NavigationRouteLines routeData={routeData} />}
+                {currentPositionMarker ?? (
                     <MapMarker position={{ lat: curLocation!.latitude, lng: curLocation!.longitude }} />
-                ) : null}
-
+                )}
+                <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
             </Map>
-            <Button
-                className='absolute bottom-7 left-3 z-30'
-                variant={'gps'}
-                size={'gps'}
-                onClick={() => onButtonClick('gps')}
-            >
-                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
-            </Button>
-            <Button
-                className='absolute bottom-20 left-3 z-30'
-                variant={'reset'}
-                size={'gps'}
-                onClick={() => onButtonClick('reset')}
-            >
-                <BiReset />
-            </Button>
+            <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
+            <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
         </div>
     );
 }

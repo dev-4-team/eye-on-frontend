@@ -28,7 +28,6 @@ export default function ProtestMapMarker({
     const maxVerified = 5000;
     const baseZIndex = 10;
     const maxZIndex = 100;
-
     const dynamicZIndex = Math.min(maxZIndex, baseZIndex + (verifiedNumber / maxVerified) * maxZIndex);
 
     const onMarkerClick = (id: string, lat: number, long: number) => {
