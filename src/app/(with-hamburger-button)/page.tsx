@@ -1,5 +1,5 @@
+import { getProtestInfos } from '@/apis/protest';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
-import ProtestInfos from '@/lib/API/ProtestInfos';
 import { Metadata } from 'next';
 
 const keywords = [
@@ -37,8 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-    const date = new Date().toISOString().split('T')[0];
-    const protests = await ProtestInfos({ date: date });
+    const protests = await getProtestInfos();
     const latitude = 37.539581447331;
     const longitude = 127.00787604008;
     return (

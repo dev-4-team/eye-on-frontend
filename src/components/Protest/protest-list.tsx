@@ -1,12 +1,11 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import ProtestCard from './protest-card';
-import ProtestInfos from '@/lib/API/ProtestInfos';
 import { ProtestData } from '@/types';
+import { getProtestInfos } from '@/apis/protest';
 
 export default async function ProtestList() {
-    const date = new Date().toISOString().split('T')[0];
-    const protests = await ProtestInfos({ date: date });
+    const protests = await getProtestInfos();
     return (
         <Sheet>
             <SheetTrigger className='absolute top-12 right-0 p-2 rounded-s-md bg-[#D44646] text-2xl text-background-white z-10'>

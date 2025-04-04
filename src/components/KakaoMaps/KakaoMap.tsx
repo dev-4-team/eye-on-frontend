@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
+import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
 import { MdGpsFixed } from 'react-icons/md';
@@ -13,7 +13,6 @@ import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useSocketConnection } from '@/hooks/useSocketConnection';
 
 type RouteData = [number, number][];
 
@@ -285,8 +284,6 @@ export default function KakaoMap({
         handleFetchRoutes();
     }, [protests]);
 
-    useSocketConnection();
-
     if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
     if (error) return <div>Loading ... error</div>;
@@ -310,7 +307,7 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
-                        <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
+                        <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
 

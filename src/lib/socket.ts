@@ -1,6 +1,7 @@
 import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { ISocket } from '@/lib/ISoket';
+import { readFile } from 'fs';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
 
@@ -22,6 +23,8 @@ export class StompSocket implements ISocket {
         return new Promise<boolean>((resolve, reject) => {
             this.client = new StompJs.Client({
                 webSocketFactory: () => SockJS(`${SERVER_URL}/api/ws`),
+                reconnectDelay: 0,
+                onWebSocketClose: () => reject(false),
             });
             this.client.onConnect = () => {
                 console.log('socket 연결 성공');
