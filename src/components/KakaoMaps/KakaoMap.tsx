@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import ProtestVerificationBadge from '@/components/Protest/ProtestVerificationBadge';
+import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
 import { MdGpsFixed } from 'react-icons/md';
@@ -307,7 +307,7 @@ export default function KakaoMap({
             >
                 {protests.map((protest) => (
                     <div key={protest.id}>
-                        <ProtestVerificationBadge protest={protest} mapInstance={mapInstance} router={router} />
+                        <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
                     </div>
                 ))}
 
