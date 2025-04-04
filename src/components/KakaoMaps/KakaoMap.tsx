@@ -13,6 +13,8 @@ import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
+import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
 
 type RouteData = [number, number][];
 
@@ -332,22 +334,8 @@ export default function KakaoMap({
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
             </Map>
-            <Button
-                className='absolute bottom-7 left-3 z-30'
-                variant={'gps'}
-                size={'gps'}
-                onClick={() => onButtonClick('gps')}
-            >
-                {isLoading ? <Loader2 className='animate-spin' /> : <MdGpsFixed />}
-            </Button>
-            <Button
-                className='absolute bottom-20 left-3 z-30'
-                variant={'reset'}
-                size={'gps'}
-                onClick={() => onButtonClick('reset')}
-            >
-                <BiReset />
-            </Button>
+            <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
+            <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
         </div>
     );
 }
