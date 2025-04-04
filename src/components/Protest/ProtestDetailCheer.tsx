@@ -13,21 +13,21 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
     const { cheerList, realtimeCheerIds } = useProtestCheerStore();
     const isRealtimeCheer = realtimeCheerIds.has(protestId);
 
-    const temporalProtestId = Number(protestId);
+    const temporalProtestId = protestId;
 
     const cheerCountCalculater = socketIsReady
-        ? cheerList.find((cheer) => cheer.protestId === temporalProtestId)?.cheerCount ?? 0
+        ? cheerList.find((cheer) => cheer.protestId === temporalProtestId)?.cheerCount
         : data?.cheerCount;
 
     return (
         <>
             {cheerCountCalculater !== undefined && (
-                <div className="flex flex-col justify-center items-center">
+                <div className='flex flex-col justify-center items-center'>
                     <AnimatePresence>
                         {(effect || isRealtimeCheer) && (
                             <motion.div
                                 key={Date.now()}
-                                className="text-2xl"
+                                className='text-2xl'
                                 initial={{ scale: 0.8, opacity: 0.5 }}
                                 animate={{ scale: 1.5, opacity: 1 }}
                                 exit={{ scale: 0.8, opacity: 0 }}

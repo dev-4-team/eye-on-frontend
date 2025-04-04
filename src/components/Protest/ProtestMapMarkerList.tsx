@@ -1,8 +1,6 @@
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
 
-type RouteData = [number, number][];
-
 export const ProtestMapMarkerList = ({
     protests,
     mapInstance,
@@ -15,7 +13,7 @@ export const ProtestMapMarkerList = ({
     return (
         <div>
             {protests.map((protest) => (
-                <div key={protest.id}>
+                <div key={protest.id} className='flex justify-center items-center'>
                     <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
                 </div>
             ))}

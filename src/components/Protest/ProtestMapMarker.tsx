@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { VerificationBadge } from '@/components/Protest/VerificationBadge';
-import { ProtestCheerBadge } from '@/components/Protest/ProtestCheerBadge';
 import { getVerificationNumber } from '@/apis/verification';
+import { useSocketStore } from '@/store/useSocketStore';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { useProtestCheerStore } from '@/store/useProtestCheerStore';
+import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 
 export default function ProtestMapMarker({
     protest,
@@ -38,6 +40,16 @@ export default function ProtestMapMarker({
         router.push(`/protest/${id}`);
     };
 
+    const { socketIsReady } = useSocketStore();
+    const { data } = UseProtestCheerCount(protest.id, socketIsReady);
+
+    const { effect } = useCheerEffect(data);
+    const { cheerList, realtimeCheerIds } = useProtestCheerStore();
+    const isRealtimeCheer = realtimeCheerIds.has(protest.id);
+    const cheerCountCalculater = socketIsReady
+        ? cheerList.find((cheer) => cheer.protestId === protest.id)?.cheerCount
+        : data?.cheerCount;
+
     return (
         <>
             <CustomOverlayMap
@@ -48,25 +60,31 @@ export default function ProtestMapMarker({
                 yAnchor={3}
                 zIndex={dynamicZIndex}
             >
-                <ProtestCheerBadge protestId={protest.id} />
-                <VerificationBadge verifiedNumber={verifiedNumber} />
+                <div
+                    className='w-[30px] h-[35px] bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain relative cursor-pointer'
+                    onClick={() =>
+                        onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
+                    }
+                >
+                    {/* <div className='absolute top-[10px] left-1/2 -translate-x-1/2 text-white text-[10px] font-bold'>
+                        {verifiedNumber}
+                    </div> */}
+                    {cheerCountCalculater && (
+                        <div className='absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center'>
+                            {(effect || isRealtimeCheer) && (
+                                <div
+                                    className={`animate-bounce ${
+                                        isRealtimeCheer ? 'text-red-500' : ''
+                                    } text-[16px] absolute bottom-6`}
+                                >
+                                    🔥
+                                </div>
+                            )}
+                            <span className='text-[10px]'>{cheerCountCalculater}</span>
+                        </div>
+                    )}
+                </div>
             </CustomOverlayMap>
-            <MapMarker
-                position={{
-                    lat: protest.locations[0].latitude,
-                    lng: protest.locations[0].longitude,
-                }}
-                image={{
-                    src: '/images/marker.png',
-                    size: {
-                        width: 30,
-                        height: 35,
-                    },
-                }}
-                title={protest.title}
-                clickable={true}
-                onClick={() => onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)}
-            />
         </>
     );
 }
