@@ -9,7 +9,6 @@ export const SendCheerMutation = (protestId: string) => {
                 method: 'POST',
             }),
         onSuccess: () => {
-            console.log('보냄');
             queryClient.invalidateQueries({ queryKey: ['cheer', protestId] });
         },
     });

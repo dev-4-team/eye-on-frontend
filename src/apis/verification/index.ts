@@ -1,7 +1,5 @@
+import { SERVER_URL, targetDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
-
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-const targetDate = process.env.NODE_ENV === 'development' ? '2025-03-15' : new Date().toISOString().split('T')[0];
 
 export const getVerificationNumber = async (protestId: string) => {
     const response = await fetch(`${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=${targetDate}`, {
