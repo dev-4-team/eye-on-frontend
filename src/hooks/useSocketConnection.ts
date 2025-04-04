@@ -1,7 +1,7 @@
 import { useSocketStore } from '@/store/useSocketStore';
 import { useCallback, useEffect, useRef } from 'react';
 import { useProtestCheerStore } from '@/store/useProtestCheerStore';
-import { ProtestsCheerCount } from '@/lib/API/ProtestCheerCount';
+import { ProtestsCheerCount } from '@/apis/cheer';
 
 export const useSocketConnection = () => {
     const { connect, disconnect, join } = useSocketStore();

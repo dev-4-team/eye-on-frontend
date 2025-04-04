@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
 import { useSocketStore } from '@/store/useSocketStore';
-import { SendCheerMutation } from '@/lib/API/ProtestCheerCount';
+import { SendCheerMutation } from '@/hooks/SendCheerMutation';
 
 export const ProtestCheeringButton = () => {
     const params = useParams();

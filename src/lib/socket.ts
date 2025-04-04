@@ -22,7 +22,7 @@ export class StompSocket implements ISocket {
     public connect() {
         return new Promise<boolean>((resolve, reject) => {
             this.client = new StompJs.Client({
-                webSocketFactory: () => SockJS(`${SERVER_URL}/api/ws`),
+                webSocketFactory: () => SockJS(`${SERVER_URL}/api/wsdd`),
                 reconnectDelay: 0,
                 onWebSocketClose: () => reject(false),
             });

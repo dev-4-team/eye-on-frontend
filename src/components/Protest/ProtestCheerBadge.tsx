@@ -1,11 +1,13 @@
+'use client';
 import { useSocketStore } from '@/store/useSocketStore';
-import { UseProtestCheerCount } from '@/lib/API/ProtestCheerCount';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerStore } from '@/store/useProtestCheerStore';
+import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 
 export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
     const { socketIsReady } = useSocketStore();
     const { data } = UseProtestCheerCount(protestId, socketIsReady);
+
     const { effect } = useCheerEffect(data);
     const { cheerList, realtimeCheerIds } = useProtestCheerStore();
     const isRealtimeCheer = realtimeCheerIds.has(protestId);
