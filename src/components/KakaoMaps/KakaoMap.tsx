@@ -7,7 +7,7 @@ import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kak
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
-import { calculateRealDistanceOnePixel } from '@/lib/utils';
+import { calculateRealDistanceOnePixel, generateColorFromIndex } from '@/lib/utils';
 import { MdGpsFixed } from 'react-icons/md';
 import { BiReset } from 'react-icons/bi';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
@@ -275,13 +275,6 @@ export default function KakaoMap({
         setRouteData(routes);
     };
 
-    const generateColorFromIndex = (index: number): string => {
-        const r = (index * 50) % 256;
-        const g = (index * 100) % 256;
-        const b = (index * 150) % 256;
-        return `rgb(${r}, ${g}, ${b})`;
-    };
-
     useEffect(() => {
         handleFetchRoutes();
     }, [protests]);
@@ -333,9 +326,9 @@ export default function KakaoMap({
 
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
+                <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
+                <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
             </Map>
-            <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
-            <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
         </div>
     );
 }

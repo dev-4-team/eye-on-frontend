@@ -57,3 +57,10 @@ export const calculateRealDistanceOnePixel = (x1: number, y1: number, x2: number
         )
     );
 };
+
+export const generateColorFromIndex = (index: number): string => {
+    const r = (index * 50) % 256;
+    const g = (index * 100) % 256;
+    const b = (index * 150) % 256;
+    return `rgb(${r}, ${g}, ${b})`;
+};
