@@ -3,20 +3,17 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapMarker, MapTypeControl, Polyline, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types';
-import { calculateRealDistanceOnePixel, generateColorFromIndex } from '@/lib/utils';
-import { MdGpsFixed } from 'react-icons/md';
-import { BiReset } from 'react-icons/bi';
+import { calculateRealDistanceOnePixel } from '@/lib/utils';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
 import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
+import { NavigationRouteLines } from '@/components/NaverDirections/NavigationRouteLines';
+import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList';
 
-type RouteData = [number, number][];
+export type RouteData = [number, number][];
 
 export default function KakaoMap({
     latitude,
@@ -33,7 +30,6 @@ export default function KakaoMap({
     l: number;
     protests: ProtestData[];
 }) {
-    const [isClient, setIsClient] = useState(false);
     const [loading, error] = useKakaoLoader();
     const [heatmapInstance, setHeatmapInstance] = useState<any>(null);
     const [mapInstance, setMapInstance] = useState<any>(null);
@@ -47,7 +43,7 @@ export default function KakaoMap({
     const animationFrameRef = useRef<number | null>(null);
     const isUpdatingRef = useRef(false);
     const [realXDistance, setRealXDistance] = useState<number | null>();
-    const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
+    const { curLocation, isLoading } = useGeoLocation(agreed);
 
     useEffect(() => {
         if (!mapInstance || !protests) return;
@@ -167,10 +163,6 @@ export default function KakaoMap({
     }, [mapInstance, updateHeatmap, realXDistance]);
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    useEffect(() => {
         if (!mapInstance) return;
         setCurrentLevel(mapInstance.getLevel());
     }, [mapInstance]);
@@ -280,7 +272,6 @@ export default function KakaoMap({
         handleFetchRoutes();
     }, [protests]);
 
-    if (!isClient) return <div>Loading ...</div>;
     if (loading) return <div>Loading ... loading</div>;
     if (error) return <div>Loading ... error</div>;
     if (!routeData) return <div>Loading...</div>;
@@ -301,35 +292,16 @@ export default function KakaoMap({
                 level={l}
                 onCreate={setMapInstance}
             >
-                {protests.map((protest) => (
-                    <div key={protest.id}>
-                        <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
-                    </div>
-                ))}
-
-                {currentLevel <= 8
-                    ? routeData.map((data: RouteData, index: number) => (
-                          <Polyline
-                              key={index}
-                              endArrow={true}
-                              path={data.map(([lng, lat]) => ({ lat, lng }))}
-                              strokeWeight={5}
-                              strokeColor={generateColorFromIndex(index)}
-                              strokeOpacity={0.7}
-                              strokeStyle='solid'
-                          />
-                      ))
-                    : null}
-
-                {currentPositionMarker ? (
+                {currentLevel <= 8 && <NavigationRouteLines routeData={routeData} />}
+                {currentPositionMarker ?? (
                     <MapMarker position={{ lat: curLocation!.latitude, lng: curLocation!.longitude }} />
-                ) : null}
-
+                )}
+                <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
                 <MapTypeControl position={'TOPLEFT'} />
                 <ZoomControl position={'LEFT'} />
-                <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
-                <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
             </Map>
+            <CurrentLocationButton onClick={() => onButtonClick('gps')} isLoading={isLoading} />
+            <CurrentLocationRestButton onClick={() => onButtonClick('reset')} />
         </div>
     );
 }
