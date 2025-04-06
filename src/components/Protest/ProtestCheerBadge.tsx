@@ -15,15 +15,15 @@ export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
         ? cheerList.find((cheer) => cheer.protestId === protestId)?.cheerCount
         : data?.cheerCount;
     return (
-        <>
+        <div className='flex flex-col justify-center items-center'>
             {cheerCountCalculater && (
-                <div className='flex flex-col justify-center items-center'>
+                <>
                     {(effect || isRealtimeCheer) && (
                         <div className={`animate-bounce ${isRealtimeCheer ? 'text-red-500' : ''}`}>🔥</div>
                     )}
                     <div>{cheerCountCalculater}</div>
-                </div>
+                </>
             )}
-        </>
+        </div>
     );
 };

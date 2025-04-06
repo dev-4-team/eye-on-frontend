@@ -20,7 +20,7 @@ const useConfetti = () => {
         };
     }, []);
 
-    return { confetti: getConfetti() };
+    return { getConfetti };
 };
 
 export default useConfetti;

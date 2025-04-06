@@ -12,15 +12,12 @@ export const useSocketConnection = () => {
     const updateCheer = (message: any) => {
         try {
             const response = JSON.parse(message.body);
-            console.log('실시간 응원 이벤트:', response);
-
+            // console.log('실시간 응원 이벤트:', response);
             addRealtimeCheer(response.protestId);
             const updatedList = cheerListRef.current.map((cheer) =>
                 cheer.protestId === response.protestId ? { ...cheer, cheerCount: response.cheerCount } : cheer
             );
-            cheerListRef.current = updatedList;
             setCheerList(updatedList);
-            // 1초 후 실시간 응원 표시 제거
             setTimeout(() => {
                 clearRealtimeCheer(response.protestId);
             }, 1500);
@@ -43,8 +40,8 @@ export const useSocketConnection = () => {
             try {
                 await connect();
                 const response = await ProtestsCheerCount();
-                cheerListRef.current = response.data;
                 setCheerList(response.data);
+                cheerListRef.current = response.data;
                 join('/topic/cheer', updateCheer);
                 join('/user/queue/errors', updateError);
             } catch (e) {
