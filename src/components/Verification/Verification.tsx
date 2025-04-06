@@ -18,6 +18,7 @@ import useUserInfo from '@/hooks/useUserInfo';
 import { toast } from 'sonner';
 import { VerificationResponse } from '@/lib/API/VerifyLocation';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
+import { ProtestActionButton } from '@/components/Button';
 
 export default function Verification({ paramId }: { paramId: string }) {
     const [agreed, setAgreed] = useState(false);
@@ -65,9 +66,9 @@ export default function Verification({ paramId }: { paramId: string }) {
 
     return (
         <div className="w-['45%'] flex flex-col items-center max-w-md">
-            <Button variant={'signature'} className='w-full' onClick={onVerificationClick}>
+            <ProtestActionButton variant={'signature'} className='w-full' onClick={onVerificationClick}>
                 {isLoading ? <Loader2 className='animate-spin' /> : <div>시위참여 인증하기</div>}
-            </Button>
+            </ProtestActionButton>
             <Drawer open={open} onOpenChange={setOpen}>
                 {open && (
                     <DrawerContent>

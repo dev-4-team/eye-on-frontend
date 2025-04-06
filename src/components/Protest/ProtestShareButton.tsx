@@ -24,7 +24,7 @@ export const ProtestShareButton = () => {
 
     return (
         <Button
-            className="flex w-9 bg-transparent text-black hover:bg-white max-w-xs  rounded-[50%]"
+            className='w-9 bg-white text-black border-2  border-black rounded-full shadow-2xl flex items-center justify-center gap-2 shadow-2xl'
             onClick={handleCopyUrl}
         >
             <IoIosLink />

@@ -1,7 +1,7 @@
 import { useSocketStore } from '@/store/useSocketStore';
 import { useEffect, useRef, useState } from 'react';
 
-export const useCheerEffect = (data: { protestId: number; cheerCount: number }) => {
+export const useCheerEffect = (data: { protestId: string; cheerCount: number }) => {
     const [effect, setEffect] = useState(false);
     const cheerCounRef = useRef<number | null>(null);
     const { socketIsReady } = useSocketStore();
@@ -15,7 +15,7 @@ export const useCheerEffect = (data: { protestId: number; cheerCount: number }) 
             setEffect(true);
             const timeout = setTimeout(() => {
                 setEffect(false);
-            }, 1500);
+            }, 3000);
             return () => clearTimeout(timeout);
         }
         cheerCounRef.current = data?.cheerCount;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getVerificationNumber } from '@/apis/verification';
@@ -7,6 +7,7 @@ import { useSocketStore } from '@/store/useSocketStore';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerStore } from '@/store/useProtestCheerStore';
 import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
+import { numberTransfer } from '@/lib/utils';
 
 export default function ProtestMapMarker({
     protest,
@@ -61,28 +62,15 @@ export default function ProtestMapMarker({
                 zIndex={dynamicZIndex}
             >
                 <div
-                    className='w-[30px] h-[35px] bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain relative cursor-pointer'
+                    className=' inline-flex p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  items-center justify-center'
                     onClick={() =>
                         onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
                     }
                 >
-                    {/* <div className='absolute top-[10px] left-1/2 -translate-x-1/2 text-white text-[10px] font-bold'>
-                        {verifiedNumber}
-                    </div> */}
-                    {cheerCountCalculater && (
-                        <div className='absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center'>
-                            {(effect || isRealtimeCheer) && (
-                                <div
-                                    className={`animate-bounce ${
-                                        isRealtimeCheer ? 'text-red-500' : ''
-                                    } text-[16px] absolute bottom-6`}
-                                >
-                                    🔥
-                                </div>
-                            )}
-                            <span className='text-[10px]'>{cheerCountCalculater}</span>
-                        </div>
-                    )}
+                    {(effect || isRealtimeCheer) && <div>🔥</div>}
+                    <span className='text-xs font-sans relative bottom-1'>
+                        {numberTransfer(cheerCountCalculater || 0)}
+                    </span>
                 </div>
             </CustomOverlayMap>
         </>
