@@ -58,17 +58,17 @@ export default function ProtestMapMarker({
                     lat: protest.locations[0].latitude,
                     lng: protest.locations[0].longitude,
                 }}
-                yAnchor={3}
+                yAnchor={1}
                 zIndex={dynamicZIndex}
             >
                 <div
-                    className=' inline-flex p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  items-center justify-center'
+                    className='inline-flex p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  items-center justify-center'
                     onClick={() =>
                         onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
                     }
                 >
                     {(effect || isRealtimeCheer) && <div>🔥</div>}
-                    <span className='text-xs font-sans relative bottom-1'>
+                    <span className='text-xs pb-2 font-sans font-bold'>
                         {numberTransfer(cheerCountCalculater || 0)}
                     </span>
                 </div>

@@ -1,7 +1,6 @@
 import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { ISocket } from '@/lib/ISoket';
-import { readFile } from 'fs';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
 
