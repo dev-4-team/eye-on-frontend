@@ -3,9 +3,7 @@ import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getVerificationNumber } from '@/apis/verification';
-import { useSocketStore } from '@/store/useSocketStore';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { useProtestCheerStore } from '@/store/useProtestCheerStore';
 import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 import { numberTransfer } from '@/lib/utils';
 
@@ -41,18 +39,12 @@ export default function ProtestMapMarker({
         router.push(`/protest/${id}`);
     };
 
-    const { socketIsReady } = useSocketStore();
-    const { data } = UseProtestCheerCount(protest.id, socketIsReady);
-
+    const { data } = UseProtestCheerCount(protest.id);
     const { effect } = useCheerEffect(data);
-    const { cheerList, realtimeCheerIds } = useProtestCheerStore();
-    const isRealtimeCheer = realtimeCheerIds.has(protest.id);
-    const cheerCountCalculater = socketIsReady
-        ? cheerList.find((cheer) => cheer.protestId === protest.id)?.cheerCount
-        : data?.cheerCount;
+    console.log('data', data);
 
     return (
-        <>
+        <div>
             <CustomOverlayMap
                 position={{
                     lat: protest.locations[0].latitude,
@@ -62,17 +54,15 @@ export default function ProtestMapMarker({
                 zIndex={dynamicZIndex}
             >
                 <div
-                    className='inline-flex p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  items-center justify-center'
+                    className=' p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  flex flex-col items-center justify-center'
                     onClick={() =>
                         onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
                     }
                 >
-                    {(effect || isRealtimeCheer) && <div>🔥</div>}
-                    <span className='text-xs pb-2 font-sans font-bold'>
-                        {numberTransfer(cheerCountCalculater || 0)}
-                    </span>
+                    {effect && <div className='absolute bottom-10'>🔥</div>}
+                    <span className='text-xs pb-2 font-sans font-bold'>{numberTransfer(data?.cheerCount || 0)}</span>
                 </div>
             </CustomOverlayMap>
-        </>
+        </div>
     );
 }

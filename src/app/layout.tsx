@@ -7,7 +7,6 @@ import { Toaster } from '@/components/ui/sonner';
 import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics';
 import { Metadata } from 'next';
 import TanStackProvider from '@/app/providers/TanStackProvider';
-import { SocketProvider } from '@/app/providers/SocketProvider';
 
 export const metadata: Metadata = {
     verification: {
@@ -40,11 +39,9 @@ export default function RootLayout({
                 />
                 <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
                 <TanStackProvider>
-                    <SocketProvider>
-                        <main>{children}</main>
-                        {modal}
-                        <Toaster />
-                    </SocketProvider>
+                    <main>{children}</main>
+                    {modal}
+                    <Toaster />
                 </TanStackProvider>
                 <Footer />
             </body>
