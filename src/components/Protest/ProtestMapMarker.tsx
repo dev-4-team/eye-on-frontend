@@ -38,10 +38,8 @@ export default function ProtestMapMarker({
         }
         router.push(`/protest/${id}`);
     };
-
     const { data } = UseProtestCheerCount(protest.id);
     const { effect } = useCheerEffect(data);
-    console.log('data', data);
 
     return (
         <div>
