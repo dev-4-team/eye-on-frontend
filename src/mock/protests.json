@@ -1,68 +1,68 @@
 [
-    {
-        "id": "1",
-        "title": "환경 보호 시위",
-        "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
-        "startDateTime": "2025-03-15T14:00:00",
-        "endDateTime": "2025-03-15T17:00:00",
-        "location": "서울시청 광장",
-        "organizer": "환경 지킴이 단체",
-        "declaredParticipants": 500,
-        "locations": [
-            {
-                "locationName": "열린송현 녹지광장",
-                "latitude": 37.576333336012166,
-                "longitude": 126.93441739522341
-            },
-            {
-                "locationName": "서울시청",
-                "latitude": 37.561223717484628,
-                "longitude": 126.12333635855888
-            }
-        ]
-    },
-    {
-        "id": "2",
-        "title": "환경 보호 시위2",
-        "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
-        "startDateTime": "2025-03-15T14:00:00",
-        "endDateTime": "2025-03-15T17:00:00",
-        "location": "서울시청 광장",
-        "organizer": "환경 지킴이 단체",
-        "declaredParticipants": 500,
-        "locations": [
-            {
-                "locationName": "열린송현 녹지광장",
-                "latitude": 37.5123123236012166,
-                "longitude": 126.9123739522341
-            },
-            {
-                "locationName": "서울시청",
-                "latitude": 37.566791232484628,
-                "longitude": 126.9424635855888
-            }
-        ]
-    },
-    {
-        "id": "3",
-        "title": "환경 보호 시위3",
-        "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
-        "startDateTime": "2025-03-15T14:00:00",
-        "endDateTime": "2025-03-15T17:00:00",
-        "location": "서울시청 광장",
-        "organizer": "환경 지킴이 단체",
-        "declaredParticipants": 500,
-        "locations": [
-            {
-                "locationName": "열린송현 녹지광장",
-                "latitude": 37.5763242436012166,
-                "longitude": 126.981424239522341
-            },
-            {
-                "locationName": "서울시청",
-                "latitude": 37.5667444484628,
-                "longitude": 126.9786655555888
-            }
-        ]
-    }
+  {
+    "id": "1",
+    "title": "환경 보호 시위",
+    "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
+    "startDateTime": "2025-03-15T14:00:00",
+    "endDateTime": "2025-03-15T17:00:00",
+    "location": "서울시청 광장",
+    "organizer": "환경 지킴이 단체",
+    "declaredParticipants": 500,
+    "locations": [
+      {
+        "locationName": "열린송현 녹지광장",
+        "latitude": 37.576333336012166,
+        "longitude": 126.93441739522341
+      },
+      {
+        "locationName": "서울시청",
+        "latitude": 37.561223717484628,
+        "longitude": 126.12333635855888
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "환경 보호 시위2",
+    "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
+    "startDateTime": "2025-03-15T14:00:00",
+    "endDateTime": "2025-03-15T17:00:00",
+    "location": "서울시청 광장",
+    "organizer": "환경 지킴이 단체",
+    "declaredParticipants": 500,
+    "locations": [
+      {
+        "locationName": "열린송현 녹지광장",
+        "latitude": 37.5123123236012166,
+        "longitude": 126.9123739522341
+      },
+      {
+        "locationName": "서울시청",
+        "latitude": 37.566791232484628,
+        "longitude": 126.9424635855888
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "환경 보호 시위3",
+    "description": "지구 온난화에 대한 인식 제고를 위한 평화로운 시위",
+    "startDateTime": "2025-03-15T14:00:00",
+    "endDateTime": "2025-03-15T17:00:00",
+    "location": "서울시청 광장",
+    "organizer": "환경 지킴이 단체",
+    "declaredParticipants": 500,
+    "locations": [
+      {
+        "locationName": "열린송현 녹지광장",
+        "latitude": 37.5763242436012166,
+        "longitude": 126.981424239522341
+      },
+      {
+        "locationName": "서울시청",
+        "latitude": 37.5667444484628,
+        "longitude": 126.9786655555888
+      }
+    ]
+  }
 ]

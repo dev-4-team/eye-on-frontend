@@ -25,26 +25,26 @@ export default function RootLayout({
   modal: ReactNode;
 }>) {
   const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
-  
-    return (
-        <html lang='kr'>
-            <body>
-                {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-                    <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
-                )}
-                <Header />
-                <Script
-                    strategy='lazyOnload'
-                    src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
-                />
-                <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
-                <TanStackProvider>
-                    <main>{children}</main>
-                    {modal}
-                    <Toaster theme='system' richColors duration={2000} />
-                </TanStackProvider>
-                <Footer />
-            </body>
-        </html>
-    );
+
+  return (
+    <html lang='kr'>
+      <body>
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        )}
+        <Header />
+        <Script
+          strategy='lazyOnload'
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
+        />
+        <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
+        <TanStackProvider>
+          <main>{children}</main>
+          {modal}
+          <Toaster theme='system' richColors duration={2000} />
+        </TanStackProvider>
+        <Footer />
+      </body>
+    </html>
+  );
 }
