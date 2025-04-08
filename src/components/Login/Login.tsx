@@ -5,25 +5,25 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import useUserInfo from '@/hooks/useUserInfo';
 
 export default function Login() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const { setUserInfo } = useUserInfo();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { setUserInfo } = useUserInfo();
 
-    useEffect(() => {
-        const previous_page = localStorage.getItem('previous_page');
-        const accessToken = searchParams.get('access_token');
+  useEffect(() => {
+    const previous_page = localStorage.getItem('previous_page');
+    const accessToken = searchParams.get('access_token');
 
-        if (accessToken) {
-            setUserInfo({ accessToken });
-            router.replace('/');
+    if (accessToken) {
+      setUserInfo({ accessToken });
+      router.replace('/');
 
-            setTimeout(() => {
-                router.push(previous_page!);
-            }, 200);
-        } else {
-            console.error('Access token not found');
-        }
-    }, []);
+      setTimeout(() => {
+        router.push(previous_page!);
+      }, 200);
+    } else {
+      console.error('Access token not found');
+    }
+  }, []);
 
-    return <div>로그인 처리 중..</div>;
+  return <div>로그인 처리 중..</div>;
 }
