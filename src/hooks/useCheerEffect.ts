@@ -1,12 +1,9 @@
-import { useSocketStore } from '@/store/useSocketStore';
 import { useEffect, useRef, useState } from 'react';
 
 export const useCheerEffect = (data: { protestId: string; cheerCount: number }) => {
     const [effect, setEffect] = useState(false);
     const cheerCounRef = useRef<number | null>(null);
-    const { socketIsReady } = useSocketStore();
     useEffect(() => {
-        if (socketIsReady) return;
         if (cheerCounRef.current === null) {
             cheerCounRef.current = data?.cheerCount;
             return;
@@ -19,6 +16,6 @@ export const useCheerEffect = (data: { protestId: string; cheerCount: number }) 
             return () => clearTimeout(timeout);
         }
         cheerCounRef.current = data?.cheerCount;
-    }, [data?.cheerCount, data, socketIsReady]);
+    }, [data?.cheerCount, data]);
     return { effect };
 };
