@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  background-color: white;
+  color: #d44646;
+  height: 6vh;
+}
+
+.logo {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: bold;
+}
+
+.normalText {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+}
+
+.smallText {
+  font-size: clamp(0.7rem, 0.9vw, 1rem);
+}
