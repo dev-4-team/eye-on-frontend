@@ -62,7 +62,7 @@ export default function ProtestMapMarker({
         >
           {effect && <div className='absolute bottom-10'>🔥</div>}
           <span className='text-xs pb-2 font-sans font-bold'>
-            {isLoading ? '🔥 ...' : isError ? '🔥 --' : numberTransfer(data?.cheerCount || 0)}
+            {isLoading ? '🔥 ...' : isError || !data ? '0' : numberTransfer(data.cheerCount)}
           </span>
         </div>
       </CustomOverlayMap>

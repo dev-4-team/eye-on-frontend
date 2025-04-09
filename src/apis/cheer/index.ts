@@ -7,7 +7,7 @@ export const ProtestsCheerCount = async () => {
 };
 
 export const ProtestCheerCount = async (protestId: string) => {
-  const response = await fetch(`${SERVER_URL}/api/cheer/protesㅇt/${protestId}`);
+  const response = await fetch(`${SERVER_URL}/api/cheer/protest/${protestId}`);
   const data = await response.json();
   return data;
 };

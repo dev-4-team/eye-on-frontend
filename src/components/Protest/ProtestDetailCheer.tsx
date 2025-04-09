@@ -19,7 +19,6 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
       confettiNumber: 30,
     });
   };
-  console.log(data, isError, isLoading);
   return (
     <div className='flex flex-col justify-center items-center  '>
       <ProtestActionButton
