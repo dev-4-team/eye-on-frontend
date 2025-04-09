@@ -13,9 +13,6 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(@types/react@19.0.6)(react@19.0.0)
-      '@stomp/stompjs':
-        specifier: ^7.1.0
-        version: 7.1.0
       '@tanstack/react-query':
         specifier: ^5.71.5
         version: 5.71.5(react@19.0.0)
@@ -70,15 +67,9 @@ importers:
       react-query:
         specifier: ^3.39.3
         version: 3.39.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      sockjs-client:
-        specifier: ^1.6.1
-        version: 1.6.1
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      stompjs:
-        specifier: ^2.3.3
-        version: 2.3.3
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -113,9 +104,6 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.0.3(@types/react@19.0.6)
-      '@types/sockjs-client':
-        specifier: ^1.5.4
-        version: 1.5.4
       eslint:
         specifier: ^9
         version: 9.18.0(jiti@1.21.7)
@@ -813,12 +801,6 @@ packages:
         integrity: sha512-kkKUDVlII2DQiKy7UstOR1ErJP8kUKAQ4oa+SQtM0K+lPdmmjj0YnnxBgtTVYH7mUKtbsxeFC9y0AmK7Yb78/A==,
       }
 
-  '@stomp/stompjs@7.1.0':
-    resolution:
-      {
-        integrity: sha512-73myzb9gKUIu6hq/NoN8yvR2hPnFfWcxDAZ3/wp4UQ1+JXaX7LR3CDJHx68BNYrFpuC0NgXry1krIb3q3SHUOg==,
-      }
-
   '@swc/counter@0.1.3':
     resolution:
       {
@@ -935,12 +917,6 @@ packages:
     resolution:
       {
         integrity: sha512-gIlMztcTeDgXCUj0vCBOqEuSEhX//63fW9SZtCJ+agxoQTOklwDfiEMlTWn4mR/C/UK5VHlpwsCsOyf7/hc4lw==,
-      }
-
-  '@types/sockjs-client@1.5.4':
-    resolution:
-      {
-        integrity: sha512-zk+uFZeWyvJ5ZFkLIwoGA/DfJ+pYzcZ8eH4H/EILCm2OBZyHH6Hkdna1/UWL/CFruh5wj6ES7g75SvUB0VsH5w==,
       }
 
   '@types/unist@2.0.11':
@@ -1994,14 +1970,6 @@ packages:
       {
         integrity: sha512-QKHXPW0hD8g4UET03SdOdunzSouc9N4AuHdsX8XNcTsuz+yYFILVNIX4l9yHABMhiEI9Db0JTTIpu0wB+Y1QQw==,
       }
-
-  faye-websocket@0.11.4:
-    resolution:
-      {
-        integrity: sha512-CzbClwlXAuiRQAlUyfqPgvPoNKTckTPGfwZV4ZdAhVcP2lh9KUxJg2b5GkE7XbjKQ3YJnQ9z6D9ntLAlB+tP8g==,
-      }
-    engines: { node: '>=0.8.0' }
-
   file-entry-cache@8.0.0:
     resolution:
       {
@@ -4061,13 +4029,6 @@ packages:
         integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==,
       }
 
-  sockjs-client@1.6.1:
-    resolution:
-      {
-        integrity: sha512-2g0tjOR+fRs0amxENLi/q5TiJTqY+WXFOzb5UwXndlK6TO3U/mirZznpx6w34HVMoc3g7cY24yC/ZMIYnDlfkw==,
-      }
-    engines: { node: '>=12' }
-
   sonner@1.7.4:
     resolution:
       {
@@ -4094,12 +4055,6 @@ packages:
     resolution:
       {
         integrity: sha512-LjdcbuBeLcdETCrPn9i8AYAZ1eCtu4ECAWtP7UleOiZ9LzVxRzzUZEoZ8zB24nhkQnDWyET0I+3sWokSDS3E7g==,
-      }
-
-  stompjs@2.3.3:
-    resolution:
-      {
-        integrity: sha512-5l/Ogz0DTFW7TrpHF0LAETGqM/so8UxNJvYZjJKqcX31EVprSQgnGkO80tZctPC/lFBDUrSFiTG3xd0R27XAIA==,
       }
 
   streamsearch@1.1.0:
@@ -4537,27 +4492,6 @@ packages:
       {
         integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==,
       }
-
-  websocket-driver@0.7.4:
-    resolution:
-      {
-        integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==,
-      }
-    engines: { node: '>=0.8.0' }
-
-  websocket-extensions@0.1.4:
-    resolution:
-      {
-        integrity: sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==,
-      }
-    engines: { node: '>=0.8.0' }
-
-  websocket@1.0.35:
-    resolution:
-      {
-        integrity: sha512-/REy6amwPZl44DDzvRCkaI1q1bIiQB0mEFQLUrhz3z2EK91cp3n72rAjUlrTP0zV22HJIUOVHQGPxhFRjxjt+Q==,
-      }
-    engines: { node: '>=4.0.0' }
 
   which-boxed-primitive@1.1.1:
     resolution:
@@ -5052,8 +4986,6 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.5': {}
 
-  '@stomp/stompjs@7.1.0': {}
-
   '@swc/counter@0.1.3': {}
 
   '@swc/helpers@0.5.15':
@@ -5114,8 +5046,6 @@ snapshots:
   '@types/react@19.0.6':
     dependencies:
       csstype: 3.1.3
-
-  '@types/sockjs-client@1.5.4': {}
 
   '@types/unist@2.0.11': {}
 
@@ -5945,10 +5875,6 @@ snapshots:
   fastq@1.18.0:
     dependencies:
       reusify: 1.0.4
-
-  faye-websocket@0.11.4:
-    dependencies:
-      websocket-driver: 0.7.4
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -7458,16 +7384,6 @@ snapshots:
       is-arrayish: 0.3.2
     optional: true
 
-  sockjs-client@1.6.1:
-    dependencies:
-      debug: 3.2.7
-      eventsource: 2.0.2
-      faye-websocket: 0.11.4
-      inherits: 2.0.4
-      url-parse: 1.5.10
-    transitivePeerDependencies:
-      - supports-color
-
   sonner@1.7.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
@@ -7478,12 +7394,6 @@ snapshots:
   space-separated-tokens@2.0.2: {}
 
   stable-hash@0.0.4: {}
-
-  stompjs@2.3.3:
-    optionalDependencies:
-      websocket: 1.0.35
-    transitivePeerDependencies:
-      - supports-color
 
   streamsearch@1.1.0: {}
 
@@ -7817,26 +7727,6 @@ snapshots:
       vfile-message: 4.0.2
 
   web-namespaces@2.0.1: {}
-
-  websocket-driver@0.7.4:
-    dependencies:
-      http-parser-js: 0.5.9
-      safe-buffer: 5.2.1
-      websocket-extensions: 0.1.4
-
-  websocket-extensions@0.1.4: {}
-
-  websocket@1.0.35:
-    dependencies:
-      bufferutil: 4.0.9
-      debug: 2.6.9
-      es5-ext: 0.10.64
-      typedarray-to-buffer: 3.1.5
-      utf-8-validate: 5.0.10
-      yaeti: 0.0.6
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
 
   which-boxed-primitive@1.1.1:
     dependencies:
