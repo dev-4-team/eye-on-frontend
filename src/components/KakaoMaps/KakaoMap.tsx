@@ -43,6 +43,7 @@ export default function KakaoMap({
   const [currentLevel, setCurrentLevel] = useState<number>(0);
   const [currentPositionMarker, setCurrentPositionMarker] = useState<CurrentPosition | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
   const animationFrameRef = useRef<number | null>(null);
   const isUpdatingRef = useRef(false);
@@ -307,6 +308,14 @@ export default function KakaoMap({
     handleFetchRoutes();
   }, [protests]);
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
   if (loading || !routeData) return <MapLoadingFallback />;
   if (error) return <MapErrorFallback />;
 
@@ -325,8 +334,10 @@ export default function KakaoMap({
         }}
         level={l}
         onCreate={setMapInstance}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       >
-        {currentLevel <= 8 && <NavigationRouteLines routeData={routeData} />}
+        {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routeData} />}
         {currentPositionMarker && (
           <MapMarker
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
