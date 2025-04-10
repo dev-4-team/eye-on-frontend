@@ -11,6 +11,8 @@ import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRe
 import { NavigationRouteLines } from '@/components/NaverDirections/NavigationRouteLines';
 import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList';
 import { toast } from 'sonner';
+import { MapErrorFallback } from '@/components/KakaoMaps/MapErrorFallback';
+import { MapLoadingFallback } from '@/components/KakaoMaps/MapLoadingFallback';
 
 export type RouteData = [number, number][];
 
@@ -305,9 +307,8 @@ export default function KakaoMap({
     handleFetchRoutes();
   }, [protests]);
 
-  if (loading) return <div>Loading ... loading</div>;
-  if (error) return <div>Loading ... error</div>;
-  if (!routeData) return <div>Loading...</div>;
+  if (loading || !routeData) return <MapLoadingFallback />;
+  if (error) return <MapErrorFallback />;
 
   return (
     <div className='relative'>

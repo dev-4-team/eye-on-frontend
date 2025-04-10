@@ -9,7 +9,7 @@ export const UseProtestCheerCount = (protestId: string) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['cheer', protestId],
     queryFn: () => ProtestCheerCount(protestId),
-    refetchInterval: 3000,
+    refetchInterval: query => (query.state.error ? false : 3000),
     enabled: !isDetail || (isDetail && currentProtestId === protestId),
   });
   return { data: data?.data, isLoading, isError };

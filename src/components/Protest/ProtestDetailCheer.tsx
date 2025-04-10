@@ -8,11 +8,10 @@ import Image from 'next/image';
 import { numberTransfer } from '@/lib/utils';
 
 export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
-  const { data } = UseProtestCheerCount(protestId);
+  const { data, isLoading, isError } = UseProtestCheerCount(protestId);
   const { effect } = useCheerEffect(data);
   const { mutate } = SendCheerMutation(String(protestId));
   const { getConfetti } = useConfetti();
-
   const handleConffeti = () => {
     getConfetti().addConfetti({
       emojis: ['🔥', '✔️', '❤️'],
@@ -27,13 +26,22 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
           handleConffeti();
           mutate(String(protestId));
         }}
+        disabled={isLoading || isError || !data}
       >
-        {effect ? (
-          <div className='animate-bounce'>🔥</div>
+        {isLoading ? (
+          <div className='animate-spin'>⟳</div>
+        ) : isError || !data ? (
+          <div>⚠️</div>
         ) : (
-          <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
+          <>
+            {effect ? (
+              <div className='animate-bounce'>🔥</div>
+            ) : (
+              <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
+            )}
+            <span className='text-sm text-white'>{numberTransfer(data.cheerCount)} 응원하기</span>
+          </>
         )}
-        <span className='text-sm text-white'> {numberTransfer(data?.cheerCount || 0)} 응원</span>
       </ProtestActionButton>
     </div>
   );
