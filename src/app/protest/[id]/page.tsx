@@ -78,11 +78,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const endTime = formatDate(endDateTime);
 
   return (
-    <section className='w-full min-w-[240px] break-words flex flex-col px-2'>
-      <div className='flex justify-between items-center bg-white px-4 py-3 shadow-md'>
-        <div className='flex flex-col'>
-          <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
-          <span className='text-zinc-400 text-sm sm:text-base'>{location}</span>
+    <section className='flex flex-col px-2 w-full'>
+      <div className='w-full flex justify-between items-center bg-white px-6 py-4 shadow-md'>
+        <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
+        <div className='flex items-center'>
+          <ProtestShareButton className='bg-red-500 border-none text-white px-2 py-2 rounded-md hover:bg-red-600 transition-colors' />
         </div>
       </div>
 
@@ -111,13 +111,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             l={3}
           />
         </div>
-        <div className='flex w-full items-center justify-center gap-2'>
+        <div className='flex items-center justify-center gap-2'>
           <ProtestDetailCheer protestId={paramId} />
           <Verification paramId={paramId} />
-          <div className='flex items-center justify-center flex-col text-black'>
-            <ProtestShareButton />
-            <span className='text-xs b-0 text-nowrap text-zinc-600'>시위 공유하기</span>
-          </div>
         </div>
       </div>
     </section>
