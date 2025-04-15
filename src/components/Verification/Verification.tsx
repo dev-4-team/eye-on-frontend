@@ -69,7 +69,7 @@ export default function Verification({ paramId }: { paramId: string }) {
   return (
     <div className="w-['45%'] flex flex-col items-center max-w-md">
       <ProtestActionButton variant={'signature'} className='w-full' onClick={onVerificationClick}>
-        {isLoading ? <Loader2 className='animate-spin' /> : <div>시위참여 인증하기</div>}
+        {isLoading ? <Loader2 className='animate-spin' /> : <div>참여 인증하기</div>}
       </ProtestActionButton>
       <Drawer open={open} onOpenChange={setOpen}>
         {open && (
