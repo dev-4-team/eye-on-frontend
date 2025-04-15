@@ -9,7 +9,7 @@ const config = {
 
     try {
       const response = await fetch(`${SERVER_URL}/api/protest?date=${date}`, {
-        next: { revalidate: 3600 },
+        next: { revalidate: 3600, tags: ['sitemap'] },
       });
 
       if (!response.ok) {
