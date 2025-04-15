@@ -1,4 +1,4 @@
-import { getProtestInfos } from '@/apis/protest';
+import { getProtestList } from '@/apis/protest';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
 import { Metadata } from 'next';
 
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const protests = await getProtestInfos();
+  const protests = await getProtestList();
   const latitude = 37.57297651;
   const longitude = 126.9743513;
   return (
