@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 export const getProtestList = async () => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 3600, tags: ['protestList'] },
   });
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -24,18 +24,4 @@ export const getProtestDetail = async (id: string) => {
 
   const protest = await response.json();
   return protest.data;
-};
-
-export const getProtestInfos = async () => {
-  const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
-    next: { revalidate: 3600 },
-  });
-  if (!response.ok) {
-    if (response.status === 404) {
-      notFound();
-    }
-    throw new Error(response.statusText);
-  }
-  const protests = await response.json();
-  return protests.data;
 };

@@ -9,10 +9,10 @@ import {
 import { GiHamburgerMenu } from 'react-icons/gi';
 import ProtestCard from './protest-card';
 import { ProtestData } from '@/types';
-import { getProtestInfos } from '@/apis/protest';
+import { getProtestList } from '@/apis/protest';
 
 export default async function ProtestList() {
-  const protests = await getProtestInfos();
+  const protests = await getProtestList();
   return (
     <Sheet>
       <SheetTrigger className='absolute top-12 right-0 p-2 rounded-s-md bg-[#D44646] text-2xl text-background-white z-10'>
