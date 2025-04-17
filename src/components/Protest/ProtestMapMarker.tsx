@@ -6,6 +6,7 @@ import { numberTransfer } from '@/lib/utils';
 import { ProtestData } from '@/types/protest';
 import { getVerificationNumber } from '@/api/verification';
 import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
+import { EMOJI } from '@/constants/emojis';
 
 export default function ProtestMapMarker({
   protest,
@@ -60,9 +61,13 @@ export default function ProtestMapMarker({
             onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
           }
         >
-          {effect && <div className='absolute bottom-10'>🔥</div>}
+          {effect && <div className='absolute bottom-10'>{EMOJI.FIRE}</div>}
           <span className='text-xs pb-2 font-sans font-bold'>
-            {isLoading ? '🔥 ...' : isError || !data ? '0' : numberTransfer(data.cheerCount)}
+            {isLoading
+              ? `${EMOJI.FIRE}...`
+              : isError || !data
+              ? '0'
+              : numberTransfer(data.cheerCount)}
           </span>
         </div>
       </CustomOverlayMap>

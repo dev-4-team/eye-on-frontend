@@ -6,6 +6,7 @@ import { ProtestActionButton } from '@/components/Button';
 import Image from 'next/image';
 import { numberTransfer } from '@/lib/utils';
 import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
+import { EMOJI } from '@/constants/emojis';
 
 export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
   const { data, isLoading, isError } = useProtestCheerCount(protestId);
@@ -14,7 +15,7 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
   const { getConfetti } = useConfetti();
   const handleConffeti = () => {
     getConfetti().addConfetti({
-      emojis: ['🔥', '✔️', '❤️'],
+      emojis: [EMOJI.FIRE, EMOJI.CHECK, EMOJI.HEART],
       emojiSize: 80,
       confettiNumber: 30,
     });
@@ -29,13 +30,13 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
         disabled={isLoading || isError || !data}
       >
         {isLoading ? (
-          <div className='animate-spin'>⟳</div>
+          <div className='animate-spin'>{EMOJI.LOADDING}</div>
         ) : isError || !data ? (
-          <div>⚠️</div>
+          <div>{EMOJI.WARNING}</div>
         ) : (
           <>
             {effect ? (
-              <div className='animate-bounce'>🔥</div>
+              <div className='animate-bounce'>{EMOJI.FIRE}</div>
             ) : (
               <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
             )}
