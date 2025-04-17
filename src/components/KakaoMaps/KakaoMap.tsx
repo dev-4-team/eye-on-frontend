@@ -15,7 +15,7 @@ import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { ProtestData } from '@/types/protest';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 
-export default function KakaoMap({
+export const KakaoMap = ({
   latitude,
   longitude,
   w,
@@ -29,7 +29,7 @@ export default function KakaoMap({
   h: string;
   l: number;
   protests: ProtestData[];
-}) {
+}) => {
   const [loading, error] = useKakaoLoader();
   const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);
@@ -260,4 +260,4 @@ export default function KakaoMap({
       <CurrentLocationRestButton onClick={() => onResetButtonClick()} />
     </div>
   );
-}
+};

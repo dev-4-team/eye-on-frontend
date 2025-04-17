@@ -1,6 +1,6 @@
 import Script from 'next/script';
 
-export default function GoogleAnalytics({ gaId }: { gaId: string }) {
+export const GoogleAnalytics = ({ gaId }: { gaId: string }) => {
   return (
     <>
       <Script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
@@ -17,4 +17,4 @@ export default function GoogleAnalytics({ gaId }: { gaId: string }) {
       />
     </>
   );
-}
+};

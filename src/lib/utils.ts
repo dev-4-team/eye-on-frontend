@@ -5,9 +5,9 @@ export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
 export const targetDate =
   process.env.NODE_ENV === 'development' ? '2025-03-15' : new Date().toISOString().split('T')[0];
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
 
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
@@ -56,7 +56,7 @@ export const numberTransfer = (number: number) => {
   }
 };
 
-export function throttle<T extends (...args: any[]) => void>(fn: T, delay: number): T {
+export const throttle = <T extends (...args: any[]) => void>(fn: T, delay: number): T => {
   let lastCall = 0;
 
   return function (...args: Parameters<T>) {
@@ -66,4 +66,4 @@ export function throttle<T extends (...args: any[]) => void>(fn: T, delay: numbe
       fn(...args);
     }
   } as T;
-}
+};

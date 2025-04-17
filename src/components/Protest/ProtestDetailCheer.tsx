@@ -1,7 +1,8 @@
 'use client';
+
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
-import useConfetti from '@/hooks/useConfetti';
+import { useConfetti } from '@/hooks/useConfetti';
 import { ProtestActionButton } from '@/components/Button';
 import Image from 'next/image';
 import { numberTransfer } from '@/lib/utils';

@@ -1,5 +1,5 @@
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
-import { ProtestData } from '@/types';
+import { ProtestData } from '@/types/protest';
 
 export const ProtestMapMarkerList = ({
   protests,

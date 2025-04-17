@@ -1,4 +1,4 @@
-import StaticKakakoMap from '@/components/KakaoMaps/StaticKakaoMap';
+import { StaticKakaoMap } from '@/components/KakaoMaps/StaticKakaoMap';
 import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
 import { formatDate } from '@/lib/utils';
 import Verification from '@/components/Verification/Verification';
@@ -101,7 +101,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           info={`${declaredParticipants.toLocaleString()}명`}
         />
         <div className='flex justify-center p-4'>
-          <StaticKakakoMap
+          <StaticKakaoMap
             latitude={locations[0].latitude}
             longitude={locations[0].longitude}
             w='100%'

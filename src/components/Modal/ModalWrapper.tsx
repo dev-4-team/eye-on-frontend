@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useCallback } from 'react';
 
-export default function ModalWrapper({ children }: { children: React.ReactNode }) {
+export const ModalWrapper = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [open, setOpen] = useState(true);
 
@@ -36,4 +36,4 @@ export default function ModalWrapper({ children }: { children: React.ReactNode }
       </DialogContent>
     </Dialog>
   );
-}
+};

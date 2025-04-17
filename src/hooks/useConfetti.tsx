@@ -3,7 +3,7 @@
 import JSConfetti from 'js-confetti';
 import { useEffect, useRef } from 'react';
 
-const useConfetti = () => {
+export const useConfetti = () => {
   const jsConfettiRef = useRef<JSConfetti | null>(null);
 
   const getConfetti = () => {
@@ -22,5 +22,3 @@ const useConfetti = () => {
 
   return { getConfetti };
 };
-
-export default useConfetti;

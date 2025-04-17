@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StaticMap } from 'react-kakao-maps-sdk';
 
-export default function StaticKakaoMap({
+export const StaticKakaoMap = ({
   latitude,
   longitude,
   w,
@@ -20,7 +20,7 @@ export default function StaticKakaoMap({
   h: string;
   minH: string;
   l: number;
-}) {
+}) => {
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
 
   useEffect(() => {
@@ -69,4 +69,4 @@ export default function StaticKakaoMap({
       level={l}
     />
   );
-}
+};

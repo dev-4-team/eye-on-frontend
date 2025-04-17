@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
 
-export default function Login() {
+export const Login = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setUserInfo } = useUserInfoStore();
@@ -26,4 +26,4 @@ export default function Login() {
   }, []);
 
   return <div>로그인 처리 중..</div>;
-}
+};
