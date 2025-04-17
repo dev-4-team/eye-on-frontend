@@ -1,9 +1,11 @@
 'use client';
 import { EMOJI } from '@/constants/emojis';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
-
-export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+interface Prosp {
+  protestId: string;
+}
+const ProtestCheerBadge = ({ protestId }: Prosp) => {
   const { data } = useProtestCheerCount(protestId);
   const { effect } = useCheerEffect(data);
 
@@ -20,3 +22,5 @@ export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
     </div>
   );
 };
+
+export default ProtestCheerBadge;

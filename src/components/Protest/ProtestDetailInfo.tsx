@@ -1,4 +1,9 @@
-export default function ProtestDetailInfo({ name, info }: { name: string; info: string }) {
+interface Props {
+  name: string;
+  info: string;
+}
+
+const ProtestDetailInfo = ({ name, info }: Props) => {
   return (
     <div className='w-full'>
       <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>{name}</p>
@@ -7,4 +12,6 @@ export default function ProtestDetailInfo({ name, info }: { name: string; info: 
       </p>
     </div>
   );
-}
+};
+
+export default ProtestDetailInfo;

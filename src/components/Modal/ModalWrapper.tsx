@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,11 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useCallback } from 'react';
 
-export const ModalWrapper = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const ModalWrapper = ({ children }: Props) => {
   const router = useRouter();
   const [open, setOpen] = useState(true);
 
@@ -37,3 +41,5 @@ export const ModalWrapper = ({ children }: { children: React.ReactNode }) => {
     </Dialog>
   );
 };
+
+export default ModalWrapper;

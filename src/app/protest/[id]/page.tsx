@@ -1,13 +1,13 @@
-import { StaticKakaoMap } from '@/components/KakaoMaps/StaticKakaoMap';
-import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
-import { formatDate } from '@/lib/utils';
-import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
-import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
-import { getProtestDetail, getProtestList } from '@/api/protest';
-import { ProtestDetailCheer } from '@/components/Protest/ProtestDetailCheer';
+import Verification from '@/components/Verification/Verification';
+import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap';
+import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
+import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
+import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
+import ProtestShareButton from '@/components/Protest/ProtestShareButton';
+import { formatDate } from '@/lib/utils';
 import { ProtestData } from '@/types/protest';
-import { MarkdownWrapper } from '@/components/Protest/MarkdownWrapper';
+import { getProtestDetail, getProtestList } from '@/api/protest';
 
 export async function generateStaticParams() {
   const protests: ProtestData[] = await getProtestList();

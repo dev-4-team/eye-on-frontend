@@ -1,15 +1,19 @@
 'use client';
 
+import Image from 'next/image';
+import { EMOJI } from '@/constants/emojis';
+import { useConfetti } from '@/hooks/useConfetti';
+import { numberTransfer } from '@/lib/utils';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
-import { useConfetti } from '@/hooks/useConfetti';
-import { ProtestActionButton } from '@/components/Button';
-import Image from 'next/image';
-import { numberTransfer } from '@/lib/utils';
-import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
-import { EMOJI } from '@/constants/emojis';
+import ProtestActionButton from '@/components/Button/ProtestActionButton';
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 
-export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
+interface Props {
+  protestId: string;
+}
+
+const ProtestDetailCheer = ({ protestId }: Props) => {
   const { data, isLoading, isError } = useProtestCheerCount(protestId);
   const { effect } = useCheerEffect(data);
   const { mutate } = useSendCheerMutation(String(protestId));
@@ -48,3 +52,5 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
     </div>
   );
 };
+
+export default ProtestDetailCheer;

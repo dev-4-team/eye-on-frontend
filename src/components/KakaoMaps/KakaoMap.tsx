@@ -3,33 +3,27 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
-import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
-import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
-import { NavigationRouteLines } from '@/components/NaverDirections/NavigationRouteLines';
-import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList';
 import { toast } from 'sonner';
-import { MapErrorFallback } from '@/components/KakaoMaps/MapErrorFallback';
-import { MapLoadingFallback } from '@/components/KakaoMaps/MapLoadingFallback';
-import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
-import { ProtestData } from '@/types/protest';
+import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
+import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
+import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
+import CurrentLocationButton from '@/components/Button/CurrentLocationButton';
+import CurrentLocationRestButton from '@/components/Button/CurrentLocationRestButton';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
-
-export const KakaoMap = ({
-  latitude,
-  longitude,
-  w,
-  h,
-  l,
-  protests,
-}: {
+import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
+import useKakaoLoader from '@/hooks/useKakaoLoader';
+import { ProtestData } from '@/types/protest';
+import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
+interface Props {
   latitude: number;
   longitude: number;
   w: string;
   h: string;
   l: number;
   protests: ProtestData[];
-}) => {
+}
+
+export const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
   const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);

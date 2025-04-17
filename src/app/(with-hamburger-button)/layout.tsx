@@ -1,5 +1,5 @@
-import ProtestList from '@/components/Protest/ProtestList';
 import { ReactNode } from 'react';
+import ProtestList from '@/components/Protest/ProtestList';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

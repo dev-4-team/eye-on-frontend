@@ -1,9 +1,10 @@
 'use client';
 
-import { useGeoLocation } from '@/hooks/useGeoLocation';
-import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { useGeoLocation } from '@/hooks/useGeoLocation';
 import {
   Drawer,
   DrawerClose,
@@ -13,13 +14,16 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { toast } from 'sonner';
+import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
-import { ProtestActionButton } from '@/components/Button';
-import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
+import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
 
-export default function Verification({ paramId }: { paramId: string }) {
+interface Props {
+  paramId: string;
+}
+
+export default function Verification({ paramId }: Props) {
   const [agreed, setAgreed] = useState(false);
   const [open, setOpen] = useState(false);
   const [verificationResult, setVerificationResult] = useState<getVerificationResponse | null>(

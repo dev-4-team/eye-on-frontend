@@ -1,6 +1,6 @@
-import { ProtestCheerCount } from '@/api/cheer';
-import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { ProtestCheerCount } from '@/api/cheer';
 
 export const useProtestCheerCount = (protestId: string) => {
   const pathname = usePathname();

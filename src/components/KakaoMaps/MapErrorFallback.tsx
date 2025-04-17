@@ -1,4 +1,4 @@
-export const MapErrorFallback = () => {
+const MapErrorFallback = () => {
   return (
     <div className='flex flex-col h-[calc(100dvh-14vh)] items-center justify-center gap-4 p-6 bg-gray-50 rounded-lg'>
       <div className='w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-500'>
@@ -48,3 +48,5 @@ export const MapErrorFallback = () => {
     </div>
   );
 };
+
+export default MapErrorFallback;

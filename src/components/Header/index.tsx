@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Single_Day } from 'next/font/google';
 import styles from './Header.module.css';
-import { KakaoLogin } from '@/components/KakaoLogin/KakaoLogin';
+import KakaoLogin from '@/components/KakaoLogin/KakaoLogin';
 
 const singleDay = Single_Day({ weight: '400' });
 
-export const Header = () => {
+const Header = () => {
   return (
     <header className={styles.header}>
       <Link href={'/'} className={`${singleDay.className} ${styles.logo}`}>
@@ -18,3 +18,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

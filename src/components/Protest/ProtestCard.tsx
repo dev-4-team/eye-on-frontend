@@ -1,8 +1,8 @@
-import { ProtestData } from '@/types/protest';
 import Link from 'next/link';
 import { MdArrowOutward } from 'react-icons/md';
+import { ProtestData } from '@/types/protest';
 
-export const ProtestCard = ({ id, title, description, location }: ProtestData) => {
+const ProtestCard = ({ id, title, description, location }: ProtestData) => {
   return (
     <Link href={`/protest/${id}`}>
       <div className='flex flex-col gap-0.5 text-start bg-background-white rounded-md p-3'>
@@ -16,3 +16,5 @@ export const ProtestCard = ({ id, title, description, location }: ProtestData) =
     </Link>
   );
 };
+
+export default ProtestCard;

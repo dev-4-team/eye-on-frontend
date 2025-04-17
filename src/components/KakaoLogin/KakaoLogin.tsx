@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
 
-export const KakaoLogin = () => {
+const KakaoLogin = () => {
   const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const { deleteUserInfo } = useUserInfoStore();
   const router = useRouter();
@@ -39,3 +39,5 @@ export const KakaoLogin = () => {
     </div>
   );
 };
+
+export default KakaoLogin;

@@ -1,22 +1,19 @@
 import { useEffect, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { numberTransfer } from '@/lib/utils';
-import { ProtestData } from '@/types/protest';
-import { getVerificationNumber } from '@/api/verification';
-import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 import { EMOJI } from '@/constants/emojis';
-
-export default function ProtestMapMarker({
-  protest,
-  mapInstance,
-  router,
-}: {
+import { ProtestData } from '@/types/protest';
+import { numberTransfer } from '@/lib/utils';
+import { getVerificationNumber } from '@/api/verification';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+interface Props {
   protest: ProtestData;
   mapInstance: any;
   router: AppRouterInstance;
-}) {
+}
+
+const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
   const [verifiedNumber, setVerifiedNumber] = useState(0);
 
   useEffect(() => {
@@ -73,4 +70,6 @@ export default function ProtestMapMarker({
       </CustomOverlayMap>
     </div>
   );
-}
+};
+
+export default ProtestMapMarker;

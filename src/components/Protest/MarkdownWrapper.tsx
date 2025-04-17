@@ -7,7 +7,7 @@ interface Props {
   content: string;
 }
 
-export const MarkdownWrapper = ({ content }: Props) => {
+const MarkdownWrapper = ({ content }: Props) => {
   return (
     <div className='px-2 py-2 shadow-md mx-auto rounded-md w-[85%] min-w-[240px] flex items-center justify-center'>
       <MarkdownPreview
@@ -17,3 +17,5 @@ export const MarkdownWrapper = ({ content }: Props) => {
     </div>
   );
 };
+
+export default MarkdownWrapper;

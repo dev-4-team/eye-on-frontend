@@ -1,15 +1,13 @@
-import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import { ProtestData } from '@/types/protest';
+import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 
-export const ProtestMapMarkerList = ({
-  protests,
-  mapInstance,
-  router,
-}: {
+interface Props {
   protests: ProtestData[];
   mapInstance: any;
   router: any;
-}) => {
+}
+
+const ProtestMapMarkerList = ({ protests, mapInstance, router }: Props) => {
   return (
     <div>
       {protests.map(protest => (
@@ -20,3 +18,5 @@ export const ProtestMapMarkerList = ({
     </div>
   );
 };
+
+export default ProtestMapMarkerList;

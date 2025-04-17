@@ -1,9 +1,9 @@
-import { shouldRenderHeatmap } from '@/lib/heatmap';
 import { throttle } from '@/lib/utils';
+import { shouldRenderHeatmap } from '@/lib/heatmap';
 import { ProtestData } from '@/types/protest';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-type Params = {
+type Props = {
   mapInstance: kakao.maps.Map | null;
   heatmapInstance: any;
   protests: ProtestData[];
@@ -15,7 +15,7 @@ export const useThrottledHeatmapUpdate = ({
   heatmapInstance,
   protests,
   realXDistance,
-}: Params) => {
+}: Props) => {
   const animationFrameRef = useRef<number | null>(null); //rAF 예약 Id 저장용
 
   const updateHeatmap = useCallback(() => {

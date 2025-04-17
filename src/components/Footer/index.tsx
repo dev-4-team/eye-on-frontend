@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className={styles.footer}>
       <h2>오늘의 집회 및 시위 일정을 확인해보세요!</h2>
@@ -25,3 +25,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;
