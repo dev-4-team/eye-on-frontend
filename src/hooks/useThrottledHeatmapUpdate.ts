@@ -1,5 +1,6 @@
-import { shouldRenderHeatmap, throttle } from '@/lib/utils';
-import { ProtestData } from '@/types';
+import { shouldRenderHeatmap } from '@/lib/heatmap';
+import { throttle } from '@/lib/utils';
+import { ProtestData } from '@/types/protest';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 type Params = {

@@ -39,26 +39,6 @@ export const getIsMobile = () => {
   return isMobile;
 };
 
-export const calculateRealDistanceOnePixel = (x1: number, y1: number, x2: number, y2: number) => {
-  const R = 6371000;
-  const toRadian = Math.PI / 180;
-  const lat1 = x1 * toRadian;
-  const lon1 = y1 * toRadian;
-  const lat2 = x2 * toRadian;
-  const lon2 = y2 * toRadian;
-
-  return (
-    2 *
-    R *
-    Math.asin(
-      Math.sqrt(
-        Math.sin((lat2 - lat1) / 2) ** 2 +
-          Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2,
-      ),
-    )
-  );
-};
-
 export const generateColorFromIndex = (index: number): string => {
   const r = (index * 50) % 256;
   const g = (index * 100) % 256;
@@ -87,27 +67,3 @@ export function throttle<T extends (...args: any[]) => void>(fn: T, delay: numbe
     }
   } as T;
 }
-
-type HeatmapRenderCheckOptions = {
-  mapInstance: kakao.maps.Map | null;
-  heatmapInstance: any;
-  minZoomLevel?: number;
-};
-
-export const shouldRenderHeatmap = ({
-  mapInstance,
-  heatmapInstance,
-  minZoomLevel = 10,
-}: HeatmapRenderCheckOptions): boolean => {
-  if (!mapInstance || !heatmapInstance) return false;
-
-  const level = mapInstance.getLevel();
-  if (level > minZoomLevel) return false;
-
-  const canvas = heatmapInstance?._renderer?.canvas;
-  const shadowCanvas = heatmapInstance?._renderer?.shadowCanvas;
-
-  const isValid = (c?: HTMLCanvasElement | null) => !!c && c.width > 0 && c.height > 0;
-
-  return isValid(canvas) && isValid(shadowCanvas);
-};
