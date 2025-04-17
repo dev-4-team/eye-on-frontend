@@ -13,11 +13,11 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import useUserInfo from '@/hooks/useUserInfo';
 import { toast } from 'sonner';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
 import { ProtestActionButton } from '@/components/Button';
 import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
+import { useUserInfoStore } from '@/store/useUserInfoStore';
 
 export default function Verification({ paramId }: { paramId: string }) {
   const [agreed, setAgreed] = useState(false);
@@ -26,7 +26,7 @@ export default function Verification({ paramId }: { paramId: string }) {
     null,
   );
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
-  const accessToken = useUserInfo(state => state.userInfo.accessToken);
+  const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
 
   const onVerificationClick = () => {

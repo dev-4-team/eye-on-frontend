@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import useUserInfo from '@/hooks/useUserInfo';
+import { useUserInfoStore } from '@/store/useUserInfoStore';
 
 export default function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfoStore();
 
   useEffect(() => {
     const previous_page = localStorage.getItem('previous_page');
