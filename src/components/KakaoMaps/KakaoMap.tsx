@@ -13,6 +13,7 @@ import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList'
 import { toast } from 'sonner';
 import { MapErrorFallback } from '@/components/KakaoMaps/MapErrorFallback';
 import { MapLoadingFallback } from '@/components/KakaoMaps/MapLoadingFallback';
+import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 
 export type RouteData = [number, number][];
 
@@ -45,8 +46,6 @@ export default function KakaoMap({
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
-  const animationFrameRef = useRef<number | null>(null);
-  const isUpdatingRef = useRef(false);
   const [realXDistance, setRealXDistance] = useState<number | null>();
 
   useEffect(() => {
@@ -133,70 +132,7 @@ export default function KakaoMap({
     }
   };
 
-  const updateHeatmap = useCallback(() => {
-    if (!heatmapInstance || !mapInstance || !realXDistance) return;
-
-    setCurrentLevel(mapInstance.getLevel());
-
-    isUpdatingRef.current = true;
-
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-
-    animationFrameRef.current = requestAnimationFrame(() => {
-      const projection = mapInstance.getProjection();
-      const bounds = mapInstance.getBounds();
-
-      const heatmapData = protests
-        .map(protest => {
-          const latLng = new window.kakao.maps.LatLng(
-            protest.locations[0].latitude,
-            protest.locations[0].longitude,
-          );
-
-          const pixel = projection.pointFromCoords(latLng);
-          return {
-            x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
-            y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
-            value: protest.declaredParticipants,
-            radius: protest.radius / realXDistance,
-          };
-        })
-        .filter(Boolean);
-
-      heatmapInstance.setData({
-        max: 10000,
-        min: 100,
-        data: heatmapData,
-      });
-      const canvas = heatmapInstance._renderer.canvas;
-      if (canvas) {
-        canvas.style.display = 'block';
-        canvas.style.opacity = '1';
-        canvas.style.zIndex = '10';
-        canvas.style.pointerEvents = 'none';
-      }
-    });
-
-    isUpdatingRef.current = false;
-  }, [heatmapInstance, mapInstance, protests, realXDistance]);
-
-  const registerMapEvents = useCallback(() => {
-    if (!mapInstance) return;
-
-    window.kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
-      updateHeatmap();
-    });
-
-    window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
-      updateHeatmap();
-    });
-
-    window.kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
-      updateHeatmap();
-    });
-  }, [mapInstance, updateHeatmap, realXDistance]);
+  useThrottledHeatmapUpdate({ mapInstance, heatmapInstance, protests, realXDistance });
 
   useEffect(() => {
     if (!mapInstance) return;
@@ -234,29 +170,6 @@ export default function KakaoMap({
       document.head.removeChild(script);
     };
   }, [mapInstance, heatmapInstance]);
-
-  useEffect(() => {
-    if (!mapInstance) return;
-
-    registerMapEvents();
-
-    return () => {
-      if (mapInstance) {
-        window.kakao.maps.event.removeListener(mapInstance, 'zoom_start', updateHeatmap);
-        window.kakao.maps.event.removeListener(mapInstance, 'center_changed', updateHeatmap);
-        window.kakao.maps.event.removeListener(mapInstance, 'zoom_changed', updateHeatmap);
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-      }
-    };
-  }, [mapInstance, registerMapEvents]);
-
-  useEffect(() => {
-    if (heatmapInstance && mapInstance) {
-      updateHeatmap();
-    }
-  }, [heatmapInstance, mapInstance, updateHeatmap]);
 
   const fetchRoute = async (start: string, goal: string, waypoints?: string) => {
     const url = new URL(`/next-api/directions/route`, window.location.origin);

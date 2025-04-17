@@ -75,3 +75,39 @@ export const numberTransfer = (number: number) => {
     return `${(number / 10000).toFixed(1)}M`;
   }
 };
+
+export function throttle<T extends (...args: any[]) => void>(fn: T, delay: number): T {
+  let lastCall = 0;
+
+  return function (...args: Parameters<T>) {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      fn(...args);
+    }
+  } as T;
+}
+
+type HeatmapRenderCheckOptions = {
+  mapInstance: kakao.maps.Map | null;
+  heatmapInstance: any;
+  minZoomLevel?: number;
+};
+
+export const shouldRenderHeatmap = ({
+  mapInstance,
+  heatmapInstance,
+  minZoomLevel = 10,
+}: HeatmapRenderCheckOptions): boolean => {
+  if (!mapInstance || !heatmapInstance) return false;
+
+  const level = mapInstance.getLevel();
+  if (level > minZoomLevel) return false;
+
+  const canvas = heatmapInstance?._renderer?.canvas;
+  const shadowCanvas = heatmapInstance?._renderer?.shadowCanvas;
+
+  const isValid = (c?: HTMLCanvasElement | null) => !!c && c.width > 0 && c.height > 0;
+
+  return isValid(canvas) && isValid(shadowCanvas);
+};
