@@ -1,14 +1,14 @@
 'use client';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { UseProtestCheerCount } from '@/hooks/useProtestCheerCount';
 import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
 import useConfetti from '@/hooks/useConfetti';
 import { ProtestActionButton } from '@/components/Button';
 import Image from 'next/image';
 import { numberTransfer } from '@/lib/utils';
+import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 
 export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
-  const { data, isLoading, isError } = UseProtestCheerCount(protestId);
+  const { data, isLoading, isError } = useProtestCheerCount(protestId);
   const { effect } = useCheerEffect(data);
   const { mutate } = useSendCheerMutation(String(protestId));
   const { getConfetti } = useConfetti();

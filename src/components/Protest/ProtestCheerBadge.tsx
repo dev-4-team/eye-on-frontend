@@ -1,9 +1,9 @@
 'use client';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { UseProtestCheerCount } from '@/hooks/useProtestCheerCount';
+import { useProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 
 export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
-  const { data } = UseProtestCheerCount(protestId);
+  const { data } = useProtestCheerCount(protestId);
   const { effect } = useCheerEffect(data);
 
   return (
