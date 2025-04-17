@@ -1,4 +1,4 @@
-import { ProtestData } from '@/types';
+import { ProtestData } from '@/types/protest';
 import Link from 'next/link';
 import { MdArrowOutward } from 'react-icons/md';
 

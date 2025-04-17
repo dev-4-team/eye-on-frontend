@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import ProtestCard from './protest-card';
+import ProtestCard from './ProtestCard';
 import { getProtestList } from '@/api/protest';
 import { ProtestData } from '@/types/protest';
 
