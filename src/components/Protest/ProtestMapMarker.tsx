@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { getVerificationNumber } from '@/apis/verification';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
 import { numberTransfer } from '@/lib/utils';
+import { ProtestData } from '@/types/protest';
+import { getVerificationNumber } from '@/api/verification';
 
 export default function ProtestMapMarker({
   protest,

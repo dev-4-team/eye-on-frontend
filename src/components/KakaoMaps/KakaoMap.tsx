@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import { ProtestData } from '@/types';
 import { calculateRealDistanceOnePixel } from '@/lib/utils';
 import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
 import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
@@ -14,6 +13,7 @@ import { toast } from 'sonner';
 import { MapErrorFallback } from '@/components/KakaoMaps/MapErrorFallback';
 import { MapLoadingFallback } from '@/components/KakaoMaps/MapLoadingFallback';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
+import { ProtestData } from '@/types/protest';
 
 export type RouteData = [number, number][];
 
