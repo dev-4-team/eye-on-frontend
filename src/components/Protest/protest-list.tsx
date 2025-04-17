@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import ProtestCard from './protest-card';
-import { ProtestData } from '@/types';
-import { getProtestList } from '@/apis/protest';
+import { getProtestList } from '@/api/protest';
+import { ProtestData } from '@/types/protest';
 
 export default async function ProtestList() {
   const protests = await getProtestList();

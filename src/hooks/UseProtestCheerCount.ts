@@ -1,4 +1,4 @@
-import { ProtestCheerCount } from '@/apis/cheer';
+import { ProtestCheerCount } from '@/api/cheer';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 
