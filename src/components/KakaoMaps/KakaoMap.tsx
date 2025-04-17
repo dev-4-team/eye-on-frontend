@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
@@ -38,7 +38,7 @@ export default function KakaoMap({
   protests: ProtestData[];
 }) {
   const [loading, error] = useKakaoLoader();
-  const [heatmapInstance, setHeatmapInstance] = useState<any>(null);
+  const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [routeData, setRouteData] = useState<any>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
