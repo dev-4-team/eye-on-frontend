@@ -40,7 +40,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     }
     router.push(`/protest/${id}`);
   };
-  const { data, isLoading, isError } = useProtestCheerCount(protest.id);
+  const { data, isLoading, isError } = useProtestCheerCount({ protestId: protest.id });
   const { effect } = useCheerEffect(data);
   return (
     <div>

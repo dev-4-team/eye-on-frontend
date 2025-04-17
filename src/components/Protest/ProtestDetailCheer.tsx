@@ -14,9 +14,9 @@ interface Props {
 }
 
 const ProtestDetailCheer = ({ protestId }: Props) => {
-  const { data, isLoading, isError } = useProtestCheerCount(protestId);
+  const { data, isLoading, isError } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
-  const { mutate } = useSendCheerMutation(String(protestId));
+  const { mutate } = useSendCheerMutation({ protestId });
   const { getConfetti } = useConfetti();
   const handleConffeti = () => {
     getConfetti().addConfetti({

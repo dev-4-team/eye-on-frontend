@@ -2,11 +2,11 @@
 import { EMOJI } from '@/constants/emojis';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
-interface Prosp {
+interface Props {
   protestId: string;
 }
-const ProtestCheerBadge = ({ protestId }: Prosp) => {
-  const { data } = useProtestCheerCount(protestId);
+const ProtestCheerBadge = ({ protestId }: Props) => {
+  const { data } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
 
   return (

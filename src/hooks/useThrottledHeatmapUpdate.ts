@@ -3,12 +3,12 @@ import { shouldRenderHeatmap } from '@/lib/heatmap';
 import { ProtestData } from '@/types/protest';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-type Props = {
+interface Props {
   mapInstance: kakao.maps.Map | null;
   heatmapInstance: any;
   protests: ProtestData[];
   realXDistance: number | null | undefined;
-};
+}
 
 export const useThrottledHeatmapUpdate = ({
   mapInstance,
