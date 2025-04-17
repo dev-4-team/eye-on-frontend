@@ -15,7 +15,6 @@ import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { ProtestData } from '@/types/protest';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 
-export type RouteData = [number, number][];
 
 type CurrentPosition = {
   lat: number;
