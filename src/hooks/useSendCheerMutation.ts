@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const SendCheerMutation = (protestId: string) => {
+export const useSendCheerMutation = (protestId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
