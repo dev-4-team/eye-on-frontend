@@ -19,6 +19,7 @@ import { toast } from 'sonner';
 import { VerificationResponse } from '@/lib/API/VerifyLocation';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
 import { ProtestActionButton } from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
 export default function Verification({ paramId }: { paramId: string }) {
   const [agreed, setAgreed] = useState(false);
@@ -27,6 +28,7 @@ export default function Verification({ paramId }: { paramId: string }) {
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
   const accessToken = useUserInfo(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
+  const router = useRouter();
 
   const onVerificationClick = () => {
     if (!isMobile) {
@@ -61,6 +63,13 @@ export default function Verification({ paramId }: { paramId: string }) {
     };
     verifyUserLocation();
   }, [agreed, curLocation]);
+
+  useEffect(() => {
+    if (verificationResult?.success === true) {
+      sessionStorage.setItem('fromValidRoute', 'true');
+      router.replace(`/verified`);
+    }
+  }, [verificationResult]);
 
   if (agreed && errorMsg) {
     return <div>{errorMsg}</div>;
