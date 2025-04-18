@@ -7,11 +7,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import ProtestCard from './protest-card';
-import { ProtestData } from '@/types';
-import { getProtestList } from '@/apis/protest';
+import ProtestCard from '@/components/Protest/ProtestCard';
+import { ProtestData } from '@/types/protest';
+import { getProtestList } from '@/api/protest';
 
-export default async function ProtestList() {
+const ProtestList = async () => {
   const protests = await getProtestList();
   return (
     <Sheet>
@@ -29,4 +29,6 @@ export default async function ProtestList() {
       </SheetContent>
     </Sheet>
   );
-}
+};
+
+export default ProtestList;

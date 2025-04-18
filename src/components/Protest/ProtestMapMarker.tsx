@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { ProtestData } from '@/types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { getVerificationNumber } from '@/apis/verification';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
+import { EMOJI } from '@/constants/emojis';
+import { ProtestData } from '@/types/protest';
 import { numberTransfer } from '@/lib/utils';
-
-export default function ProtestMapMarker({
-  protest,
-  mapInstance,
-  router,
-}: {
+import { getVerificationNumber } from '@/api/verification';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+interface Props {
   protest: ProtestData;
   mapInstance: any;
   router: AppRouterInstance;
-}) {
+}
+
+const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
   const [verifiedNumber, setVerifiedNumber] = useState(0);
 
   useEffect(() => {
@@ -42,7 +40,7 @@ export default function ProtestMapMarker({
     }
     router.push(`/protest/${id}`);
   };
-  const { data, isLoading, isError } = UseProtestCheerCount(protest.id);
+  const { data, isLoading, isError } = useProtestCheerCount({ protestId: protest.id });
   const { effect } = useCheerEffect(data);
   return (
     <div>
@@ -60,12 +58,18 @@ export default function ProtestMapMarker({
             onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
           }
         >
-          {effect && <div className='absolute bottom-10'>🔥</div>}
+          {effect && <div className='absolute bottom-10'>{EMOJI.FIRE}</div>}
           <span className='text-xs pb-2 font-sans font-bold'>
-            {isLoading ? '🔥 ...' : isError || !data ? '0' : numberTransfer(data.cheerCount)}
+            {isLoading
+              ? `${EMOJI.FIRE}...`
+              : isError || !data
+              ? '0'
+              : numberTransfer(data.cheerCount)}
           </span>
         </div>
       </CustomOverlayMap>
     </div>
   );
-}
+};
+
+export default ProtestMapMarker;

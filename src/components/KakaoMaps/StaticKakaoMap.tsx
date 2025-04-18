@@ -3,16 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StaticMap } from 'react-kakao-maps-sdk';
-
-export default function StaticKakaoMap({
-  latitude,
-  longitude,
-  w,
-  minW,
-  h,
-  minH,
-  l,
-}: {
+interface Props {
   latitude: number;
   longitude: number;
   w: string;
@@ -20,7 +11,9 @@ export default function StaticKakaoMap({
   h: string;
   minH: string;
   l: number;
-}) {
+}
+
+const StaticKakaoMap = ({ latitude, longitude, w, minW, h, minH, l }: Props) => {
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
 
   useEffect(() => {
@@ -69,4 +62,6 @@ export default function StaticKakaoMap({
       level={l}
     />
   );
-}
+};
+
+export default StaticKakaoMap;

@@ -1,7 +1,11 @@
-import { Badge } from '@/components/ui/badge';
 import { IoPerson } from 'react-icons/io5';
+import { Badge } from '@/components/ui/badge';
 
-export const VerificationBadge = ({ verifiedNumber }: { verifiedNumber: number }) => {
+interface Props {
+  verifiedNumber: number;
+}
+
+const VerificationBadge = ({ verifiedNumber }: Props) => {
   return (
     <div className={'flex gap-1 text-[#D44646] items-center'}>
       <IoPerson />
@@ -9,3 +13,5 @@ export const VerificationBadge = ({ verifiedNumber }: { verifiedNumber: number }
     </div>
   );
 };
+
+export default VerificationBadge;

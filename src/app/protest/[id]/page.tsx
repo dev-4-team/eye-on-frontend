@@ -1,13 +1,13 @@
-import StaticKakakoMap from '@/components/KakaoMaps/StaticKakaoMap';
-import ProtestDetailInfo from '@/components/Protest/protest-detail-info';
-import { ProtestData } from '@/types';
-import { formatDate } from '@/lib/utils';
-import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
-import MarkdownWrapper from '@/components/Protest/protest-md';
-import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
-import { getProtestDetail, getProtestList } from '@/apis/protest';
-import { ProtestDetailCheer } from '@/components/Protest/ProtestDetailCheer';
+import Verification from '@/components/Verification/Verification';
+import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap';
+import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
+import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
+import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
+import ProtestShareButton from '@/components/Protest/ProtestShareButton';
+import { formatDate } from '@/lib/utils';
+import { ProtestData } from '@/types/protest';
+import { getProtestDetail, getProtestList } from '@/api/protest';
 
 export async function generateStaticParams() {
   const protests: ProtestData[] = await getProtestList();
@@ -101,7 +101,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           info={`${declaredParticipants.toLocaleString()}명`}
         />
         <div className='flex justify-center p-4'>
-          <StaticKakakoMap
+          <StaticKakaoMap
             latitude={locations[0].latitude}
             longitude={locations[0].longitude}
             w='100%'

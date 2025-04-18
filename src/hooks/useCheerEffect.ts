@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useCheerEffect = (data: { protestId: string; cheerCount: number }) => {
+interface Props {
+  protestId: string;
+  cheerCount: number;
+}
+
+export const useCheerEffect = (data: Props) => {
   const [effect, setEffect] = useState(false);
   const cheerCounRef = useRef<number | null>(null);
   useEffect(() => {

@@ -1,10 +1,10 @@
 'use client';
 
-import { useGeoLocation } from '@/hooks/useGeoLocation';
-import VerifyLocation from '@/lib/API/VerifyLocation';
-import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { useGeoLocation } from '@/hooks/useGeoLocation';
 import {
   Drawer,
   DrawerClose,
@@ -14,18 +14,23 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import useUserInfo from '@/hooks/useUserInfo';
-import { toast } from 'sonner';
-import { VerificationResponse } from '@/lib/API/VerifyLocation';
+import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
-import { ProtestActionButton } from '@/components/Button';
+import { useUserInfoStore } from '@/store/useUserInfoStore';
+import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
 
-export default function Verification({ paramId }: { paramId: string }) {
+interface Props {
+  paramId: string;
+}
+
+export default function Verification({ paramId }: Props) {
   const [agreed, setAgreed] = useState(false);
   const [open, setOpen] = useState(false);
-  const [verificationResult, setVerificationResult] = useState<VerificationResponse | null>(null);
+  const [verificationResult, setVerificationResult] = useState<getVerificationResponse | null>(
+    null,
+  );
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
-  const accessToken = useUserInfo(state => state.userInfo.accessToken);
+  const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
 
   const onVerificationClick = () => {
@@ -48,6 +53,66 @@ export default function Verification({ paramId }: { paramId: string }) {
 
   useEffect(() => {
     if (!agreed || !curLocation) return;
+
+    const VerifyLocation = async ({
+      paramId,
+      longitude,
+      latitude,
+      accessToken,
+    }: {
+      paramId: string;
+      longitude: number;
+      latitude: number;
+      accessToken: string;
+    }): Promise<{ success: boolean; message: string; status?: number; code?: string }> => {
+      try {
+        const data = await getVerifyLocation({ paramId, longitude, latitude, accessToken });
+
+        if (data.success) {
+          return {
+            success: true,
+            message: data.message,
+          };
+        }
+
+        switch (data.code) {
+          case 'PROTEST_422_1':
+            return {
+              success: false,
+              message: '현재 위치가 시위 참여 가능 범위를 벗어났습니다',
+              status: data.status,
+              code: data.code,
+            };
+          case 'PROTEST_400_1':
+            return {
+              success: false,
+              message: '존재하지 않는 시위입니다',
+              status: data.status,
+              code: data.code,
+            };
+          case 'PROTEST_409_1':
+            return {
+              success: false,
+              message: '한 개의 시위에 중복 인증은 불가능합니다',
+              status: data.status,
+              code: data.code,
+            };
+          default:
+            return {
+              success: false,
+              message: data.message || '알 수 없는 오류가 발생했습니다',
+              status: data.status,
+              code: data.code,
+            };
+        }
+      } catch (error) {
+        console.error('verify location 에러: ', error);
+        return {
+          success: false,
+          message: '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        };
+      }
+    };
 
     const verifyUserLocation = async () => {
       const result = await VerifyLocation({

@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import useUserInfo from '@/hooks/useUserInfo';
+import { useUserInfoStore } from '@/store/useUserInfoStore';
 
-export default function Login() {
+const Login = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfoStore();
 
   useEffect(() => {
     const previous_page = localStorage.getItem('previous_page');
@@ -26,4 +26,6 @@ export default function Login() {
   }, []);
 
   return <div>로그인 처리 중..</div>;
-}
+};
+
+export default Login;

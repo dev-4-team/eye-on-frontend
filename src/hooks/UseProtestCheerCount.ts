@@ -1,8 +1,11 @@
-import { ProtestCheerCount } from '@/apis/cheer';
-import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { ProtestCheerCount } from '@/api/cheer';
 
-export const UseProtestCheerCount = (protestId: string) => {
+interface Props {
+  protestId: string;
+}
+export const useProtestCheerCount = ({ protestId }: Props) => {
   const pathname = usePathname();
   const isDetail = pathname.includes('protest');
   const currentProtestId = pathname?.split('/').pop();

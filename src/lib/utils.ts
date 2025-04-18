@@ -5,9 +5,9 @@ export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
 export const targetDate =
   process.env.NODE_ENV === 'development' ? '2025-03-15' : new Date().toISOString().split('T')[0];
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
 
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
@@ -39,26 +39,6 @@ export const getIsMobile = () => {
   return isMobile;
 };
 
-export const calculateRealDistanceOnePixel = (x1: number, y1: number, x2: number, y2: number) => {
-  const R = 6371000;
-  const toRadian = Math.PI / 180;
-  const lat1 = x1 * toRadian;
-  const lon1 = y1 * toRadian;
-  const lat2 = x2 * toRadian;
-  const lon2 = y2 * toRadian;
-
-  return (
-    2 *
-    R *
-    Math.asin(
-      Math.sqrt(
-        Math.sin((lat2 - lat1) / 2) ** 2 +
-          Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2,
-      ),
-    )
-  );
-};
-
 export const generateColorFromIndex = (index: number): string => {
   const r = (index * 50) % 256;
   const g = (index * 100) % 256;
@@ -76,7 +56,7 @@ export const numberTransfer = (number: number) => {
   }
 };
 
-export function throttle<T extends (...args: any[]) => void>(fn: T, delay: number): T {
+export const throttle = <T extends (...args: any[]) => void>(fn: T, delay: number): T => {
   let lastCall = 0;
 
   return function (...args: Parameters<T>) {
@@ -86,28 +66,4 @@ export function throttle<T extends (...args: any[]) => void>(fn: T, delay: numbe
       fn(...args);
     }
   } as T;
-}
-
-type HeatmapRenderCheckOptions = {
-  mapInstance: kakao.maps.Map | null;
-  heatmapInstance: any;
-  minZoomLevel?: number;
-};
-
-export const shouldRenderHeatmap = ({
-  mapInstance,
-  heatmapInstance,
-  minZoomLevel = 10,
-}: HeatmapRenderCheckOptions): boolean => {
-  if (!mapInstance || !heatmapInstance) return false;
-
-  const level = mapInstance.getLevel();
-  if (level > minZoomLevel) return false;
-
-  const canvas = heatmapInstance?._renderer?.canvas;
-  const shadowCanvas = heatmapInstance?._renderer?.shadowCanvas;
-
-  const isValid = (c?: HTMLCanvasElement | null) => !!c && c.width > 0 && c.height > 0;
-
-  return isValid(canvas) && isValid(shadowCanvas);
 };

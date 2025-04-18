@@ -1,8 +1,11 @@
-import { RouteData } from '@/components/KakaoMaps/KakaoMap';
-import { generateColorFromIndex } from '@/lib/utils';
 import { Polyline } from 'react-kakao-maps-sdk';
+import { RouteData } from '@/types/naverRoute';
+import { generateColorFromIndex } from '@/lib/utils';
 
-export const NavigationRouteLines = ({ routeData }: { routeData: RouteData[] }) => {
+interface Props {
+  routeData: RouteData[];
+}
+const NavigationRouteLines = ({ routeData }: Props) => {
   return routeData.map((data: RouteData, index: number) => (
     <Polyline
       key={index}
@@ -15,3 +18,5 @@ export const NavigationRouteLines = ({ routeData }: { routeData: RouteData[] }) 
     />
   ));
 };
+
+export default NavigationRouteLines;

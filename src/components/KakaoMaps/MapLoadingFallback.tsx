@@ -1,4 +1,4 @@
-export const MapLoadingFallback = () => {
+const MapLoadingFallback = () => {
   return (
     <div className='flex h-[calc(100dvh-14vh)] items-center justify-center relative overflow-hidden bg-gray-100 rounded-lg'>
       <div className='relative z-10 bg-white rounded-full p-5 shadow-xl'>
@@ -10,3 +10,5 @@ export const MapLoadingFallback = () => {
     </div>
   );
 };
+
+export default MapLoadingFallback;
