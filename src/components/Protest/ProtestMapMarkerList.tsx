@@ -1,8 +1,8 @@
-import { ProtestData } from '@/types/protest';
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
+import { Protest } from '@/types/protest';
 
 interface Props {
-  protests: ProtestData[];
+  protests: Protest[];
   mapInstance: any;
   router: any;
 }

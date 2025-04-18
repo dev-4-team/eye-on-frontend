@@ -11,17 +11,17 @@ import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLi
 import CurrentLocationButton from '@/components/Button/CurrentLocationButton';
 import CurrentLocationRestButton from '@/components/Button/CurrentLocationRestButton';
 import { Coordinate } from '@/types/kakaoMap';
-import { ProtestData } from '@/types/protest';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
+import { Protest } from '@/types/protest';
 interface Props {
   latitude: number;
   longitude: number;
   w: string;
   h: string;
   l: number;
-  protests: ProtestData[];
+  protests: Protest[];
 }
 
 const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
@@ -181,7 +181,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
     }
   };
 
-  const fetchMultipleRoutes = async (protests: ProtestData[]) => {
+  const fetchMultipleRoutes = async (protests: Protest[]) => {
     const results = await Promise.all(
       protests
         .filter(({ locations }) => locations.length >= 2)

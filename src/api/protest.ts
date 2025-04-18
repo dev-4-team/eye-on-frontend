@@ -1,7 +1,8 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
+import { Protest } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
-export const getProtestList = async () => {
+export const getProtestList = async (): Promise<Protest[]> => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
     next: { revalidate: 3600, tags: ['protestList'] },
   });
@@ -12,8 +13,14 @@ export const getProtestList = async () => {
   return data.data;
 };
 
-export const getProtestDetail = async (id: string) => {
-  const response = await fetch(`${SERVER_URL}/api/protest/${id}`, { next: { revalidate: 3600 } });
+interface ProtestDetailRequest {
+  protestId: number;
+}
+
+export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Promise<Protest> => {
+  const response = await fetch(`${SERVER_URL}/api/protest/${protestId}`, {
+    next: { revalidate: 3600 },
+  });
 
   if (!response.ok) {
     if (response.status === 404) {

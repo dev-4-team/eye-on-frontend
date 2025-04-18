@@ -1,7 +1,18 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
-export const getVerificationNumber = async (protestId: string) => {
+interface getVerificationNumberRequest {
+  protestId: number;
+}
+
+type getVerificationNumber = {
+  protestId: number;
+  verifiedNum: number;
+};
+
+export const getVerificationNumber = async ({
+  protestId,
+}: getVerificationNumberRequest): Promise<getVerificationNumber> => {
   const response = await fetch(
     `${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=${targetDate}`,
     {
@@ -20,6 +31,13 @@ export const getVerificationNumber = async (protestId: string) => {
   return protests.data[0];
 };
 
+interface getVerificationRequest {
+  paramId: number;
+  longitude: number;
+  latitude: number;
+  accessToken: string;
+}
+
 export type getVerificationResponse = {
   success: boolean;
   message: string;
@@ -32,20 +50,22 @@ export const getVerifyLocation = async ({
   longitude,
   latitude,
   accessToken,
-}: {
-  paramId: string;
-  longitude: number;
-  latitude: number;
-  accessToken: string;
-}) => {
-  const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({ latitude, longitude }),
-  });
-  const data = await response.json();
-  return data;
+}: getVerificationRequest) => {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ latitude, longitude }),
+    });
+    if (!response.ok) {
+      throw new Error(`인증하기 실패 ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    throw e;
+  }
 };

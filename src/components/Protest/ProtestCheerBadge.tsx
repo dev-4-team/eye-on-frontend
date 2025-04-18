@@ -3,11 +3,12 @@ import { EMOJI } from '@/constants/emojis';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 interface Props {
-  protestId: string;
+  protestId: number;
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
-  const { data } = useProtestCheerCount({ protestId });
+  const { data, isLoading } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
+  if (!protestId || isLoading) return;
 
   return (
     <div className='flex flex-col justify-center items-center'>

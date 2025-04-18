@@ -10,7 +10,7 @@ import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 
 interface Props {
-  protestId: string;
+  protestId: number;
 }
 
 const ProtestDetailCheer = ({ protestId }: Props) => {
@@ -30,7 +30,7 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
       <ProtestActionButton
         onClick={() => {
           handleConffeti();
-          mutate(String(protestId));
+          mutate(protestId);
         }}
         disabled={isLoading || isError || !data}
       >

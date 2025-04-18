@@ -1,18 +1,17 @@
-type ProtestLocations = {
-  locationName: string;
-  latitude: number;
-  longitude: number;
-};
-
-export interface ProtestData {
-  id: string;
+export interface Protest {
+  id: number;
   title: string;
   description: string;
-  startDateTime: string;
-  endDateTime: string;
-  location: string;
   organizer: string;
+  startDateTime: string; // ISO 형식의 날짜 문자열
+  endDateTime: string;
   declaredParticipants: number;
-  locations: ProtestLocations[];
+  locations: ProtestLocation[];
   radius: number;
+}
+
+export interface ProtestLocation {
+  name: string;
+  latitude: number;
+  longitude: number;
 }

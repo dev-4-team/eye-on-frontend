@@ -6,11 +6,10 @@ import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
 import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
 import ProtestShareButton from '@/components/Protest/ProtestShareButton';
 import { formatDate } from '@/lib/utils';
-import { ProtestData } from '@/types/protest';
 import { getProtestDetail, getProtestList } from '@/api/protest';
 
 export async function generateStaticParams() {
-  const protests: ProtestData[] = await getProtestList();
+  const protests = await getProtestList();
   return protests.map(protest => ({
     id: protest.id.toString(),
   }));
@@ -19,10 +18,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const protest = await getProtestDetail(id);
+  const protest = await getProtestDetail({ protestId: id });
 
   const keywords = [
     '집회',
@@ -59,16 +58,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params }: { params: Promise<{ id: number }> }) {
   const { id: paramId } = await params;
-  const protest = await getProtestDetail(paramId);
+  const protest = await getProtestDetail({ protestId: paramId });
 
   const {
     title,
     description,
     startDateTime,
     endDateTime,
-    location,
     organizer,
     declaredParticipants,
     locations,

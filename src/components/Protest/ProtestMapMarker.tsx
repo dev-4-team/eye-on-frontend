@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { EMOJI } from '@/constants/emojis';
-import { ProtestData } from '@/types/protest';
 import { numberTransfer } from '@/lib/utils';
 import { getVerificationNumber } from '@/api/verification';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { Protest } from '@/types/protest';
 interface Props {
-  protest: ProtestData;
+  protest: Protest;
   mapInstance: any;
   router: AppRouterInstance;
 }
@@ -18,8 +18,12 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
 
   useEffect(() => {
     const verifyNumber = async () => {
-      const result = await getVerificationNumber(protest.id);
-      setVerifiedNumber(result.verifiedNum);
+      try {
+        const result = await getVerificationNumber({ protestId: protest.id });
+        setVerifiedNumber(result.verifiedNum);
+      } catch (error) {
+        console.error('error', error);
+      }
     };
     verifyNumber();
   }, [protest]);
@@ -32,7 +36,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     baseZIndex + (verifiedNumber / maxVerified) * maxZIndex,
   );
 
-  const onMarkerClick = (id: string, lat: number, long: number) => {
+  const onMarkerClick = (id: number, lat: number, long: number) => {
     if (mapInstance) {
       mapInstance.setLevel(4);
       const destLatLng = new kakao.maps.LatLng(lat, long);
