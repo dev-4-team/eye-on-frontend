@@ -16,7 +16,7 @@ import {
 import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
-import { useLocationVerification } from '@/hooks/useVerificationNumber';
+import { useLocationVerification } from '@/hooks/useLocationVerification';
 
 interface Props {
   paramId: string;
