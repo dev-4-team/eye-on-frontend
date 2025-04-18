@@ -28,12 +28,11 @@ export default function Verification({ paramId }: Props) {
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
   const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
-  const verificationResult = useLocationVerification({
+  useLocationVerification({
     agreed,
     curLocation,
     protestId: paramId,
   });
-  verificationResult();
 
   const onVerificationClick = () => {
     if (!isMobile) {
