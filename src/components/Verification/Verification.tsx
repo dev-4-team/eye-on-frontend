@@ -1,8 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGeoLocation } from '@/hooks/useGeoLocation';
 import {
@@ -17,7 +16,7 @@ import {
 import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
-import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
+import { useLocationVerification } from '@/hooks/useVerificationNumber';
 
 interface Props {
   paramId: string;
@@ -26,18 +25,20 @@ interface Props {
 export default function Verification({ paramId }: Props) {
   const [agreed, setAgreed] = useState(false);
   const [open, setOpen] = useState(false);
-  const [verificationResult, setVerificationResult] = useState<getVerificationResponse | null>(
-    null,
-  );
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
   const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
+  const verificationResult = useLocationVerification({
+    agreed,
+    curLocation,
+    protestId: paramId,
+  });
 
   const onVerificationClick = () => {
-    if (!isMobile) {
-      alert('모바일에서만 인증이 가능합니다.');
-      return;
-    }
+    // if (!isMobile) {
+    //   alert('모바일에서만 인증이 가능합니다.');
+    //   return;
+    // }
     if (!accessToken)
       window.location.replace(
         `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
@@ -50,82 +51,6 @@ export default function Verification({ paramId }: Props) {
     setAgreed(true);
     setOpen(false);
   };
-
-  useEffect(() => {
-    if (!agreed || !curLocation) return;
-
-    const VerifyLocation = async ({
-      paramId,
-      longitude,
-      latitude,
-      accessToken,
-    }: {
-      paramId: string;
-      longitude: number;
-      latitude: number;
-      accessToken: string;
-    }): Promise<{ success: boolean; message: string; status?: number; code?: string }> => {
-      try {
-        const data = await getVerifyLocation({ paramId, longitude, latitude, accessToken });
-
-        if (data.success) {
-          return {
-            success: true,
-            message: data.message,
-          };
-        }
-
-        switch (data.code) {
-          case 'PROTEST_422_1':
-            return {
-              success: false,
-              message: '현재 위치가 시위 참여 가능 범위를 벗어났습니다',
-              status: data.status,
-              code: data.code,
-            };
-          case 'PROTEST_400_1':
-            return {
-              success: false,
-              message: '존재하지 않는 시위입니다',
-              status: data.status,
-              code: data.code,
-            };
-          case 'PROTEST_409_1':
-            return {
-              success: false,
-              message: '한 개의 시위에 중복 인증은 불가능합니다',
-              status: data.status,
-              code: data.code,
-            };
-          default:
-            return {
-              success: false,
-              message: data.message || '알 수 없는 오류가 발생했습니다',
-              status: data.status,
-              code: data.code,
-            };
-        }
-      } catch (error) {
-        console.error('verify location 에러: ', error);
-        return {
-          success: false,
-          message: '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.',
-        };
-      }
-    };
-
-    const verifyUserLocation = async () => {
-      const result = await VerifyLocation({
-        paramId: paramId,
-        longitude: curLocation.longitude,
-        latitude: curLocation.latitude,
-        accessToken: accessToken,
-      });
-      setVerificationResult(result);
-      toast(result.message);
-    };
-    verifyUserLocation();
-  }, [agreed, curLocation]);
 
   if (agreed && errorMsg) {
     return <div>{errorMsg}</div>;
