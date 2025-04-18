@@ -1,3 +1,5 @@
+'use client';
+
 const MapErrorFallback = () => {
   return (
     <div className='flex flex-col h-[calc(100dvh-14vh)] items-center justify-center gap-4 p-6 bg-gray-50 rounded-lg'>

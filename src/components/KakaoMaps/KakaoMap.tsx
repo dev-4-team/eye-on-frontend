@@ -24,7 +24,7 @@ interface Props {
   protests: ProtestData[];
 }
 
-export const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
+const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
   const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);
@@ -253,3 +253,5 @@ export const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
     </div>
   );
 };
+
+export default KakaoMap;

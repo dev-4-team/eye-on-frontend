@@ -94,7 +94,7 @@ export default function Verification({ paramId }: Props) {
             return {
               success: false,
               message: '한 개의 시위에 중복 인증은 불가능합니다',
-              status: data.statis,
+              status: data.status,
               code: data.code,
             };
           default:
