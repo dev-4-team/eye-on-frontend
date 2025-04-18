@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { Location } from '@/types/location';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
-import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
+import { getVerifyLocation } from '@/api/verification';
 
 interface Props {
   agreed: boolean;
@@ -11,10 +11,21 @@ interface Props {
 }
 
 export const useLocationVerification = ({ agreed, curLocation, protestId }: Props) => {
-  const [verificationResult, setVerificationResult] = useState<getVerificationResponse | null>(
-    null,
-  );
   const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
+
+  useEffect(() => {
+    if (!agreed || !curLocation || !accessToken || !protestId) return;
+    const verifyUserLocation = async () => {
+      const result = await VerifyLocation({
+        paramId: protestId,
+        longitude: curLocation.longitude,
+        latitude: curLocation.latitude,
+        accessToken: accessToken,
+      });
+      toast(result.message);
+    };
+    verifyUserLocation();
+  }, [agreed, curLocation, accessToken, protestId]);
 
   const VerifyLocation = async ({
     paramId,
@@ -75,19 +86,4 @@ export const useLocationVerification = ({ agreed, curLocation, protestId }: Prop
       };
     }
   };
-  useEffect(() => {
-    if (!agreed || !curLocation) return;
-    const verifyUserLocation = async () => {
-      const result = await VerifyLocation({
-        paramId: protestId,
-        longitude: curLocation.longitude,
-        latitude: curLocation.latitude,
-        accessToken: accessToken,
-      });
-      setVerificationResult(result);
-      toast(result.message);
-    };
-    verifyUserLocation();
-  }, [agreed, curLocation]);
-  return verificationResult;
 };
