@@ -66,7 +66,7 @@ export default function Verification({ paramId }: { paramId: string }) {
 
   useEffect(() => {
     if (verificationResult?.success === true) {
-      router.push(`/verified`);
+      router.replace(`/verified`);
     }
   }, [verificationResult]);
 
