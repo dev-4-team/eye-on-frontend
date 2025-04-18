@@ -3,12 +3,36 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
   const router = useRouter();
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    const cameFromValidRoute = sessionStorage.getItem('fromValidRoute');
+
+    if (!cameFromValidRoute) {
+      router.replace('/');
+    } else {
+      setIsValid(true);
+    }
+  }, [router]);
+
   const handleGobackButton = () => {
     router.back();
   };
+
+  if (!isValid) {
+    return (
+      <div className='flex justify-center items-center h-[86vh]'>
+        <div className='flex flex-col h-[100%] items-center justify-around'>
+          <span>잘못 된 접근입니다</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className='flex justify-center items-center h-[86vh]'>
       <div className='flex flex-col h-[100%] items-center justify-around'>
