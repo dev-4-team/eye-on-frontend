@@ -1,11 +1,7 @@
 'use client';
 
+import { LocationType } from '@/types/location';
 import { useCallback, useEffect, useState } from 'react';
-
-type LocationType = {
-  latitude: number;
-  longitude: number;
-};
 
 export const useGeoLocation = (permissionStatus: boolean) => {
   const [location, setLocation] = useState<LocationType>();

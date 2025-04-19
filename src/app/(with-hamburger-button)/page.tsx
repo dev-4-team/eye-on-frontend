@@ -1,6 +1,6 @@
-import { getProtestList } from '@/api/protest';
-import { KakaoMap } from '@/components/KakaoMaps/KakaoMap';
 import { Metadata } from 'next';
+import KakaoMap from '@/components/KakaoMaps/KakaoMap';
+import { getProtestList } from '@/api/protest';
 
 const keywords = [
   '집회',
