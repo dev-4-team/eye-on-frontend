@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
-  protestId: number;
+  protestId: string;
   cheerCount: number;
 }
 

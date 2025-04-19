@@ -3,7 +3,7 @@ import { EMOJI } from '@/constants/emojis';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 interface Props {
-  protestId: number;
+  protestId: string;
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
   const { data, isLoading } = useProtestCheerCount({ protestId });

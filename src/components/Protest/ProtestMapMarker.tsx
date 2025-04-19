@@ -36,7 +36,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     baseZIndex + (verifiedNumber / maxVerified) * maxZIndex,
   );
 
-  const onMarkerClick = (id: number, lat: number, long: number) => {
+  const onMarkerClick = (id: string, lat: number, long: number) => {
     if (mapInstance) {
       mapInstance.setLevel(4);
       const destLatLng = new kakao.maps.LatLng(lat, long);

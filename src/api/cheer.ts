@@ -1,10 +1,10 @@
 import { SERVER_URL } from '@/lib/utils';
 
 interface ProtestCheerCountRequest {
-  protestId: number;
+  protestId: string;
 }
 interface ProtestCheerCount {
-  protestId: number;
+  protestId: string;
   cheerCount: number;
 }
 
@@ -16,5 +16,8 @@ export const ProtestCheerCount = async ({
     throw new Error(`시위별 응원수 가져오기 error ${response.status}`);
   }
   const data = await response.json();
-  return data.data;
+  return {
+    ...data.data,
+    id: String(data.data.id),
+  };
 };

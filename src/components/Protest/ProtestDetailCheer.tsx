@@ -10,7 +10,7 @@ import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 
 interface Props {
-  protestId: number;
+  protestId: string;
 }
 
 const ProtestDetailCheer = ({ protestId }: Props) => {

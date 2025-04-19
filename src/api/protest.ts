@@ -10,11 +10,14 @@ export const getProtestList = async (): Promise<Protest[]> => {
     throw new Error(response.statusText);
   }
   const data = await response.json();
-  return data.data;
+  return data.data.map((protest: Protest) => ({
+    ...protest,
+    id: String(protest.id),
+  }));
 };
 
 interface ProtestDetailRequest {
-  protestId: number;
+  protestId: string;
 }
 
 export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Promise<Protest> => {
@@ -29,6 +32,10 @@ export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Pro
     throw new Error(response.statusText);
   }
 
-  const protest = await response.json();
-  return protest.data;
+  const data = await response.json();
+  const protest = data.data;
+  return {
+    ...protest,
+    id: String(protest.id),
+  };
 };

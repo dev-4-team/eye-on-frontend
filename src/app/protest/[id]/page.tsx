@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
   const protest = await getProtestDetail({ protestId: id });
@@ -58,7 +58,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ id: number }> }) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id: paramId } = await params;
   const protest = await getProtestDetail({ protestId: paramId });
 
@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ id: number }>
           오늘의 집회 및 시위 일정
         </h2>
         <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>시위정보</p>
-        <MarkdownWrapper content={description} />
+        <MarkdownWrapper content={description || ''} />
         <ProtestDetailInfo name='시작 일시' info={startTime} />
         <ProtestDetailInfo name='종료 일시' info={endTime} />
         <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>주최자</p>

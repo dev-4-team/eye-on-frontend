@@ -2,11 +2,11 @@ import { SERVER_URL, targetDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
 interface getVerificationNumberRequest {
-  protestId: number;
+  protestId: string;
 }
 
 type getVerificationNumber = {
-  protestId: number;
+  protestId: string;
   verifiedNum: number;
 };
 
@@ -32,7 +32,7 @@ export const getVerificationNumber = async ({
 };
 
 interface getVerificationRequest {
-  paramId: number;
+  paramId: string;
   longitude: number;
   latitude: number;
   accessToken: string;

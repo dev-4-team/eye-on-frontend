@@ -1,9 +1,9 @@
 export interface Protest {
-  id: number;
+  id: string;
   title: string;
-  description: string;
+  description: string | null;
   organizer: string;
-  startDateTime: string; // ISO 형식의 날짜 문자열
+  startDateTime: string;
   endDateTime: string;
   declaredParticipants: number;
   locations: ProtestLocation[];

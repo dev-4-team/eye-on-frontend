@@ -20,7 +20,7 @@ import { useUserInfoStore } from '@/store/useUserInfoStore';
 import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
 
 interface Props {
-  paramId: number;
+  paramId: string;
 }
 
 export default function Verification({ paramId }: Props) {
@@ -60,7 +60,7 @@ export default function Verification({ paramId }: Props) {
       latitude,
       accessToken,
     }: {
-      paramId: number;
+      paramId: string;
       longitude: number;
       latitude: number;
       accessToken: string;

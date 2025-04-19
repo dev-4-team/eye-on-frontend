@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ProtestCheerCount } from '@/api/cheer';
 
 interface Props {
-  protestId: number;
+  protestId: string;
 }
 export const useProtestCheerCount = ({ protestId }: Props) => {
   const pathname = usePathname();

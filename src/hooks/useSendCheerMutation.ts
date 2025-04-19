@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
-  protestId: number;
+  protestId: string;
 }
 
 export const useSendCheerMutation = ({ protestId }: Props) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (protestId: number) =>
+    mutationFn: async (protestId: string) =>
       await fetch(`${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/api/cheer/protest/${protestId}`, {
         method: 'POST',
       }),
