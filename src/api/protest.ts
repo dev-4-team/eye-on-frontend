@@ -1,4 +1,5 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
+import { ApiResponse } from '@/types/api';
 import { Protest } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
@@ -9,7 +10,7 @@ export const getProtestList = async (): Promise<Protest[]> => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  const data = await response.json();
+  const data = (await response.json()) as ApiResponse<Protest[]>;
   return data.data.map((protest: Protest) => ({
     ...protest,
     id: String(protest.id),
@@ -32,7 +33,7 @@ export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Pro
     throw new Error(response.statusText);
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as ApiResponse<Protest>;
   const protest = data.data;
   return {
     ...protest,

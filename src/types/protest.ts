@@ -15,3 +15,13 @@ export interface ProtestLocation {
   latitude: number;
   longitude: number;
 }
+
+export interface ProtestCheerCount {
+  protestId: string;
+  cheerCount: number;
+}
+
+export type VerificationNumber = {
+  protestId: string;
+  verifiedNum: number;
+};
