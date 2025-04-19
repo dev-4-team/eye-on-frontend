@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import ProtestCard from '@/components/Protest/ProtestCard';
-import { ProtestData } from '@/types/protest';
 import { getProtestList } from '@/api/protest';
+import { Protest } from '@/types/protest';
 
 const ProtestList = async () => {
   const protests = await getProtestList();
@@ -22,7 +22,7 @@ const ProtestList = async () => {
         <SheetHeader className='mt-11 gap-1 overflow-hidden'>
           <SheetTitle className='hidden'>ProtestList</SheetTitle>
           <SheetDescription className='hidden'>ProtestList</SheetDescription>
-          {protests?.map((protest: ProtestData, idx: number) => (
+          {protests?.map((protest: Protest, idx: number) => (
             <ProtestCard key={idx} {...protest} />
           ))}
         </SheetHeader>

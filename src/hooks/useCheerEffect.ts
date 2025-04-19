@@ -5,10 +5,12 @@ interface Props {
   cheerCount: number;
 }
 
-export const useCheerEffect = (data: Props) => {
+export const useCheerEffect = (data?: Props) => {
   const [effect, setEffect] = useState(false);
   const cheerCounRef = useRef<number | null>(null);
   useEffect(() => {
+    if (!data) return;
+
     if (cheerCounRef.current === null) {
       cheerCounRef.current = data?.cheerCount;
       return;

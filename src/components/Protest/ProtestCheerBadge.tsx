@@ -6,8 +6,9 @@ interface Props {
   protestId: string;
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
-  const { data } = useProtestCheerCount({ protestId });
+  const { data, isLoading } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
+  if (!protestId || isLoading) return;
 
   return (
     <div className='flex flex-col justify-center items-center'>

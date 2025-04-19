@@ -1,19 +1,30 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
+import { ApiResponse } from '@/types/api';
+import { Protest } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
-export const getProtestList = async () => {
+export const getProtestList = async (): Promise<Protest[]> => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
     next: { revalidate: 3600, tags: ['protestList'] },
   });
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  const data = await response.json();
-  return data.data;
+  const data = (await response.json()) as ApiResponse<Protest[]>;
+  return data.data.map((protest: Protest) => ({
+    ...protest,
+    id: String(protest.id),
+  }));
 };
 
-export const getProtestDetail = async (id: string) => {
-  const response = await fetch(`${SERVER_URL}/api/protest/${id}`, { next: { revalidate: 3600 } });
+interface ProtestDetailRequest {
+  protestId: string;
+}
+
+export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Promise<Protest> => {
+  const response = await fetch(`${SERVER_URL}/api/protest/${protestId}`, {
+    next: { revalidate: 3600 },
+  });
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -22,6 +33,10 @@ export const getProtestDetail = async (id: string) => {
     throw new Error(response.statusText);
   }
 
-  const protest = await response.json();
-  return protest.data;
+  const data = (await response.json()) as ApiResponse<Protest>;
+  const protest = data.data;
+  return {
+    ...protest,
+    id: String(protest.id),
+  };
 };

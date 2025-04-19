@@ -1,12 +1,12 @@
 import { throttle } from '@/lib/utils';
 import { shouldRenderHeatmap } from '@/lib/heatmap';
-import { ProtestData } from '@/types/protest';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { Protest } from '@/types/protest';
 
 interface Props {
   mapInstance: kakao.maps.Map | null;
   heatmapInstance: any;
-  protests: ProtestData[];
+  protests: Protest[];
   realXDistance: number | null | undefined;
 }
 

@@ -30,7 +30,7 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
       <ProtestActionButton
         onClick={() => {
           handleConffeti();
-          mutate(String(protestId));
+          mutate(protestId);
         }}
         disabled={isLoading || isError || !data}
       >
