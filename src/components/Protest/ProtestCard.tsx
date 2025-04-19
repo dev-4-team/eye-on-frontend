@@ -10,7 +10,9 @@ const ProtestCard = ({ id, title, description, locations }: Protest) => {
           <h1 className='text-[#D44646] font-bold'>{title}</h1>
           <MdArrowOutward />
         </div>
-        <p className='text-[11px] text-zinc-400'>{locations[0].name}</p>
+        <p className='text-[11px] text-zinc-400'>
+          {locations[0]?.name || `(${locations[0]?.latitude}, ${locations[0]?.longitude})`}
+        </p>
         <p className='text-[13px] truncate'>{description}</p>
       </div>
     </Link>
