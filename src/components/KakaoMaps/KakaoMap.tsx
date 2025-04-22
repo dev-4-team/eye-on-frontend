@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, ZoomControl, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { toast } from 'sonner';
 import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
 import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
@@ -237,6 +237,9 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
         onCreate={setMapInstance}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onZoomChanged={map => {
+          setCurrentLevel(map.getLevel());
+        }}
       >
         {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routeData} />}
         {currentPositionMarker && (
@@ -244,7 +247,64 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
           />
         )}
-        <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
+        {currentLevel < 11 && (
+          <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
+        )}
+        <MarkerClusterer
+          averageCenter={true}
+          minLevel={11}
+          calculator={[5, 10, 15]}
+          styles={[
+            {
+              width: '30px',
+              height: '30px',
+              background: 'rgba(0, 128, 255, 0.8)',
+              border: '2px solid white',
+              borderRadius: '50%',
+              color: '#fff',
+              fontWeight: 'bold',
+              fontSize: '13px',
+              textAlign: 'center',
+              lineHeight: '30px',
+            },
+            {
+              width: '40px',
+              height: '40px',
+              background: 'rgba(255, 165, 0, 0.8)',
+              border: '2px solid white',
+              color: '#fff',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              textAlign: 'center',
+              lineHeight: '40px',
+            },
+            {
+              width: '50px',
+              height: '50px',
+              background: 'rgba(255, 69, 58, 0.8)',
+              border: '2px solid white',
+              borderRadius: '50%',
+              color: '#fff',
+              fontWeight: 'bold',
+              fontSize: '15px',
+              textAlign: 'center',
+              lineHeight: '50px',
+            },
+          ]}
+        >
+          {protests.map(protest => {
+            return (
+              <MapMarker
+                key={`map-maker-${protest.id}`}
+                position={{
+                  lat: protest.locations[0].latitude,
+                  lng: protest.locations[0].longitude,
+                }}
+                opacity={0}
+              />
+            );
+          })}
+        </MarkerClusterer>
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>
