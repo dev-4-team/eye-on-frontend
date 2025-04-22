@@ -16,6 +16,7 @@ import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
 import { SEOUL_CENTER_LONGITUDE } from '@/constants/map';
+import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
 interface Props {
   latitude: number;
   longitude: number;
@@ -29,13 +30,13 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
   const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
-  const [routeData, setRouteData] = useState<any>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
   const [currentPositionMarker, setCurrentPositionMarker] = useState<Coordinate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
   const [realXDistance, setRealXDistance] = useState<number | null>();
+  const { routesData } = useNavigationRoutes({ protests });
 
   useEffect(() => {
     if (!mapInstance || !protests) return;
@@ -160,56 +161,6 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
     };
   }, [mapInstance, heatmapInstance]);
 
-  const fetchRoute = async (start: string, goal: string, waypoints?: string) => {
-    const url = new URL(`/next-api/directions/route`, window.location.origin);
-    url.searchParams.append('start', start);
-    url.searchParams.append('goal', goal);
-
-    if (waypoints) {
-      url.searchParams.append('waypoints', waypoints);
-    }
-    try {
-      const res = await fetch(url.toString());
-      const data = await res.json();
-      if (data.code === 0) {
-        return data.route ? data.route.trafast[0].path : [];
-      }
-      if (data.code === 1) {
-        return [];
-      }
-    } catch (e) {
-      return [];
-    }
-  };
-
-  const fetchMultipleRoutes = async (protests: Protest[]) => {
-    const results = await Promise.all(
-      protests
-        .filter(({ locations }) => locations.length >= 2)
-        .map(({ locations }) => {
-          const start = `${locations[0].longitude},${locations[0].latitude}`;
-          const goal = `${locations[locations.length - 1].longitude},${
-            locations[locations.length - 1].latitude
-          }`;
-          const waypoints =
-            Array.from(
-              new Set(locations.slice(1, -1).map(loc => `${loc.longitude},${loc.latitude}`)),
-            ).join('|') || undefined;
-          return fetchRoute(start, goal, waypoints);
-        }),
-    );
-    return results;
-  };
-
-  const handleFetchRoutes = async () => {
-    const routes = await fetchMultipleRoutes(protests);
-    setRouteData(routes);
-  };
-
-  useEffect(() => {
-    handleFetchRoutes();
-  }, [protests]);
-
   const handleDragStart = () => {
     setIsDragging(true);
   };
@@ -218,7 +169,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
     setIsDragging(false);
   };
 
-  if (loading || !routeData) return <MapLoadingFallback />;
+  if (loading || !routesData) return <MapLoadingFallback />;
   if (error) return <MapErrorFallback />;
 
   return (
@@ -239,7 +190,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routeData} />}
+        {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routesData} />}
         {currentPositionMarker && (
           <MapMarker
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
