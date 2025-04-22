@@ -36,3 +36,5 @@ export const clusterStyles = [
     lineHeight: '50px',
   },
 ];
+
+export const CLUSTER_MIN_LEVEL = 11;

@@ -15,7 +15,8 @@ import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
-import { clusterCalculator, clusterStyles } from '@/constants/clusterConfig';
+import { CLUSTER_MIN_LEVEL, clusterCalculator, clusterStyles } from '@/constants/clusterConfig';
+import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer';
 interface Props {
   latitude: number;
   longitude: number;
@@ -248,28 +249,10 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
           />
         )}
-        {currentLevel < 11 && (
+        {currentLevel < CLUSTER_MIN_LEVEL && (
           <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
         )}
-        <MarkerClusterer
-          averageCenter={true}
-          minLevel={11}
-          calculator={clusterCalculator}
-          styles={clusterStyles}
-        >
-          {protests.map(protest => {
-            return (
-              <MapMarker
-                key={`map-maker-${protest.id}`}
-                position={{
-                  lat: protest.locations[0].latitude,
-                  lng: protest.locations[0].longitude,
-                }}
-                opacity={0}
-              />
-            );
-          })}
-        </MarkerClusterer>
+        <KakaoMapClusterer protests={protests} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>
