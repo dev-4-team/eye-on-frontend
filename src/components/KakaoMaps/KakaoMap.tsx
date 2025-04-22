@@ -43,7 +43,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
       const bounds = mapInstance.getBounds();
       const southWestLat = bounds.getSouthWest().getLat();
       const northEastLat = bounds.getNorthEast().getLat();
-      const d =
+      const currentPixel =
         calculateRealDistanceOnePixel(
           southWestLat,
           SEOUL_CENTER_LONGITUDE,
@@ -51,8 +51,8 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
           SEOUL_CENTER_LONGITUDE,
         ) / window.innerWidth;
       setRealXDistance(prev => {
-        if (prev === d) return prev;
-        return d;
+        if (prev === currentPixel) return prev;
+        return currentPixel;
       });
     };
     updateBounds();
