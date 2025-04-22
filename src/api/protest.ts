@@ -5,8 +5,7 @@ import { notFound } from 'next/navigation';
 
 export const getProtestList = async (): Promise<Protest[]> => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
-    // next: { revalidate: 3600, tags: ['protestList'] },
-    cache: 'no-store',
+    next: { revalidate: 3600, tags: ['protestList'] },
   });
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -24,8 +23,7 @@ interface ProtestDetailRequest {
 
 export const getProtestDetail = async ({ protestId }: ProtestDetailRequest): Promise<Protest> => {
   const response = await fetch(`${SERVER_URL}/api/protest/${protestId}`, {
-    // next: { revalidate: 3600 },
-    cache: 'no-store',
+    next: { revalidate: 3600 },
   });
 
   if (!response.ok) {
