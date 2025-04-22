@@ -42,15 +42,13 @@ export default async function Home() {
   const latitude = SEOUL_CENTER_LATITUDE;
   const longitude = SEOUL_CENTER_LONGITUDE;
   return (
-    <>
-      <KakaoMap
-        latitude={latitude}
-        longitude={longitude}
-        w='100%'
-        h='calc(100dvh - 14vh)'
-        l={8}
-        protests={protests}
-      />
-    </>
+    <KakaoMap
+      latitude={latitude}
+      longitude={longitude}
+      w='100%'
+      h='calc(100dvh - 14vh)'
+      l={8}
+      protests={protests}
+    />
   );
 }
