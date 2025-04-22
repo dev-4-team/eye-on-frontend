@@ -19,3 +19,18 @@ export const getProtestCheerCount = async ({
     protestId: String(data.data.protestId),
   };
 };
+interface ProtestCheerCountRequest {
+  protestId: string;
+}
+export const postProtestCheer = async ({ protestId }: ProtestCheerCountRequest) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/api/cheer/protest/${protestId}`,
+    {
+      method: 'POST',
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`시위별 응원수 가져오기 error ${response.status}`);
+  }
+  return response.json();
+};
