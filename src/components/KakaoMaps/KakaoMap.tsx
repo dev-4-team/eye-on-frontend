@@ -15,6 +15,7 @@ import { Coordinate } from '@/types/kakaoMap';
 import { useHeatMap } from '@/hooks/useHeatMap';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
+import { SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 interface Props {
   latitude: number;
   longitude: number;
@@ -91,7 +92,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
 
   const onResetButtonClick = () => {
     if (mapInstance) {
-      const destLatLng = new kakao.maps.LatLng(37.57297651, 126.9743513);
+      const destLatLng = new kakao.maps.LatLng(SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE);
       setCurrentPositionMarker({ lat: 0, long: 0 });
       mapInstance.setLevel(5);
       mapInstance.panTo(destLatLng);
