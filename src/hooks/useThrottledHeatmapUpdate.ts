@@ -16,47 +16,33 @@ export const useThrottledHeatmapUpdate = ({
   protests,
   realXDistance,
 }: Props) => {
-  const animationFrameRef = useRef<number | null>(null); // rAF 예약 ID
-  const retryCountRef = useRef(0);
-  const MAX_RETRIES = 10;
+  const animationFrameRef = useRef<number | null>(null); //rAF 예약 Id 저장용
 
   const updateHeatmap = useCallback(() => {
+    // 실제 heatmap 데이터를 계산하고 setData()로 업데이트 하는 함수
     if (!mapInstance || !heatmapInstance || !realXDistance) return;
 
-    const canvas = heatmapInstance._renderer?.canvas;
-    if (!canvas || canvas.width === 0 || canvas.height === 0) {
-      if (retryCountRef.current >= MAX_RETRIES) {
-        console.warn('🔥 Heatmap canvas not ready after max retries');
-        return;
-      }
-
-      retryCountRef.current += 1;
-      requestAnimationFrame(() => updateHeatmap());
-      return;
-    }
-
-    retryCountRef.current = 0; // 성공 시 초기화
-
-    const projection = mapInstance.getProjection();
-    const bounds = mapInstance.getBounds();
+    const projection = mapInstance.getProjection(); // 지도의 위 경도를 화변의 픽셀 좌표로 변경
+    const bounds = mapInstance.getBounds(); // 현재 눈에 보이는 뷰포트 기준 사각형
 
     const heatmapData = protests
       .map(protest => {
         const latLng = new window.kakao.maps.LatLng(
           protest.locations[0].latitude,
           protest.locations[0].longitude,
-        );
+        ); // 시위 위치의 위 경도를 LatLng 객체로 변환
 
         const pixel = projection.pointFromCoords(latLng);
 
         return {
-          x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x,
-          y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y,
+          // 왼쪽 위 (0,0) 기준 위경도를 픽셀좌표로 바꾸어
+          x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x, // 연산 지도 좌하단에서 얼마나 떨어졌는지
+          y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y, // 지도 우상단에서 얼마나 떨어졌는지
           value: protest.declaredParticipants,
           radius: protest.radius / realXDistance,
-        };
+        }; // 히트맵 용 {x, y, value, radius}
       })
-      .filter(Boolean);
+      .filter(Boolean); // 혹여 null, undefined 제거
 
     if (!shouldRenderHeatmap({ mapInstance, heatmapInstance })) {
       console.warn('heatmap hide!');
@@ -71,6 +57,7 @@ export const useThrottledHeatmapUpdate = ({
   }, [mapInstance, heatmapInstance, protests, realXDistance]);
 
   const throttledUpdate = useMemo(() => {
+    // 고차함수인 throttle()의 리턴 된 fn을 캐싱
     return throttle(() => {
       if (animationFrameRef.current) return;
       animationFrameRef.current = requestAnimationFrame(() => {
@@ -81,18 +68,17 @@ export const useThrottledHeatmapUpdate = ({
   }, [updateHeatmap]);
 
   useEffect(() => {
-    if (mapInstance && heatmapInstance) {
-      requestAnimationFrame(() => {
-        updateHeatmap(); // 첫 업데이트는 안전하게 defer
-      });
+    if (heatmapInstance && mapInstance) {
+      updateHeatmap();
     }
-  }, [mapInstance, heatmapInstance, updateHeatmap]);
+  }, [heatmapInstance, mapInstance, updateHeatmap]);
 
   useEffect(() => {
     if (!mapInstance || !heatmapInstance) return;
 
     kakao.maps.event.addListener(mapInstance, 'center_changed', throttledUpdate);
     kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
+      // zoom시 히트맵 숨김
       heatmapInstance._renderer.canvas.style.opacity = '0';
     });
     kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
@@ -107,6 +93,7 @@ export const useThrottledHeatmapUpdate = ({
       kakao.maps.event.removeListener(mapInstance, 'drag', throttledUpdate);
 
       if (animationFrameRef.current) {
+        // 이미 예약된 rAF가 있다면 취소
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
