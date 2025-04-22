@@ -1,0 +1,1 @@
+export const SEOUL_CENTER_LONGITUDE = 127.0016985;

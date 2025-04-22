@@ -3,7 +3,7 @@ import { Protest } from '@/types/protest';
 
 interface Props {
   protests: Protest[];
-  mapInstance: any;
+  mapInstance: kakao.maps.Map;
   router: any;
 }
 

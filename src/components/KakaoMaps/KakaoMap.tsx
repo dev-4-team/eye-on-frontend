@@ -15,6 +15,7 @@ import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
+import { SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 interface Props {
   latitude: number;
   longitude: number;
@@ -27,7 +28,7 @@ interface Props {
 const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
   const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
-  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
   const [routeData, setRouteData] = useState<any>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
   const [currentPositionMarker, setCurrentPositionMarker] = useState<Coordinate | null>(null);
@@ -39,12 +40,16 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   useEffect(() => {
     if (!mapInstance || !protests) return;
     const updateBounds = () => {
-      const SEOUL_CENTER_LONGITUDE = 127.0016985;
-
-      const { ha, qa, oa, pa } = mapInstance.getBounds();
+      const bounds = mapInstance.getBounds();
+      const southWestLat = bounds.getSouthWest().getLat();
+      const northEastLat = bounds.getNorthEast().getLat();
       const d =
-        calculateRealDistanceOnePixel(ha, SEOUL_CENTER_LONGITUDE, oa, SEOUL_CENTER_LONGITUDE) /
-        window.innerWidth;
+        calculateRealDistanceOnePixel(
+          southWestLat,
+          SEOUL_CENTER_LONGITUDE,
+          northEastLat,
+          SEOUL_CENTER_LONGITUDE,
+        ) / window.innerWidth;
       setRealXDistance(prev => {
         if (prev === d) return prev;
         return d;
@@ -58,6 +63,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   }, [mapInstance, protests]);
 
   const onGpsButtonClick = () => {
+    if (!mapInstance) return;
     setIsLoading(true);
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -244,7 +250,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
           />
         )}
-        <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
+        <ProtestMapMarkerList protests={protests} mapInstance={mapInstance!} router={router} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>
