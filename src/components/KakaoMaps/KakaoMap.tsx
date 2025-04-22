@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import { toast } from 'sonner';
@@ -10,12 +10,10 @@ import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
 import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
 import CurrentLocationButton from '@/components/Button/CurrentLocationButton';
 import CurrentLocationRestButton from '@/components/Button/CurrentLocationRestButton';
-import { Coordinate } from '@/types/kakaoMap';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
-import { calculateRealDistanceOnePixel } from '@/lib/map';
-import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
-import { SEOUL_CENTER_LONGITUDE } from '@/constants/map';
+import { Coordinate } from '@/types/kakaoMap';
+import { useHeatMap } from '@/hooks/useHeatMap';
+import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
 interface Props {
   latitude: number;
@@ -28,40 +26,14 @@ interface Props {
 
 const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
-  const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
   const [currentPositionMarker, setCurrentPositionMarker] = useState<Coordinate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
-  const [realXDistance, setRealXDistance] = useState<number | null>();
   const { routesData } = useNavigationRoutes({ protests });
-
-  useEffect(() => {
-    if (!mapInstance || !protests) return;
-    const updateBounds = () => {
-      const bounds = mapInstance.getBounds();
-      const southWestLat = bounds.getSouthWest().getLat();
-      const northEastLat = bounds.getNorthEast().getLat();
-      const currentPixel =
-        calculateRealDistanceOnePixel(
-          southWestLat,
-          SEOUL_CENTER_LONGITUDE,
-          northEastLat,
-          SEOUL_CENTER_LONGITUDE,
-        ) / window.innerWidth;
-      setRealXDistance(prev => {
-        if (prev === currentPixel) return prev;
-        return currentPixel;
-      });
-    };
-    updateBounds();
-    window.kakao.maps.event.addListener(mapInstance, 'bounds_changed', updateBounds);
-    return () => {
-      window.kakao.maps.event.removeListener(mapInstance, 'bounds_changed', updateBounds);
-    };
-  }, [mapInstance, protests]);
+  useHeatMap({ mapInstance, protests });
 
   const onGpsButtonClick = () => {
     if (!mapInstance) return;
@@ -126,40 +98,6 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
       toast.success('초기 위치로 이동!');
     }
   };
-
-  useThrottledHeatmapUpdate({ mapInstance, heatmapInstance, protests, realXDistance });
-
-  useEffect(() => {
-    if (!mapInstance || heatmapInstance) return;
-
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/heatmap.js';
-    script.async = true;
-    script.onload = () => {
-      const container = document.getElementById('map');
-      if (!container) return;
-
-      const heatmap = (window as any).h337.create({
-        container,
-        maxOpacity: 0.4,
-        minOpacity: 0.1,
-        blur: 0.95,
-      });
-
-      setHeatmapInstance(heatmap);
-
-      const canvas = heatmap._renderer.canvas;
-      if (canvas) {
-        canvas.style.zIndex = '10';
-        canvas.style.pointerEvents = 'none';
-      }
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [mapInstance, heatmapInstance]);
 
   const handleDragStart = () => {
     setIsDragging(true);
