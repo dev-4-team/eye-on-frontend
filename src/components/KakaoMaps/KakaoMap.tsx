@@ -129,11 +129,6 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   useThrottledHeatmapUpdate({ mapInstance, heatmapInstance, protests, realXDistance });
 
   useEffect(() => {
-    if (!mapInstance) return;
-    setCurrentLevel(mapInstance.getLevel());
-  }, [mapInstance]);
-
-  useEffect(() => {
     if (!mapInstance || heatmapInstance) return;
 
     const script = document.createElement('script');
