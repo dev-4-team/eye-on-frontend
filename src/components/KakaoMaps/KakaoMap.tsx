@@ -15,6 +15,7 @@ import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
+import { clusterCalculator, clusterStyles } from '@/constants/clusterConfig';
 interface Props {
   latitude: number;
   longitude: number;
@@ -253,44 +254,8 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
         <MarkerClusterer
           averageCenter={true}
           minLevel={11}
-          calculator={[5, 10, 15]}
-          styles={[
-            {
-              width: '30px',
-              height: '30px',
-              background: 'rgba(0, 128, 255, 0.8)',
-              border: '2px solid white',
-              borderRadius: '50%',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: '13px',
-              textAlign: 'center',
-              lineHeight: '30px',
-            },
-            {
-              width: '40px',
-              height: '40px',
-              background: 'rgba(255, 165, 0, 0.8)',
-              border: '2px solid white',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: '14px',
-              textAlign: 'center',
-              lineHeight: '40px',
-            },
-            {
-              width: '50px',
-              height: '50px',
-              background: 'rgba(255, 69, 58, 0.8)',
-              border: '2px solid white',
-              borderRadius: '50%',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: '15px',
-              textAlign: 'center',
-              lineHeight: '50px',
-            },
-          ]}
+          calculator={clusterCalculator}
+          styles={clusterStyles}
         >
           {protests.map(protest => {
             return (
