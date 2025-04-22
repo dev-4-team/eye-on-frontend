@@ -6,7 +6,7 @@ import { getVerifyLocation } from '@/api/verification';
 
 interface Props {
   agreed: boolean;
-  curLocation: Location;
+  curLocation?: Location;
   protestId: string;
 }
 
