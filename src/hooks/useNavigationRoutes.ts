@@ -1,12 +1,13 @@
 import { Protest } from '@/types/protest';
 import { useEffect, useState } from 'react';
+import { RouteData } from '@/types/naverRoute';
 
 interface Props {
   protests: Protest[];
 }
 
 export const useNavigationRoutes = ({ protests }: Props) => {
-  const [routesData, setRoutesData] = useState<any>(null);
+  const [routesData, setRoutesData] = useState<RouteData[] | null>(null);
   const fetchRoute = async (start: string, goal: string, waypoints?: string) => {
     const url = new URL(`/next-api/directions/route`, window.location.origin);
     url.searchParams.append('start', start);
