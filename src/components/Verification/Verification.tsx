@@ -53,7 +53,11 @@ export default function Verification({ paramId }: Props) {
   };
 
   if (agreed && errorMsg) {
-    return <div>{errorMsg}</div>;
+    return (
+      <ProtestActionButton variant={'signature'} className='w-full' disabled={true}>
+        <span>{errorMsg}</span>
+      </ProtestActionButton>
+    );
   }
 
   return (
