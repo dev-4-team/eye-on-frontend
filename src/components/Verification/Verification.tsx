@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/drawer';
 import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
+
+import { ProtestActionButton } from '@/components/Button';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
 import { useLocationVerification } from '@/hooks/useLocationVerification';
 
