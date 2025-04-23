@@ -1,6 +1,7 @@
 import { SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
+import { HeatmapInstance } from '@/types/heatMap';
 import { Protest } from '@/types/protest';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export const useHeatMap = ({ mapInstance, protests }: Props) => {
-  const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
+  const [heatmapInstance, setHeatmapInstance] = useState<HeatmapInstance | null>(null);
   const [realXDistance, setRealXDistance] = useState<number | null>();
 
   useEffect(() => {

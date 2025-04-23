@@ -4,6 +4,10 @@ interface HeatmapRenderer {
 }
 
 export interface HeatmapInstance {
-  _renderer: HeatmapRenderer;
-  setData: (data: { max: number; min: number; data: any[] }) => void;
+  renderer: HeatmapRenderer;
+  setData: (data: {
+    max: number;
+    min: number;
+    data: Array<{ x: number; y: number; value: number }>;
+  }) => void;
 }
