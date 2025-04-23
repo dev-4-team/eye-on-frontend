@@ -19,10 +19,10 @@ export const getProtestCheerCount = async ({
     protestId: String(data.data.protestId),
   };
 };
-interface ProtestCheerCountRequest {
+interface ProtestCheerequest {
   protestId: string;
 }
-export const postProtestCheer = async ({ protestId }: ProtestCheerCountRequest) => {
+export const postProtestCheer = async ({ protestId }: ProtestCheerequest) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_DEV_URL}/api/cheer/protest/${protestId}`,
     {
