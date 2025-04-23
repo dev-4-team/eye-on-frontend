@@ -53,7 +53,7 @@ export default function Verification({ paramId }: Props) {
   };
 
   if (agreed && errorMsg) {
-    return <div>{errorMsg}</div>;
+    return <div className="w-['45%'] flex flex-col items-center max-w-md">{errorMsg}</div>;
   }
 
   return (
