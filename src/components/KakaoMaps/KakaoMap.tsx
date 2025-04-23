@@ -1,48 +1,36 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
-import { ProtestData } from '@/types';
-import { calculateRealDistanceOnePixel } from '@/lib/utils';
-import { CurrentLocationButton } from '@/components/Button/CurrentLocationButton';
-import { CurrentLocationRestButton } from '@/components/Button/CurrentLocationRestButton';
-import { NavigationRouteLines } from '@/components/NaverDirections/NavigationRouteLines';
-import { ProtestMapMarkerList } from '@/components/Protest/ProtestMapMarkerList';
 import { toast } from 'sonner';
-import { MapErrorFallback } from '@/components/KakaoMaps/MapErrorFallback';
-import { MapLoadingFallback } from '@/components/KakaoMaps/MapLoadingFallback';
+import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
+import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
+import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
+import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
+import CurrentLocationButton from '@/components/Button/CurrentLocationButton';
+import CurrentLocationRestButton from '@/components/Button/CurrentLocationRestButton';
+import { Coordinate } from '@/types/kakaoMap';
+import useKakaoLoader from '@/hooks/useKakaoLoader';
+import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
-
-export type RouteData = [number, number][];
-
-type CurrentPosition = {
-  lat: number;
-  long: number;
-};
-
-export default function KakaoMap({
-  latitude,
-  longitude,
-  w,
-  h,
-  l,
-  protests,
-}: {
+import { Protest } from '@/types/protest';
+interface Props {
   latitude: number;
   longitude: number;
   w: string;
   h: string;
   l: number;
-  protests: ProtestData[];
-}) {
+  protests: Protest[];
+}
+
+const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const [loading, error] = useKakaoLoader();
-  const [heatmapInstance, setHeatmapInstance] = useState<any>(null);
+  const [heatmapInstance, setHeatmapInstance] = useState<unknown>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [routeData, setRouteData] = useState<any>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
-  const [currentPositionMarker, setCurrentPositionMarker] = useState<CurrentPosition | null>(null);
+  const [currentPositionMarker, setCurrentPositionMarker] = useState<Coordinate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
@@ -193,7 +181,7 @@ export default function KakaoMap({
     }
   };
 
-  const fetchMultipleRoutes = async (protests: ProtestData[]) => {
+  const fetchMultipleRoutes = async (protests: Protest[]) => {
     const results = await Promise.all(
       protests
         .filter(({ locations }) => locations.length >= 2)
@@ -264,4 +252,6 @@ export default function KakaoMap({
       <CurrentLocationRestButton onClick={() => onResetButtonClick()} />
     </div>
   );
-}
+};
+
+export default KakaoMap;

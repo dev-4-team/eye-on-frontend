@@ -7,11 +7,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import ProtestCard from './protest-card';
-import { ProtestData } from '@/types';
-import { getProtestList } from '@/apis/protest';
+import ProtestCard from '@/components/Protest/ProtestCard';
+import { getProtestList } from '@/api/protest';
+import { Protest } from '@/types/protest';
 
-export default async function ProtestList() {
+const ProtestList = async () => {
   const protests = await getProtestList();
   return (
     <Sheet>
@@ -22,11 +22,13 @@ export default async function ProtestList() {
         <SheetHeader className='mt-11 gap-1 overflow-hidden'>
           <SheetTitle className='hidden'>ProtestList</SheetTitle>
           <SheetDescription className='hidden'>ProtestList</SheetDescription>
-          {protests?.map((protest: ProtestData, idx: number) => (
+          {protests?.map((protest: Protest, idx: number) => (
             <ProtestCard key={idx} {...protest} />
           ))}
         </SheetHeader>
       </SheetContent>
     </Sheet>
   );
-}
+};
+
+export default ProtestList;

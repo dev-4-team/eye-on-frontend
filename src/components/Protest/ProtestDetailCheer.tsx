@@ -1,20 +1,26 @@
 'use client';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
-import { SendCheerMutation } from '@/hooks/SendCheerMutation';
-import useConfetti from '@/hooks/useConfetti';
-import { ProtestActionButton } from '@/components/Button';
-import Image from 'next/image';
-import { numberTransfer } from '@/lib/utils';
 
-export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
-  const { data, isLoading, isError } = UseProtestCheerCount(protestId);
+import Image from 'next/image';
+import { EMOJI } from '@/constants/emojis';
+import { useConfetti } from '@/hooks/useConfetti';
+import { numberTransfer } from '@/lib/utils';
+import { useCheerEffect } from '@/hooks/useCheerEffect';
+import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
+import ProtestActionButton from '@/components/Button/ProtestActionButton';
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+
+interface Props {
+  protestId: string;
+}
+
+const ProtestDetailCheer = ({ protestId }: Props) => {
+  const { data, isLoading, isError } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
-  const { mutate } = SendCheerMutation(String(protestId));
+  const { mutate } = useSendCheerMutation({ protestId });
   const { getConfetti } = useConfetti();
   const handleConffeti = () => {
     getConfetti().addConfetti({
-      emojis: ['🔥', '✔️', '❤️'],
+      emojis: [EMOJI.FIRE, EMOJI.CHECK, EMOJI.HEART],
       emojiSize: 80,
       confettiNumber: 30,
     });
@@ -24,18 +30,18 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
       <ProtestActionButton
         onClick={() => {
           handleConffeti();
-          mutate(String(protestId));
+          mutate(protestId);
         }}
         disabled={isLoading || isError || !data}
       >
         {isLoading ? (
-          <div className='animate-spin'>⟳</div>
+          <div className='animate-spin'>{EMOJI.LOADDING}</div>
         ) : isError || !data ? (
-          <div>⚠️</div>
+          <div>{EMOJI.WARNING}</div>
         ) : (
           <>
             {effect ? (
-              <div className='animate-bounce'>🔥</div>
+              <div className='animate-bounce'>{EMOJI.FIRE}</div>
             ) : (
               <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
             )}
@@ -46,3 +52,5 @@ export const ProtestDetailCheer = ({ protestId }: { protestId: string }) => {
     </div>
   );
 };
+
+export default ProtestDetailCheer;

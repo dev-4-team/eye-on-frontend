@@ -2,11 +2,11 @@ import { Button, ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
-export const ProtestActionButton = ({
-  className,
-  children,
-  ...rest
-}: { children: ReactNode } & ButtonProps) => {
+interface Props {
+  children: ReactNode;
+}
+
+const ProtestActionButton = ({ className, children, ...rest }: Props & ButtonProps) => {
   return (
     <Button
       {...rest}
@@ -17,3 +17,5 @@ export const ProtestActionButton = ({
     </Button>
   );
 };
+
+export default ProtestActionButton;

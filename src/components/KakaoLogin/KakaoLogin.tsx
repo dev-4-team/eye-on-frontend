@@ -1,11 +1,11 @@
 'use client';
 
-import useUserInfo from '@/hooks/useUserInfo';
 import { useRouter } from 'next/navigation';
+import { useUserInfoStore } from '@/store/useUserInfoStore';
 
-export default function KakaoLogin() {
-  const accessToken = useUserInfo(state => state.userInfo.accessToken);
-  const { deleteUserInfo } = useUserInfo();
+const KakaoLogin = () => {
+  const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
+  const { deleteUserInfo } = useUserInfoStore();
   const router = useRouter();
 
   const onLoginClick = async () => {
@@ -38,4 +38,6 @@ export default function KakaoLogin() {
       )}
     </div>
   );
-}
+};
+
+export default KakaoLogin;

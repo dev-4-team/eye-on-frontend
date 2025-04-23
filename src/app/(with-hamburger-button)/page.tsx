@@ -1,4 +1,4 @@
-import { getProtestList } from '@/apis/protest';
+import { getProtestList } from '@/api/protest';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
 import { Metadata } from 'next';
 

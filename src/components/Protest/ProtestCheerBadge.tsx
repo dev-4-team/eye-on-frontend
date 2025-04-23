@@ -1,17 +1,21 @@
 'use client';
+import { EMOJI } from '@/constants/emojis';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { UseProtestCheerCount } from '@/hooks/UseProtestCheerCount';
-
-export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
-  const { data } = UseProtestCheerCount(protestId);
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+interface Props {
+  protestId: string;
+}
+const ProtestCheerBadge = ({ protestId }: Props) => {
+  const { data, isLoading } = useProtestCheerCount({ protestId });
   const { effect } = useCheerEffect(data);
+  if (!protestId || isLoading) return;
 
   return (
     <div className='flex flex-col justify-center items-center'>
       <>
         {effect && (
           <div className={`absolute bottom-3 animate-bounce ${effect ? 'text-red-500' : ''}`}>
-            🔥
+            {EMOJI.FIRE}
           </div>
         )}
         <div>{data?.cheerCount}</div>
@@ -19,3 +23,5 @@ export const ProtestCheerBadge = ({ protestId }: { protestId: string }) => {
     </div>
   );
 };
+
+export default ProtestCheerBadge;

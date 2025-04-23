@@ -1,16 +1,15 @@
-import StaticKakakoMap from '@/components/KakaoMaps/StaticKakaoMap';
-import ProtestDetailInfo from '@/components/Protest/protest-detail-info';
-import { ProtestData } from '@/types';
-import { formatDate } from '@/lib/utils';
-import Verification from '@/components/Verification/Verification';
 import { Metadata } from 'next';
-import MarkdownWrapper from '@/components/Protest/protest-md';
-import { ProtestShareButton } from '@/components/Protest/ProtestShareButton';
-import { getProtestDetail, getProtestList } from '@/apis/protest';
-import { ProtestDetailCheer } from '@/components/Protest/ProtestDetailCheer';
+import Verification from '@/components/Verification/Verification';
+import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap';
+import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
+import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
+import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
+import ProtestShareButton from '@/components/Protest/ProtestShareButton';
+import { formatDate } from '@/lib/utils';
+import { getProtestDetail, getProtestList } from '@/api/protest';
 
 export async function generateStaticParams() {
-  const protests: ProtestData[] = await getProtestList();
+  const protests = await getProtestList();
   return protests.map(protest => ({
     id: protest.id.toString(),
   }));
@@ -22,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const protest = await getProtestDetail(id);
+  const protest = await getProtestDetail({ protestId: id });
 
   const keywords = [
     '집회',
@@ -61,14 +60,13 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id: paramId } = await params;
-  const protest = await getProtestDetail(paramId);
+  const protest = await getProtestDetail({ protestId: paramId });
 
   const {
     title,
     description,
     startDateTime,
     endDateTime,
-    location,
     organizer,
     declaredParticipants,
     locations,
@@ -91,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           오늘의 집회 및 시위 일정
         </h2>
         <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>시위정보</p>
-        <MarkdownWrapper content={description} />
+        <MarkdownWrapper content={description || ''} />
         <ProtestDetailInfo name='시작 일시' info={startTime} />
         <ProtestDetailInfo name='종료 일시' info={endTime} />
         <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>주최자</p>
@@ -101,7 +99,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           info={`${declaredParticipants.toLocaleString()}명`}
         />
         <div className='flex justify-center p-4'>
-          <StaticKakakoMap
+          <StaticKakaoMap
             latitude={locations[0].latitude}
             longitude={locations[0].longitude}
             w='100%'
