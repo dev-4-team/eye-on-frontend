@@ -36,16 +36,15 @@ export default function Verification({ paramId }: Props) {
   });
 
   const onVerificationClick = () => {
-    // if (!isMobile) {
-    //   alert('모바일에서만 인증이 가능합니다.');
-    //   return;
-    // }
-    // if (!accessToken)
-    //   window.location.replace(
-    //     `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
-    //   );
-    // else setOpen(true);
-    setOpen(true);
+    if (!isMobile) {
+      alert('모바일에서만 인증이 가능합니다.');
+      return;
+    }
+    if (!accessToken)
+      window.location.replace(
+        `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
+      );
+    else setOpen(true);
   };
 
   const handleAgree = () => {
