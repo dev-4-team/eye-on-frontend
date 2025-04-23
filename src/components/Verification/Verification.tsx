@@ -36,15 +36,16 @@ export default function Verification({ paramId }: Props) {
   });
 
   const onVerificationClick = () => {
-    if (!isMobile) {
-      alert('모바일에서만 인증이 가능합니다.');
-      return;
-    }
-    if (!accessToken)
-      window.location.replace(
-        `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
-      );
-    else setOpen(true);
+    // if (!isMobile) {
+    //   alert('모바일에서만 인증이 가능합니다.');
+    //   return;
+    // }
+    // if (!accessToken)
+    //   window.location.replace(
+    //     `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
+    //   );
+    // else setOpen(true);
+    setOpen(true);
   };
 
   const handleAgree = () => {
@@ -52,8 +53,15 @@ export default function Verification({ paramId }: Props) {
     setOpen(false);
   };
 
+  // if (agreed && errorMsg) {
+  //   return <div className="w-['45%'] flex flex-col items-center max-w-md">{errorMsg}</div>;
+  // }
   if (agreed && errorMsg) {
-    return <div className="w-['45%'] flex flex-col items-center max-w-md">{errorMsg}</div>;
+    return (
+      <ProtestActionButton variant={'signature'} className='w-full' disabled={true}>
+        <span>{errorMsg}</span>
+      </ProtestActionButton>
+    );
   }
 
   return (

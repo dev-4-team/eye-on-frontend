@@ -97,7 +97,7 @@ export const useLocationVerification = ({ agreed, curLocation, protestId }: Prop
           };
       }
     } catch (error) {
-      console.error('verify location 에러: ', error);
+      console.error('위치 인증하기 예상치 못한 에러: ', error);
       return {
         success: false,
         message: '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.',
