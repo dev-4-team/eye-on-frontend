@@ -1,5 +1,6 @@
 import { getProtestList } from '@/api/protest';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
+import { SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 import { Metadata } from 'next';
 
 const keywords = [
@@ -38,18 +39,16 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const protests = await getProtestList();
-  const latitude = 37.57297651;
-  const longitude = 126.9743513;
+  const latitude = SEOUL_CENTER_LATITUDE;
+  const longitude = SEOUL_CENTER_LONGITUDE;
   return (
-    <>
-      <KakaoMap
-        latitude={latitude}
-        longitude={longitude}
-        w='100%'
-        h='calc(100dvh - 14vh)'
-        l={8}
-        protests={protests}
-      />
-    </>
+    <KakaoMap
+      latitude={latitude}
+      longitude={longitude}
+      w='100%'
+      h='calc(100dvh - 14vh)'
+      l={8}
+      protests={protests}
+    />
   );
 }
