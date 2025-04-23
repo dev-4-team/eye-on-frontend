@@ -40,7 +40,7 @@ export const useLocationVerification = ({ agreed, curLocation, protestId }: Prop
       sessionStorage.setItem('fromValidRoute', 'true');
       router.replace(`/verified`);
     } else if (verificationResult?.success === false) {
-      sessionStorage.removeItem('fromValidRoute');
+      sessionStorage.setItem('fromValidRoute', 'false');
       router.replace(`/protest/${protestId}`);
     }
   }, [verificationResult]);

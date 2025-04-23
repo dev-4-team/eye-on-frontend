@@ -20,7 +20,7 @@ export default function Page() {
   }, [router]);
 
   const handleGobackButton = () => {
-    sessionStorage.removeItem('fromValidRoute');
+    sessionStorage.setItem('fromValidRoute', 'false');
     router.back();
   };
 
