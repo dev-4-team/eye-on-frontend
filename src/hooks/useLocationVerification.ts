@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Location } from '@/types/location';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
-import { getVerifyLocation } from '@/api/verification';
+import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   agreed: boolean;
@@ -11,6 +12,12 @@ interface Props {
 }
 
 export const useLocationVerification = ({ agreed, curLocation, protestId }: Props) => {
+  const [verificationResult, setVerificationResult] = useState<getVerificationResponse | null>(
+    null,
+  );
+
+  const router = useRouter();
+
   const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
 
   useEffect(() => {
@@ -22,10 +29,21 @@ export const useLocationVerification = ({ agreed, curLocation, protestId }: Prop
         latitude: curLocation.latitude,
         accessToken: accessToken,
       });
+      setVerificationResult(result);
       toast(result.message);
     };
     verifyUserLocation();
   }, [agreed, curLocation, accessToken, protestId]);
+
+  useEffect(() => {
+    if (verificationResult?.success === true) {
+      sessionStorage.setItem('fromValidRoute', 'true');
+      router.replace(`/verified`);
+    } else if (verificationResult?.success === false) {
+      sessionStorage.removeItem('fromValidRoute');
+      router.replace(`/protest/${protestId}`);
+    }
+  }, [verificationResult]);
 
   const VerifyLocation = async ({
     paramId,
