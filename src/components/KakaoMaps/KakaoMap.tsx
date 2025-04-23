@@ -16,6 +16,8 @@ import { useHeatMap } from '@/hooks/useHeatMap';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
 import { SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE } from '@/constants/map';
+import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig';
+import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer';
 interface Props {
   latitude: number;
   longitude: number;
@@ -128,6 +130,9 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
         onCreate={setMapInstance}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onZoomChanged={map => {
+          setCurrentLevel(map.getLevel());
+        }}
       >
         {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routesData} />}
         {currentPositionMarker && (
@@ -135,7 +140,10 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
           />
         )}
-        <ProtestMapMarkerList protests={protests} mapInstance={mapInstance!} router={router} />
+        {currentLevel < CLUSTER_MIN_LEVEL && (
+          <ProtestMapMarkerList protests={protests} mapInstance={mapInstance!} router={router} />
+        )}
+        <KakaoMapClusterer protests={protests} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>
