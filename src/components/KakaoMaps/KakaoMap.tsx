@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, ZoomControl, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { toast } from 'sonner';
 import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
 import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
@@ -15,6 +15,8 @@ import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { Protest } from '@/types/protest';
+import { CLUSTER_MIN_LEVEL, clusterCalculator, clusterStyles } from '@/constants/clusterConfig';
+import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer';
 interface Props {
   latitude: number;
   longitude: number;
@@ -237,6 +239,9 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
         onCreate={setMapInstance}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onZoomChanged={map => {
+          setCurrentLevel(map.getLevel());
+        }}
       >
         {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routeData} />}
         {currentPositionMarker && (
@@ -244,7 +249,10 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
             position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
           />
         )}
-        <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
+        {currentLevel < CLUSTER_MIN_LEVEL && (
+          <ProtestMapMarkerList protests={protests} mapInstance={mapInstance} router={router} />
+        )}
+        <KakaoMapClusterer protests={protests} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>
