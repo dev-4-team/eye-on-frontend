@@ -32,10 +32,11 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         )}
+
         <Header />
         <Script
-          strategy='lazyOnload'
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`}
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&autoload=false&libraries=clusterer`}
+          strategy='beforeInteractive'
         />
         <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
         <TanStackProvider>
