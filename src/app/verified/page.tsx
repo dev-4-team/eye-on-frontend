@@ -20,6 +20,7 @@ export default function Page() {
   }, [router]);
 
   const handleGobackButton = () => {
+    sessionStorage.setItem('fromValidRoute', 'false');
     router.back();
   };
 
