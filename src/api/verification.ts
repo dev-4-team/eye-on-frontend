@@ -48,21 +48,17 @@ export const getVerifyLocation = async ({
   latitude,
   accessToken,
 }: getVerificationRequest) => {
-  try {
-    const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ latitude, longitude }),
-    });
-    if (!response.ok) {
-      throw new Error(`인증하기 실패 ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    throw e;
+  const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ latitude, longitude }),
+  });
+  if (!response.ok) {
+    throw new Error(`인증하기 실패 ${response.status}`);
   }
+  const data = await response.json();
+  return data;
 };
