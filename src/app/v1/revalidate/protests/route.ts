@@ -3,6 +3,6 @@ import { revalidateTag } from 'next/cache';
 
 export async function GET() {
   revalidateTag('protestList');
-  revalidateTag('sitmap');
+  revalidateTag('sitemap');
   return NextResponse.json({ success: true, message: 'Cache invalidated' });
 }
