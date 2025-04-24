@@ -7,6 +7,7 @@ export const getProtestList = async (): Promise<Protest[]> => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
     next: { revalidate: 3600, tags: ['protestList'] },
   });
+  console.log('getProtestList', 'called');
   if (!response.ok) {
     throw new Error(response.statusText);
   }
