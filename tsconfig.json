@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -13,6 +12,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    //  추가적으로 적은 부분
+    "strict": true,
+    "noImplicitAny": false,
+
     "types": ["kakao.maps.d.ts"],
     "plugins": [
       {
