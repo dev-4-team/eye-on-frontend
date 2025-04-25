@@ -1,6 +1,6 @@
 import { MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { CLUSTER_MIN_LEVEL, clusterCalculator, clusterStyles } from '@/constants/clusterConfig';
-import { Protest } from '@/types/protest';
+import type { Protest } from '@/types/protest';
 
 interface Props {
   protests: Protest[];
@@ -16,13 +16,15 @@ const KakaoMapClusterer = ({ protests }: Props) => {
       styles={clusterStyles}
     >
       {protests.map(protest => {
+        const location = protest.locations[0];
+        if (!location) return null;
         return (
           // 시위 계산을 위한 마커입니다.
           <MapMarker
             key={`map-maker-${protest.id}`}
             position={{
-              lat: protest.locations[0].latitude,
-              lng: protest.locations[0].longitude,
+              lat: location.latitude,
+              lng: location.longitude,
             }}
             opacity={0}
           />

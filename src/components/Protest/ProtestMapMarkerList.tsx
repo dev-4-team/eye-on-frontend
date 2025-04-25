@@ -1,5 +1,5 @@
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
-import { Protest } from '@/types/protest';
+import type { Protest } from '@/types/protest';
 
 interface Props {
   protests: Protest[];

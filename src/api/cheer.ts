@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@/lib/utils';
-import { ApiResponse } from '@/types/api';
-import { ProtestCheerCount } from '@/types/protest';
+import type { ApiResponse } from '@/types/api';
+import type { ProtestCheerCount } from '@/types/protest';
 
 interface ProtestCheerCountRequest {
   protestId: string;

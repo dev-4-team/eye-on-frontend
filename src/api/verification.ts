@@ -1,6 +1,6 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
-import { ApiResponse } from '@/types/api';
-import { VerificationNumber } from '@/types/protest';
+import type { ApiResponse } from '@/types/api';
+import type { VerificationNumber } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
 interface getVerificationNumberRequest {
@@ -24,8 +24,11 @@ export const getVerificationNumber = async ({
     throw new Error(response.statusText);
   }
 
-  const protests = (await response.json()) as ApiResponse<VerificationNumber[]>;
-  return protests.data[0];
+  const protest = (await response.json()) as ApiResponse<VerificationNumber[]>;
+  if (!protest.data[0] || protest.data.length === 0) {
+    notFound();
+  }
+  return protest.data[0];
 };
 
 interface getVerificationRequest {

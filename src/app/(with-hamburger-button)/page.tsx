@@ -1,7 +1,7 @@
-import { getProtestList } from '@/api/protest';
+import type { Metadata } from 'next';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
+import { getProtestList } from '@/api/protest';
 import { SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE } from '@/constants/map';
-import { Metadata } from 'next';
 
 const keywords = [
   '집회',

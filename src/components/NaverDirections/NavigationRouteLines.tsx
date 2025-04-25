@@ -1,5 +1,5 @@
 import { Polyline } from 'react-kakao-maps-sdk';
-import { RouteData } from '@/types/naverRoute';
+import type { RouteData } from '@/types/naverRoute';
 import { generateColorFromIndex } from '@/lib/utils';
 
 interface Props {

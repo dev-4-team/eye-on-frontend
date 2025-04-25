@@ -1,8 +1,8 @@
 import { SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 import { useThrottledHeatmapUpdate } from '@/hooks/useThrottledHeatmapUpdate';
 import { calculateRealDistanceOnePixel } from '@/lib/map';
-import { HeatmapInstance } from '@/types/heatMap';
-import { Protest } from '@/types/protest';
+import type { HeatmapInstance } from '@/types/heatMap';
+import type { Protest } from '@/types/protest';
 import { useEffect, useState } from 'react';
 
 interface Props {

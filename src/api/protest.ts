@@ -1,6 +1,6 @@
 import { SERVER_URL, targetDate } from '@/lib/utils';
-import { ApiResponse } from '@/types/api';
-import { Protest } from '@/types/protest';
+import type { ApiResponse } from '@/types/api';
+import type { Protest } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
 export const getProtestList = async (): Promise<Protest[]> => {

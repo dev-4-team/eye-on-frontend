@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Verification from '@/components/Verification/Verification';
 import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap';
 import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
@@ -98,17 +98,19 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           name='예상 참가 인원'
           info={`${declaredParticipants.toLocaleString()}명`}
         />
-        <div className='flex justify-center p-4'>
-          <StaticKakaoMap
-            latitude={locations[0].latitude}
-            longitude={locations[0].longitude}
-            w='100%'
-            h='250px'
-            minW='240px'
-            minH='150px'
-            l={3}
-          />
-        </div>
+        {locations[0] && (
+          <div className='flex justify-center p-4'>
+            <StaticKakaoMap
+              latitude={locations[0].latitude}
+              longitude={locations[0].longitude}
+              w='100%'
+              h='250px'
+              minW='240px'
+              minH='150px'
+              l={3}
+            />
+          </div>
+        )}
         <div className='flex items-center justify-center gap-2'>
           <ProtestDetailCheer protestId={paramId} />
           <Verification paramId={paramId} />

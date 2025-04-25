@@ -1,6 +1,6 @@
 'use client';
 
-import { Location } from '@/types/location';
+import type { Location } from '@/types/location';
 import { useCallback, useEffect, useState } from 'react';
 
 export const useGeoLocation = (permissionStatus: boolean) => {

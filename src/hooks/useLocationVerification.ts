@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { Location } from '@/types/location';
+import type { Location } from '@/types/location';
 import { useUserInfoStore } from '@/store/useUserInfoStore';
-import { getVerificationResponse, getVerifyLocation } from '@/api/verification';
+import { type getVerificationResponse, getVerifyLocation } from '@/api/verification';
 import { useRouter } from 'next/navigation';
 
 interface Props {

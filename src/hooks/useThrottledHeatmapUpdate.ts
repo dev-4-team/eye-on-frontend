@@ -1,7 +1,7 @@
 import { throttle } from '@/lib/utils';
 import { shouldRenderHeatmap } from '@/lib/heatmap';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Protest } from '@/types/protest';
+import { type Protest } from '@/types/protest';
 
 interface Props {
   mapInstance: kakao.maps.Map | null;
@@ -27,10 +27,9 @@ export const useThrottledHeatmapUpdate = ({
 
     const heatmapData = protests
       .map(protest => {
-        const latLng = new window.kakao.maps.LatLng(
-          protest.locations[0].latitude,
-          protest.locations[0].longitude,
-        ); // 시위 위치의 위 경도를 LatLng 객체로 변환
+        const location = protest.locations[0];
+        if (!location) return null;
+        const latLng = new window.kakao.maps.LatLng(location.latitude, location.longitude); // 시위 위치의 위 경도를 LatLng 객체로 변환
 
         const pixel = projection.pointFromCoords(latLng);
 
