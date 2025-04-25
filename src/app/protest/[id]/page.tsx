@@ -76,7 +76,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const endTime = formatDate(endDateTime);
 
   return (
-    <section className='flex flex-col px-2 w-full'>
+    <section className='flex flex-col px-2 w-full h-full'>
       <div className='w-full flex justify-between items-center bg-white px-6 py-4 shadow-md'>
         <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
         <div className='flex items-center'>
