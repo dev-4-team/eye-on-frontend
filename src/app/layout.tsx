@@ -1,6 +1,6 @@
 import Script from 'next/script';
-import { Metadata } from 'next';
-import { ReactNode } from 'react';
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';

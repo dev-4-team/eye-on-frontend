@@ -1,6 +1,6 @@
-import { Protest } from '@/types/protest';
+import type { Protest } from '@/types/protest';
 import { useEffect, useState } from 'react';
-import { RouteData } from '@/types/naverRoute';
+import type { RouteData } from '@/types/naverRoute';
 
 interface Props {
   protests: Protest[];
@@ -35,18 +35,21 @@ export const useNavigationRoutes = ({ protests }: Props) => {
       protests
         .filter(({ locations }) => locations.length >= 2)
         .map(({ locations }) => {
-          const start = `${locations[0].longitude},${locations[0].latitude}`;
-          const goal = `${locations[locations.length - 1].longitude},${
-            locations[locations.length - 1].latitude
-          }`;
-          const waypoints =
-            Array.from(
-              new Set(locations.slice(1, -1).map(loc => `${loc.longitude},${loc.latitude}`)),
-            ).join('|') || undefined;
-          return fetchRoute(start, goal, waypoints);
+          const startLoc = locations[0];
+          const endLoc = locations[locations.length - 1];
+
+          if (startLoc && endLoc && endLoc.longitude && endLoc.latitude) {
+            const start = `${startLoc.longitude},${startLoc.latitude}`;
+            const goal = `${endLoc.longitude},${endLoc.latitude}`;
+            const waypoints =
+              Array.from(
+                new Set(locations.slice(1, -1).map(loc => `${loc.longitude},${loc.latitude}`)),
+              ).join('|') || undefined;
+            return fetchRoute(start, goal, waypoints);
+          }
         }),
     );
-    return results;
+    return results.filter(Boolean) as RouteData[];
   };
 
   const handleFetchRoutes = async () => {

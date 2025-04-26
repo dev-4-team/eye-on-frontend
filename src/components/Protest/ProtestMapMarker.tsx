@@ -1,40 +1,20 @@
-import { useEffect, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { EMOJI } from '@/constants/emojis';
 import { numberTransfer } from '@/lib/utils';
-import { getVerificationNumber } from '@/api/verification';
-import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { Protest } from '@/types/protest';
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+import type { Protest } from '@/types/protest';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 interface Props {
   protest: Protest;
-  mapInstance: any;
+  mapInstance: kakao.maps.Map;
   router: AppRouterInstance;
 }
 
 const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
-  const [verifiedNumber, setVerifiedNumber] = useState(0);
-
-  useEffect(() => {
-    const verifyNumber = async () => {
-      try {
-        const result = await getVerificationNumber({ protestId: protest.id });
-        setVerifiedNumber(result.verifiedNum);
-      } catch (error) {
-        console.error('error', error);
-      }
-    };
-    verifyNumber();
-  }, [protest]);
-
-  const maxVerified = 5000;
-  const baseZIndex = 10;
-  const maxZIndex = 100;
-  const dynamicZIndex = Math.min(
-    maxZIndex,
-    baseZIndex + (verifiedNumber / maxVerified) * maxZIndex,
-  );
+  const { data, isLoading, isError } = useProtestCheerCount({ protestId: protest.id });
+  const { effect } = useCheerEffect(data);
+  const location = protest.locations[0];
 
   const onMarkerClick = (id: string, lat: number, long: number) => {
     if (mapInstance) {
@@ -44,31 +24,31 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     }
     router.push(`/protest/${id}`);
   };
-  const { data, isLoading, isError } = useProtestCheerCount({ protestId: protest.id });
-  const { effect } = useCheerEffect(data);
+
+  if (!location) {
+    // TODO: 위치 정보가 없는 경우에 대한 예외 처리 (예: 로그, fallback UI 등)
+    return null;
+  }
   return (
     <div>
       <CustomOverlayMap
         position={{
-          lat: protest.locations[0].latitude,
-          lng: protest.locations[0].longitude,
+          lat: location.latitude,
+          lng: location.longitude,
         }}
         yAnchor={1}
-        zIndex={dynamicZIndex}
       >
         <div
           className=' p-5  bg-[url(/images/marker.png)] bg-center bg-no-repeat bg-contain  cursor-pointer  flex flex-col items-center justify-center'
-          onClick={() =>
-            onMarkerClick(protest.id, protest.locations[0].latitude, protest.locations[0].longitude)
-          }
+          onClick={() => onMarkerClick(protest.id, location.latitude, location.longitude)}
         >
           {effect && <div className='absolute bottom-10'>{EMOJI.FIRE}</div>}
           <span className='text-xs pb-2 font-sans font-bold'>
             {isLoading
               ? `${EMOJI.FIRE}...`
               : isError || !data
-              ? '0'
-              : numberTransfer(data.cheerCount)}
+                ? '0'
+                : numberTransfer(data.cheerCount)}
           </span>
         </div>
       </CustomOverlayMap>

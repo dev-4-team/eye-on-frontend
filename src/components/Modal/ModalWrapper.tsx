@@ -31,7 +31,8 @@ const ModalWrapper = ({ children }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4/5 max-w-lg bg-white rounded-lg shadow-lg overflow-y-auto'>
+      <DialogContent className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-md sm:max-w-lg bg-white rounded-lg shadow-lg overflow-y-auto h-auto '>
+        {/* <DialogContent className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4/5 max-w-lg bg-white rounded-lg shadow-lg overflow-y-auto'> */}
         <DialogHeader className='hidden'>
           <DialogTitle>Protest detail dialog</DialogTitle>
           <DialogDescription>Protest detail dialog</DialogDescription>

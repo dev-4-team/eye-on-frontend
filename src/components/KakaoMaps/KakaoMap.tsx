@@ -10,8 +10,8 @@ import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
 import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
 import CurrentLocationButton from '@/components/Button/CurrentLocationButton';
 import CurrentLocationRestButton from '@/components/Button/CurrentLocationRestButton';
-import { Protest } from '@/types/protest';
-import { Coordinate } from '@/types/kakaoMap';
+import type { Protest } from '@/types/protest';
+import type { Coordinate } from '@/types/kakaoMap';
 import { useHeatMap } from '@/hooks/useHeatMap';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
@@ -37,6 +37,7 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
   const router = useRouter();
   const { routesData } = useNavigationRoutes({ protests });
   useHeatMap({ mapInstance, protests });
+  const filteredProtests = protests.filter(p => p.locations?.length > 0);
 
   const onGpsButtonClick = () => {
     if (!mapInstance) return;
@@ -141,9 +142,13 @@ const KakaoMap = ({ latitude, longitude, w, h, l, protests }: Props) => {
           />
         )}
         {currentLevel < CLUSTER_MIN_LEVEL && (
-          <ProtestMapMarkerList protests={protests} mapInstance={mapInstance!} router={router} />
+          <ProtestMapMarkerList
+            protests={filteredProtests}
+            mapInstance={mapInstance!}
+            router={router}
+          />
         )}
-        <KakaoMapClusterer protests={protests} />
+        <KakaoMapClusterer protests={filteredProtests} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />
       </Map>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { MdArrowOutward } from 'react-icons/md';
-import { Protest } from '@/types/protest';
+import type { Protest } from '@/types/protest';
 
 const ProtestCard = ({ id, title, description, locations }: Protest) => {
   return (

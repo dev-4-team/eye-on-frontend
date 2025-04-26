@@ -9,7 +9,7 @@ import {
 import { GiHamburgerMenu } from 'react-icons/gi';
 import ProtestCard from '@/components/Protest/ProtestCard';
 import { getProtestList } from '@/api/protest';
-import { Protest } from '@/types/protest';
+import type { Protest } from '@/types/protest';
 
 const ProtestList = async () => {
   const protests = await getProtestList();
@@ -22,9 +22,7 @@ const ProtestList = async () => {
         <SheetHeader className='gap-1'>
           <SheetTitle className='hidden'>ProtestList</SheetTitle>
           <SheetDescription className='hidden'>ProtestList</SheetDescription>
-          {protests?.map((protest: Protest, idx: number) => (
-            <ProtestCard key={idx} {...protest} />
-          ))}
+          {protests?.map((protest: Protest, idx: number) => <ProtestCard key={idx} {...protest} />)}
         </SheetHeader>
       </SheetContent>
     </Sheet>
