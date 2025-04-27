@@ -9,10 +9,18 @@ interface Props {
 
 const MarkdownWrapper = ({ content }: Props) => {
   return (
-    <div className='px-2 py-2 shadow-md mx-auto rounded-md w-[85%] min-w-[240px] flex items-center justify-center'>
+    <div className='shadow-md mx-auto rounded-md w-[90%] sm:w-[85%] min-w-[240px] flex items-center justify-center'>
       <MarkdownPreview
         source={content}
-        style={{ backgroundColor: 'white', color: 'black', fontSize: '12px', width: '100%' }}
+        style={{
+          backgroundColor: 'white',
+          color: 'black',
+          width: '100%',
+          overflowWrap: 'break-word',
+          wordBreak: 'break-word',
+          fontSize: '	0.8rem',
+        }}
+        className='overflow-hidden md:text-base p-2 sm:w-[85%] text-zinc-600 '
       />
     </div>
   );
