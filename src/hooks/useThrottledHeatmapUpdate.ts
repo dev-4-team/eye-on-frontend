@@ -72,23 +72,33 @@ export const useThrottledHeatmapUpdate = ({
     }
   }, [heatmapInstance, mapInstance, updateHeatmap]);
 
+  const handleHideHeatmap = useCallback(() => {
+    if (!heatmapInstance) return;
+    heatmapInstance._renderer.canvas.style.opacity = '0';
+  }, [heatmapInstance]);
+
+  const handleShowHeatmap = useCallback(() => {
+    if (!mapInstance || !heatmapInstance) return;
+    const level = mapInstance.getLevel();
+    if (level > 10) {
+      heatmapInstance._renderer.canvas.style.opacity = '0';
+    } else {
+      heatmapInstance._renderer.canvas.style.opacity = '1';
+    }
+  }, [mapInstance, heatmapInstance]);
+
   useEffect(() => {
     if (!mapInstance || !heatmapInstance) return;
 
     kakao.maps.event.addListener(mapInstance, 'center_changed', throttledUpdate);
-    kakao.maps.event.addListener(mapInstance, 'zoom_start', () => {
-      // zoom시 히트맵 숨김
-      heatmapInstance._renderer.canvas.style.opacity = '0';
-    });
-    kakao.maps.event.addListener(mapInstance, 'zoom_changed', () => {
-      heatmapInstance._renderer.canvas.style.opacity = '1';
-    });
+    kakao.maps.event.addListener(mapInstance, 'zoom_start', handleHideHeatmap);
+    kakao.maps.event.addListener(mapInstance, 'zoom_changed', handleShowHeatmap);
     kakao.maps.event.addListener(mapInstance, 'drag', throttledUpdate);
 
     return () => {
       kakao.maps.event.removeListener(mapInstance, 'center_changed', throttledUpdate);
-      kakao.maps.event.removeListener(mapInstance, 'zoom_start', throttledUpdate);
-      kakao.maps.event.removeListener(mapInstance, 'zoom_changed', throttledUpdate);
+      kakao.maps.event.removeListener(mapInstance, 'zoom_start', handleHideHeatmap);
+      kakao.maps.event.removeListener(mapInstance, 'zoom_changed', handleShowHeatmap);
       kakao.maps.event.removeListener(mapInstance, 'drag', throttledUpdate);
 
       if (animationFrameRef.current) {
@@ -96,5 +106,5 @@ export const useThrottledHeatmapUpdate = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [mapInstance, heatmapInstance, throttledUpdate]);
+  }, [mapInstance, heatmapInstance, throttledUpdate, handleHideHeatmap, handleShowHeatmap]); // eslint-disable-line react-hooks/exhaustive-deps
 };
