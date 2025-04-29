@@ -76,23 +76,25 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const endTime = formatDate(endDateTime);
 
   return (
-    <section className='flex flex-col px-2 w-full h-full'>
-      <div className='w-full flex justify-between items-center bg-white px-6 py-4 shadow-md'>
-        <h1 className='text-[#D44646] px-2 text-lg sm:text-xl font-bold'>{title}</h1>
+    <section className='flex flex-col'>
+      <div className='flex justify-between items-center bg-white px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-md'>
+        <h1 className='text-[#D44646] text-base sm:text-base md:text-lg lg:text-xl font-bold break-words px-2'>
+          {title}
+        </h1>
         <div className='flex items-center'>
           <ProtestShareButton className='bg-red-500 border-none text-white px-2 py-2 rounded-md hover:bg-red-600 transition-colors' />
         </div>
       </div>
 
-      <div className='flex flex-col flex-grow gap-3 py-5 items-center justify-center'>
-        <h2 className='mx-auto mb-1 font-bold w-[85%] min-w-[240px] text-zinc-600 text-lx'>
+      <div className='flex flex-col flex-grow gap-2 sm:gap-3 py-3 sm:py-4 md:py-5 items-center justify-center'>
+        <h2 className='mx-auto mb-1 font-bold w-[90%] sm:w-[85%] text-zinc-600 text-base sm:text-sm md:text-base'>
           오늘의 집회 및 시위 일정
         </h2>
-        <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>시위정보</p>
+        <p className='mx-auto w-[90%] sm:w-[85%] text-zinc-600 text-sm'>시위정보</p>
         <MarkdownWrapper content={description || ''} />
         <ProtestDetailInfo name='시작 일시' info={startTime} />
         <ProtestDetailInfo name='종료 일시' info={endTime} />
-        <p className='mx-auto mb-1 w-[85%] min-w-[240px] text-zinc-600 text-xs'>주최자</p>
+        <p className='mx-auto  w-[90%] sm:w-[85%] text-zinc-600 text-sm'>주최자</p>
         <MarkdownWrapper content={organizer} />
         <ProtestDetailInfo
           name='예상 참가 인원'
@@ -111,7 +113,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             />
           </div>
         )}
-        <div className='flex items-center justify-center gap-2'>
+        <div className='flex items-center justify-center gap-2 mt-2'>
           <ProtestDetailCheer protestId={paramId} />
           <Verification paramId={paramId} />
         </div>
