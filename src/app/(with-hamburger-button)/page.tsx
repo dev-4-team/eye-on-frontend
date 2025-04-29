@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   keywords,
 };
 
+export const revalidate = 3600;
+
 export default async function Home() {
   const protests = await getProtestList();
   const latitude = SEOUL_CENTER_LATITUDE;
