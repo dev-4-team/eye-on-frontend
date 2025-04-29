@@ -38,7 +38,6 @@ export default function RootLayout({
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&autoload=false&libraries=clusterer`}
           strategy='beforeInteractive'
         />
-        <Script strategy='lazyOnload' src='https://unpkg.com/heatmap.js' />
         <TanStackProvider>
           <main>{children}</main>
           {modal}
