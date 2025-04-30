@@ -1,5 +1,4 @@
 import { throttle } from '@/lib/utils';
-import { shouldRenderHeatmap } from '@/lib/heatmap';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { type Protest } from '@/types/protest';
 
@@ -26,27 +25,27 @@ export const useThrottledHeatmapUpdate = ({
     const bounds = mapInstance.getBounds(); // 현재 눈에 보이는 뷰포트 기준 사각형
 
     const heatmapData = protests
+      .filter(protest => protest.locations && protest.locations.length > 0)
       .map(protest => {
         const location = protest.locations[0];
         if (!location) return null;
         const latLng = new window.kakao.maps.LatLng(location.latitude, location.longitude); // 시위 위치의 위 경도를 LatLng 객체로 변환
 
+        if (!bounds.contain(latLng)) return null; // 현재 뷰포트에 포함되지 않는다면 null 리턴
+
         const pixel = projection.pointFromCoords(latLng);
+        const swPixel = projection.pointFromCoords(bounds.getSouthWest());
+        const nePixel = projection.pointFromCoords(bounds.getNorthEast());
 
         return {
           // 왼쪽 위 (0,0) 기준 위경도를 픽셀좌표로 바꾸어
-          x: pixel.x - projection.pointFromCoords(bounds.getSouthWest()).x, // 연산 지도 좌하단에서 얼마나 떨어졌는지
-          y: pixel.y - projection.pointFromCoords(bounds.getNorthEast()).y, // 지도 우상단에서 얼마나 떨어졌는지
+          x: pixel.x - swPixel.x, // 연산 지도 좌하단에서 얼마나 떨어졌는지
+          y: pixel.y - nePixel.y, // 지도 우상단에서 얼마나 떨어졌는지
           value: protest.declaredParticipants,
-          radius: protest.radius / realXDistance,
+          radius: Math.max(10, (protest.radius || 50) / realXDistance), // 최소 범위를 10으로 보장한다
         }; // 히트맵 용 {x, y, value, radius}
       })
       .filter(Boolean); // 혹여 null, undefined 제거
-
-    if (!shouldRenderHeatmap({ mapInstance, heatmapInstance })) {
-      console.warn('heatmap hide!');
-      return;
-    }
 
     heatmapInstance.setData({
       max: 10000,
