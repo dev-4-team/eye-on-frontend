@@ -77,14 +77,9 @@ export const useThrottledHeatmapUpdate = ({
   }, [heatmapInstance]);
 
   const handleShowHeatmap = useCallback(() => {
-    if (!mapInstance || !heatmapInstance) return;
-    const level = mapInstance.getLevel();
-    if (level > 10) {
-      heatmapInstance._renderer.canvas.style.opacity = '0';
-    } else {
-      heatmapInstance._renderer.canvas.style.opacity = '1';
-    }
-  }, [mapInstance, heatmapInstance]);
+    if (!heatmapInstance) return;
+    heatmapInstance._renderer.canvas.style.opacity = '1';
+  }, [heatmapInstance]);
 
   useEffect(() => {
     if (!mapInstance || !heatmapInstance) return;
@@ -105,5 +100,5 @@ export const useThrottledHeatmapUpdate = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [mapInstance, heatmapInstance, throttledUpdate, handleHideHeatmap, handleShowHeatmap]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [mapInstance, heatmapInstance, throttledUpdate, handleHideHeatmap, handleShowHeatmap]);
 };
