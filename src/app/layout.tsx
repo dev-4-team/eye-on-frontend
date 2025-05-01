@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
@@ -24,8 +23,6 @@ export default function RootLayout({
   children: ReactNode;
   modal: ReactNode;
 }>) {
-  const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
-
   return (
     <html lang='kr'>
       <body>
@@ -34,10 +31,6 @@ export default function RootLayout({
         )}
 
         <Header />
-        <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&autoload=false&libraries=clusterer`}
-          strategy='beforeInteractive'
-        />
         <TanStackProvider>
           <main>{children}</main>
           {modal}
