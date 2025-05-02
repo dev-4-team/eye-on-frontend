@@ -1,13 +1,13 @@
 export interface Protest {
   id: string;
   title: string;
-  description: string | null;
+  description: string;
   organizer: string;
+  radius: number;
   startDateTime: string;
   endDateTime: string;
   declaredParticipants: number;
   locations: ProtestLocation[];
-  radius: number;
 }
 
 export interface ProtestLocation {
