@@ -40,17 +40,5 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function Home() {
-  const protests = await getProtestList();
-  const latitude = SEOUL_CENTER_LATITUDE;
-  const longitude = SEOUL_CENTER_LONGITUDE;
-  return (
-    <KakaoMap
-      latitude={latitude}
-      longitude={longitude}
-      w='100%'
-      h='calc(100dvh - 14vh)'
-      l={8}
-      protests={protests}
-    />
-  );
+  return <KakaoMap />;
 }

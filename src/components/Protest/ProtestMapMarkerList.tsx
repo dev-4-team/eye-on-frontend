@@ -1,10 +1,11 @@
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
 import type { Protest } from '@/types/protest';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface Props {
   protests: Protest[];
   mapInstance: kakao.maps.Map;
-  router: any;
+  router: AppRouterInstance;
 }
 
 const ProtestMapMarkerList = ({ protests, mapInstance, router }: Props) => {
