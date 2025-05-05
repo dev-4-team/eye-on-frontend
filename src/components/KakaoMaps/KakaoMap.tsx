@@ -2,26 +2,27 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import { toast } from 'sonner';
 import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
+import CurrentMapMarker from '@/components/KakaoMaps/CurrentMapMarker';
 import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer';
 import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
 import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
 import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
+import CurrentLocationControls from '@/components/KakaoMaps/MapControls';
 import type { Protest } from '@/types/protest';
 import type { Coordinate } from '@/types/kakaoMap';
 import { useHeatMap } from '@/hooks/useHeatMap';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
-import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig';
 import {
   INITIAL_MAP_CENTER,
   INITIAL_ZOOM_LEVEL,
   SEOUL_CENTER_LATITUDE,
   SEOUL_CENTER_LONGITUDE,
 } from '@/constants/map';
-import CurrentLocationControls from '@/components/KakaoMaps/MapControls';
+import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig';
 
 interface Props {
   protests: Protest[];
@@ -30,10 +31,10 @@ interface Props {
 const KakaoMap = ({ protests }: Props) => {
   const { mapIsLoading, mapIsError } = useKakaoLoader();
   const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
-  const [currentLevel, setCurrentLevel] = useState<number>(0);
+  const [currentZoomLevel, setCurrentZoomLevel] = useState<number>(0);
   const [currentPositionMarker, setCurrentPositionMarker] = useState<Coordinate | null>(null);
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const [isMapDragging, setIsMapDragging] = useState(false);
   const router = useRouter();
   const { routesData } = useNavigationRoutes({ protests });
   useHeatMap({ mapInstance, protests });
@@ -104,11 +105,11 @@ const KakaoMap = ({ protests }: Props) => {
   };
 
   const handleDragStart = () => {
-    setIsDragging(true);
+    setIsMapDragging(true);
   };
 
   const handleDragEnd = () => {
-    setIsDragging(false);
+    setIsMapDragging(false);
   };
 
   if (mapIsLoading || !routesData) return <MapLoadingFallback />;
@@ -132,22 +133,22 @@ const KakaoMap = ({ protests }: Props) => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onZoomChanged={map => {
-          setCurrentLevel(map.getLevel());
+          setCurrentZoomLevel(map.getLevel());
         }}
       >
-        {currentLevel <= 8 && !isDragging && <NavigationRouteLines routeData={routesData} />}
-        {currentPositionMarker && (
-          <MapMarker
-            position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }}
-          />
-        )}
-        {currentLevel < CLUSTER_MIN_LEVEL && (
-          <ProtestMapMarkerList
-            protests={filteredProtests}
-            mapInstance={mapInstance!}
-            router={router}
-          />
-        )}
+        <NavigationRouteLines
+          routeData={routesData}
+          currentZoomLevel={currentZoomLevel}
+          mapIsDragging={isMapDragging}
+        />
+        <CurrentMapMarker currentPositionMarker={currentPositionMarker} />
+        <ProtestMapMarkerList
+          currentZoomLevel={currentZoomLevel}
+          clusterMinLevel={CLUSTER_MIN_LEVEL}
+          protests={filteredProtests}
+          mapInstance={mapInstance!}
+          router={router}
+        />
         <KakaoMapClusterer protests={filteredProtests} />
         <MapTypeControl position={'TOPLEFT'} />
         <ZoomControl position={'LEFT'} />

@@ -3,9 +3,12 @@ import type { RouteData } from '@/types/naverRoute';
 import { generateColorFromIndex } from '@/lib/utils';
 
 interface Props {
+  currentZoomLevel: number;
+  mapIsDragging: boolean;
   routeData: RouteData[];
 }
-const NavigationRouteLines = ({ routeData }: Props) => {
+const NavigationRouteLines = ({ currentZoomLevel, mapIsDragging, routeData }: Props) => {
+  if (currentZoomLevel > 8 && !mapIsDragging) return null;
   return routeData.map((data: RouteData, index: number) => (
     <Polyline
       key={index}
