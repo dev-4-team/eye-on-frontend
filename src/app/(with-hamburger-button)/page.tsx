@@ -38,6 +38,6 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const protests = await getProtestList();
-
-  return <KakaoMap protests={protests} />;
+  const filteredProtests = protests.filter(p => p.locations?.length > 0);
+  return <KakaoMap protests={filteredProtests} />;
 }
