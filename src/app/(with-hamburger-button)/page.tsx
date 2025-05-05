@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import KakaoMap from '@/components/KakaoMaps/KakaoMap';
 import { getProtestList } from '@/api/protest';
-import { SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE } from '@/constants/map';
 
 const keywords = [
   '집회',
@@ -37,8 +36,8 @@ export const metadata: Metadata = {
   keywords,
 };
 
-export const revalidate = 3600;
-
 export default async function Home() {
-  return <KakaoMap />;
+  const protests = await getProtestList();
+
+  return <KakaoMap protests={protests} />;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import { toast } from 'sonner';
@@ -16,7 +16,6 @@ import type { Coordinate } from '@/types/kakaoMap';
 import { useHeatMap } from '@/hooks/useHeatMap';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
 import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
-import { getProtestList } from '@/api/protest';
 import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig';
 import {
   INITIAL_MAP_CENTER,
@@ -24,8 +23,12 @@ import {
   SEOUL_CENTER_LATITUDE,
   SEOUL_CENTER_LONGITUDE,
 } from '@/constants/map';
-const KakaoMap = () => {
-  const [protests, setProtests] = useState<Protest[]>([]);
+
+interface Props {
+  protests: Protest[];
+}
+
+const KakaoMap = ({ protests }: Props) => {
   const [loading, error] = useKakaoLoader();
   const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
@@ -36,13 +39,6 @@ const KakaoMap = () => {
   const { routesData } = useNavigationRoutes({ protests });
   useHeatMap({ mapInstance, protests });
   const filteredProtests = protests.filter(p => p.locations?.length > 0);
-  useEffect(() => {
-    const fetchProtests = async () => {
-      const protests = await getProtestList();
-      setProtests(protests);
-    };
-    fetchProtests();
-  }, []);
 
   const onGpsButtonClick = () => {
     if (!mapInstance) return;
