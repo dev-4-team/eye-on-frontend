@@ -9,5 +9,5 @@ export default function useKakaoLoader() {
     libraries: ['clusterer', 'drawing', 'services'],
   });
 
-  return [loading, error];
+  return { mapIsLoading: loading, mapIsError: error };
 }
