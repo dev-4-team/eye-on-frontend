@@ -8,7 +8,7 @@ interface Props {
 const CurrentMapMarker = ({ currentPositionMarker }: Props) => {
   if (!currentPositionMarker) return null;
   return (
-    <MapMarker position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.long }} />
+    <MapMarker position={{ lat: currentPositionMarker.lat, lng: currentPositionMarker.lng }} />
   );
 };
 export default CurrentMapMarker;
