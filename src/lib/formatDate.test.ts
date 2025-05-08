@@ -1,33 +1,23 @@
 import { formatDate } from '@/lib/utils';
 
-describe('formatDate toEqual test', () => {
-  test('should return correct format for Monday', () => {
-    const testDate = new Date(2025, 5, 2).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 2일 월요일 0시 0분');
-  });
-  test('should return correct format for Tuesday', () => {
-    const testDate = new Date(2025, 5, 3).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 3일 화요일 0시 0분');
-  });
-  test('should return correct format for Wednesday', () => {
-    const testDate = new Date(2025, 5, 4).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 4일 수요일 0시 0분');
-  });
-  test('should return correct format for Thursday', () => {
-    const testDate = new Date(2025, 5, 5).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 5일 목요일 0시 0분');
-  });
-  test('should return correct format for Friday', () => {
-    const testDate = new Date(2025, 5, 6).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 6일 금요일 0시 0분');
-  });
-  test('should return correct format for Saturday', () => {
-    const testDate = new Date(2025, 5, 7).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 7일 토요일 0시 0분');
-  });
-  test('should return correct format for Sunday', () => {
-    const testDate = new Date(2025, 5, 8).toISOString();
-    expect(formatDate(testDate)).toEqual('6월 8일 일요일 0시 0분');
+describe('formatDate full format test', () => {
+  const cases = [
+    ['2025-06-02', '6월 2일 월요일 0시 0분'],
+    ['2025-06-03', '6월 3일 화요일 0시 0분'],
+    ['2025-06-04', '6월 4일 수요일 0시 0분'],
+    ['2025-06-05', '6월 5일 목요일 0시 0분'],
+    ['2025-06-06', '6월 6일 금요일 0시 0분'],
+    ['2025-06-07', '6월 7일 토요일 0시 0분'],
+    ['2025-06-08', '6월 8일 일요일 0시 0분'],
+  ];
+
+  test.each(cases)('should return "%s" -> %s', (dateString, expected) => {
+    const list = dateString.split('-');
+    const year = Number(list[0]);
+    const month = Number(list[1]);
+    const day = Number(list[2]);
+    const isoDate = new Date(year, month - 1, day).toISOString();
+    expect(formatDate(isoDate)).toBe(expected);
   });
 });
 
