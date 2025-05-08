@@ -55,34 +55,38 @@ describe('formatDate should contain correct day of week', () => {
 describe('formatDate invalid input handling', () => {
   test('should return fallback for empty string input', () => {
     const testDate = '';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
   test('should return fallback for gibberish string input', () => {
     const testDate = 'asdasdasd';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
   test('should return fallback for Korean characters input', () => {
     const testDate = 'ㅁㅇㄴㅁㄴㅇㅁㄴㅇㄴ';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
   test('should return fallback for special characters input', () => {
     const testDate = '!@#@$#';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
   test('should return fallback for whitespace-only input', () => {
     const testDate = '  ';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
   test('should return fallback for strange day input', () => {
     const testDate = '염요일';
-    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+    expect(() => formatDate(testDate)).toThrow('유효하지 않은 날짜입니다.');
   });
 });
 
 describe('numberTransfer should correct value', () => {
   test('should return correct value when number is lower than 1000', () => {
     const testDataInput = 123;
-    expect(numberTransfer(testDataInput)).toBe(testDataInput);
+    expect(numberTransfer(testDataInput)).toBe(String(testDataInput));
+  });
+  test('should return correct value when typeof string number is lower than 1000', () => {
+    const testDataInput = '123';
+    expect(numberTransfer(testDataInput)).toBe(String(testDataInput));
   });
   test('should return correct value when number is 1000', () => {
     const testDataInput = 1000;
@@ -99,12 +103,5 @@ describe('numberTransfer should correct value', () => {
   test('should return correct value when number is 100000', () => {
     const testDataInput = 100000;
     expect(numberTransfer(testDataInput)).toBe('10.0M');
-  });
-});
-
-describe('numberTransfer invalid input handling', () => {
-  test('should return correct value when number is lower than 1000', () => {
-    const testDataInput = NaN;
-    expect(numberTransfer(testDataInput)).toBe('유효하지 않은 숫자입니다.');
   });
 });

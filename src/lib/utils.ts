@@ -46,11 +46,12 @@ export const generateColorFromIndex = (index: number): string => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-export const numberTransfer = (number: number): string => {
-  if (typeof number !== 'number' || isNaN(number)) throw new Error('유효하지 않은 숫자입니다.');
-  if (number < 1000) return String(number);
-  else if (number < 10000) return `${(number / 1000).toFixed(1)}k`;
-  else return `${(number / 10000).toFixed(1)}M`;
+export const numberTransfer = (input: number | string): string => {
+  input = Number(input);
+  if (typeof input !== 'number' || isNaN(input)) throw new Error('유효하지 않은 숫자입니다.');
+  if (input < 1000) return String(input);
+  else if (input < 10000) return `${(input / 1000).toFixed(1)}k`;
+  else return `${(input / 10000).toFixed(1)}M`;
 };
 
 export const withSafe = <TArg, TResult>({
