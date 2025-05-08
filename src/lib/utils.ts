@@ -47,8 +47,10 @@ export const generateColorFromIndex = (index: number): string => {
 };
 
 export const numberTransfer = (input: number | string): string => {
+  if (typeof input == 'string' && input.trim().length === 0)
+    throw new Error('유효하지 않은 숫자입니다.');
+  if (isNaN(Number(input))) throw new Error('유효하지 않은 숫자입니다.');
   input = Number(input);
-  if (typeof input !== 'number' || isNaN(input)) throw new Error('유효하지 않은 숫자입니다.');
   if (input < 1000) return String(input);
   else if (input < 10000) return `${(input / 1000).toFixed(1)}k`;
   else return `${(input / 10000).toFixed(1)}M`;

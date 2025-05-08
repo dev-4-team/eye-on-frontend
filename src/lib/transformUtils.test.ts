@@ -105,3 +105,22 @@ describe('numberTransfer should correct value', () => {
     expect(numberTransfer(testDataInput)).toBe('10.0M');
   });
 });
+
+describe('numberTransfer invalid input handling', () => {
+  test('should return fallback for empty string input', () => {
+    const testDataInput = '';
+    expect(() => numberTransfer(testDataInput)).toThrow('유효하지 않은 숫자입니다.');
+  });
+  test('should return fallback for space string input', () => {
+    const testDataInput = '  ';
+    expect(() => numberTransfer(testDataInput)).toThrow('유효하지 않은 숫자입니다.');
+  });
+  test('should return fallback for gibberish string input', () => {
+    const testDataInput = 'asdasdasd';
+    expect(() => numberTransfer(testDataInput)).toThrow('유효하지 않은 숫자입니다.');
+  });
+  test('should return fallback for special character input', () => {
+    const testDataInput = '@#!#*';
+    expect(() => numberTransfer(testDataInput)).toThrow('유효하지 않은 숫자입니다.');
+  });
+});
