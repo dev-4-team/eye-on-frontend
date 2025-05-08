@@ -1,6 +1,6 @@
 import { formatDate } from '@/lib/utils';
 
-describe('testing formatDate toEqual', () => {
+describe('formatDate toEqual test', () => {
   test('correctly return monday', () => {
     const testDate = new Date(2025, 5, 2).toISOString();
     expect(formatDate(testDate)).toEqual('6월 2일 월요일 0시 0분');
@@ -31,7 +31,7 @@ describe('testing formatDate toEqual', () => {
   });
 });
 
-describe('testing formatDate correctly contain day of week', () => {
+describe('formatDate correctly contain day of week test', () => {
   test('return correctly contain monday', () => {
     const testDate = new Date(2025, 5, 2).toISOString();
     expect(formatDate(testDate)).toMatch('월요일');
@@ -59,5 +59,12 @@ describe('testing formatDate correctly contain day of week', () => {
   test('return correctly contain sunday', () => {
     const testDate = new Date(2025, 5, 8).toISOString();
     expect(formatDate(testDate)).toMatch('일요일');
+  });
+});
+
+describe('exception test', () => {
+  test('', () => {
+    const testDate = '';
+    expect(formatDate(testDate)).toMatch('월요일');
   });
 });

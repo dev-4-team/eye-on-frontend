@@ -11,7 +11,7 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
-
+  if (isNaN(date.getTime())) return '유효하지 않은 날짜';
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
