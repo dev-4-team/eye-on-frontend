@@ -11,7 +11,7 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
-  if (isNaN(date.getTime())) return '유효하지 않은 날짜';
+  if (isNaN(date.getTime())) return '유효하지 않은 날짜입니다.';
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
@@ -47,6 +47,7 @@ export const generateColorFromIndex = (index: number): string => {
 };
 
 export const numberTransfer = (number: number) => {
+  if (typeof number !== 'number' || isNaN(number)) return '유효하지 않은 숫자입니다.';
   if (number < 1000) return number;
   else if (number < 10000) return `${(number / 1000).toFixed(1)}k`;
   else return `${(number / 10000).toFixed(1)}M`;

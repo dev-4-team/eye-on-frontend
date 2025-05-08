@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/utils';
+import { formatDate, numberTransfer } from '@/lib/utils';
 
 describe('formatDate full format test', () => {
   const cases = [
@@ -76,5 +76,28 @@ describe('formatDate invalid input handling', () => {
   test('should return fallback for strange day input', () => {
     const testDate = '염요일';
     expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+  });
+});
+
+describe('numberTransfer should correct value', () => {
+  test('should return correct value when number is lower than 1000', () => {
+    const testDataInput = 123;
+    expect(numberTransfer(testDataInput)).toBe(testDataInput);
+  });
+  test('should return correct value when number is 1000', () => {
+    const testDataInput = 1000;
+    expect(numberTransfer(testDataInput)).toBe('1.0k');
+  });
+  test('should return correct value when number is 1200', () => {
+    const testDataInput = 1233;
+    expect(numberTransfer(testDataInput)).toBe('1.2k');
+  });
+  test('should return correct value when number is 10000', () => {
+    const testDataInput = 10000;
+    expect(numberTransfer(testDataInput)).toBe('1.0M');
+  });
+  test('should return correct value when number is 100000', () => {
+    const testDataInput = 100000;
+    expect(numberTransfer(testDataInput)).toBe('10.0M');
   });
 });
