@@ -83,4 +83,8 @@ describe('formatDate invalid input handling', () => {
     const testDate = '  ';
     expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
   });
+  test('should return fallback for strange day input', () => {
+    const testDate = '염요일';
+    expect(formatDate(testDate)).toMatch('유효하지 않은 날짜');
+  });
 });
