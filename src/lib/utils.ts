@@ -47,13 +47,9 @@ export const generateColorFromIndex = (index: number): string => {
 };
 
 export const numberTransfer = (number: number) => {
-  if (number < 1000) {
-    return number;
-  } else if (number < 10000) {
-    return `${(number / 1000).toFixed(1)}k`;
-  } else {
-    return `${(number / 10000).toFixed(1)}M`;
-  }
+  if (number < 1000) return number;
+  else if (number < 10000) return `${(number / 1000).toFixed(1)}k`;
+  else return `${(number / 10000).toFixed(1)}M`;
 };
 
 export const throttle = <T extends (...args: any[]) => void>(fn: T, delay: number): T => {
