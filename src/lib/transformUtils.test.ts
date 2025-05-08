@@ -101,3 +101,10 @@ describe('numberTransfer should correct value', () => {
     expect(numberTransfer(testDataInput)).toBe('10.0M');
   });
 });
+
+describe('numberTransfer invalid input handling', () => {
+  test('should return correct value when number is lower than 1000', () => {
+    const testDataInput = NaN;
+    expect(numberTransfer(testDataInput)).toBe('유효하지 않은 숫자입니다.');
+  });
+});

@@ -24,7 +24,14 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     }
     router.push(`/protest/${id}`);
   };
-
+  const safeNumberTransfer = (input: unknown) => {
+    try {
+      return numberTransfer(input as number);
+    } catch (e) {
+      console.error('numberTransfer 에러', e);
+      return '0';
+    }
+  };
   if (!location) {
     // TODO: 위치 정보가 없는 경우에 대한 예외 처리 (예: 로그, fallback UI 등)
     return null;
@@ -48,7 +55,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
               ? `${EMOJI.FIRE}...`
               : isError || !data
                 ? '0'
-                : numberTransfer(data.cheerCount)}
+                : safeNumberTransfer(data.cheerCount)}
           </span>
         </div>
       </CustomOverlayMap>

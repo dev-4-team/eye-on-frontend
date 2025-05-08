@@ -72,8 +72,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     locations,
   } = protest;
 
-  const startTime = formatDate(startDateTime);
-  const endTime = formatDate(endDateTime);
+  const safeNumberToDayTransfer = (input: unknown) => {
+    try {
+      return formatDate(input as string);
+    } catch (e) {
+      console.error('formatDate 에러', e);
+      return '유효하지 않은 날짜입니다.';
+    }
+  };
 
   return (
     <section className='flex flex-col'>
@@ -92,8 +98,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </h2>
         <p className='mx-auto w-[90%] sm:w-[85%] text-zinc-600 text-sm'>시위정보</p>
         <MarkdownWrapper content={description || ''} />
-        <ProtestDetailInfo name='시작 일시' info={startTime} />
-        <ProtestDetailInfo name='종료 일시' info={endTime} />
+        <ProtestDetailInfo
+          name='시작 일시'
+          info={safeNumberToDayTransfer(startDateTime) as string}
+        />
+        <ProtestDetailInfo name='종료 일시' info={safeNumberToDayTransfer(endDateTime) as string} />
         <p className='mx-auto  w-[90%] sm:w-[85%] text-zinc-600 text-sm'>주최자</p>
         <MarkdownWrapper content={organizer} />
         <ProtestDetailInfo
