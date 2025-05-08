@@ -5,7 +5,7 @@ import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
 import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
 import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
 import ProtestShareButton from '@/components/Protest/ProtestShareButton';
-import { formatDate } from '@/lib/utils';
+import { formatDate, withSafe } from '@/lib/utils';
 import { getProtestDetail, getProtestList } from '@/api/protest';
 
 export async function generateStaticParams() {
@@ -72,15 +72,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     locations,
   } = protest;
 
-  const safeNumberToDayTransfer = (input: unknown) => {
-    try {
-      return formatDate(input as string);
-    } catch (e) {
-      console.error('formatDate 에러', e);
-      return '유효하지 않은 날짜입니다.';
-    }
-  };
-
   return (
     <section className='flex flex-col'>
       <div className='flex justify-between items-center bg-white px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-md'>
@@ -100,9 +91,20 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <MarkdownWrapper content={description || ''} />
         <ProtestDetailInfo
           name='시작 일시'
-          info={safeNumberToDayTransfer(startDateTime) as string}
+          info={withSafe({
+            arg: startDateTime,
+            callback: formatDate,
+            fallback: new Date().toISOString(),
+          })}
         />
-        <ProtestDetailInfo name='종료 일시' info={safeNumberToDayTransfer(endDateTime) as string} />
+        <ProtestDetailInfo
+          name='종료 일시'
+          info={withSafe({
+            arg: endDateTime,
+            callback: formatDate,
+            fallback: new Date().toISOString(),
+          })}
+        />
         <p className='mx-auto  w-[90%] sm:w-[85%] text-zinc-600 text-sm'>주최자</p>
         <MarkdownWrapper content={organizer} />
         <ProtestDetailInfo

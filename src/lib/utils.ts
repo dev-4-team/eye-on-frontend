@@ -53,6 +53,23 @@ export const numberTransfer = (number: number): string => {
   else return `${(number / 10000).toFixed(1)}M`;
 };
 
+export const withSafe = <TArg, TResult>({
+  arg,
+  callback,
+  fallback,
+}: {
+  arg: TArg;
+  callback: (arg: TArg) => TResult;
+  fallback: TResult;
+}) => {
+  try {
+    return callback(arg);
+  } catch (e) {
+    console.error(e);
+    return fallback;
+  }
+};
+
 export const throttle = <T extends (...args: any[]) => void>(fn: T, delay: number): T => {
   let lastCall = 0;
 
