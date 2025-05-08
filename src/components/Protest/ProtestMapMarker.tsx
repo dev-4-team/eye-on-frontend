@@ -1,6 +1,6 @@
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { EMOJI } from '@/constants/emojis';
-import { numberTransfer } from '@/lib/utils';
+import { numberTransfer, withSafe } from '@/lib/utils';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
 import type { Protest } from '@/types/protest';
@@ -24,7 +24,6 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     }
     router.push(`/protest/${id}`);
   };
-
   if (!location) {
     // TODO: 위치 정보가 없는 경우에 대한 예외 처리 (예: 로그, fallback UI 등)
     return null;
@@ -48,7 +47,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
               ? `${EMOJI.FIRE}...`
               : isError || !data
                 ? '0'
-                : numberTransfer(data.cheerCount)}
+                : withSafe({ arg: data.cheerCount, callback: numberTransfer, fallback: 'X' })}
           </span>
         </div>
       </CustomOverlayMap>
