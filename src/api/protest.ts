@@ -11,6 +11,7 @@ export const getProtestList = async (): Promise<Protest[]> => {
     throw new Error(response.statusText);
   }
   const data = (await response.json()) as ApiResponse<Protest[]>;
+  console.log('Protest List:', data);
   return data.data.map((protest: Protest) => ({
     ...protest,
     id: String(protest.id),
