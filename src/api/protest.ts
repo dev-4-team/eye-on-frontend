@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 export const getProtestList = async (): Promise<Protest[]> => {
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
-    next: { revalidate: 3600, tags: ['protestList'] },
+    next: { revalidate: 10, tags: ['protestList'] },
   });
   if (!response.ok) {
     throw new Error(response.statusText);

@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   keywords,
 };
 
-export const revalidate = 3600;
+export const revalidate = 10;
 
 export default async function Home() {
   console.log('🏠 Home');
