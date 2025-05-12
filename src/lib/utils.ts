@@ -11,7 +11,7 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
-
+  if (isNaN(date.getTime())) throw new Error('유효하지 않은 날짜입니다.');
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
@@ -46,13 +46,30 @@ export const generateColorFromIndex = (index: number): string => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-export const numberTransfer = (number: number) => {
-  if (number < 1000) {
-    return number;
-  } else if (number < 10000) {
-    return `${(number / 1000).toFixed(1)}k`;
-  } else {
-    return `${(number / 10000).toFixed(1)}M`;
+export const numberTransfer = (input: number | string): string => {
+  if (typeof input == 'string' && input.trim().length === 0)
+    throw new Error('유효하지 않은 숫자입니다.');
+  if (isNaN(Number(input))) throw new Error('유효하지 않은 숫자입니다.');
+  input = Number(input);
+  if (input < 1000) return String(input);
+  else if (input < 1000000) return `${(input / 1000).toFixed(1)}K`;
+  else return `${(input / 1000000).toFixed(1)}M`;
+};
+
+export const withSafe = <TArg, TResult>({
+  arg,
+  callback,
+  fallback,
+}: {
+  arg: TArg;
+  callback: (arg: TArg) => TResult;
+  fallback: TResult;
+}) => {
+  try {
+    return callback(arg);
+  } catch (e) {
+    console.error(e);
+    return fallback;
   }
 };
 
