@@ -90,19 +90,23 @@ describe('numberTransfer should correct value', () => {
   });
   test('should return correct value when number is 1000', () => {
     const testDataInput = 1000;
-    expect(numberTransfer(testDataInput)).toBe('1.0k');
+    expect(numberTransfer(testDataInput)).toBe('1.0K');
   });
   test('should return correct value when number is 1200', () => {
     const testDataInput = 1233;
-    expect(numberTransfer(testDataInput)).toBe('1.2k');
+    expect(numberTransfer(testDataInput)).toBe('1.2K');
   });
   test('should return correct value when number is 10000', () => {
     const testDataInput = 10000;
-    expect(numberTransfer(testDataInput)).toBe('1.0M');
+    expect(numberTransfer(testDataInput)).toBe('10.0K');
   });
   test('should return correct value when number is 100000', () => {
     const testDataInput = 100000;
-    expect(numberTransfer(testDataInput)).toBe('10.0M');
+    expect(numberTransfer(testDataInput)).toBe('100.0K');
+  });
+  test('should return correct value when number is 100000', () => {
+    const testDataInput = 1000000;
+    expect(numberTransfer(testDataInput)).toBe('1.0M');
   });
 });
 

@@ -52,7 +52,7 @@ export const numberTransfer = (input: number | string): string => {
   if (isNaN(Number(input))) throw new Error('유효하지 않은 숫자입니다.');
   input = Number(input);
   if (input < 1000) return String(input);
-  else if (input < 1000000) return `${(input / 1000).toFixed(1)}k`;
+  else if (input < 1000000) return `${(input / 1000).toFixed(1)}K`;
   else return `${(input / 1000000).toFixed(1)}M`;
 };
 
