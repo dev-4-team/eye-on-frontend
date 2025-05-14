@@ -1,4 +1,4 @@
-import { SERVER_URL, targetDate } from '@/lib/utils';
+import { SERVER_URL, getTargetDate } from '@/lib/utils';
 import type { ApiResponse } from '@/types/api';
 import type { VerificationNumber } from '@/types/protest';
 import { notFound } from 'next/navigation';
@@ -10,6 +10,7 @@ interface getVerificationNumberRequest {
 export const getVerificationNumber = async ({
   protestId,
 }: getVerificationNumberRequest): Promise<VerificationNumber> => {
+  const targetDate = getTargetDate();
   const response = await fetch(
     `${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=${targetDate}`,
     {

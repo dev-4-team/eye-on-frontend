@@ -2,8 +2,14 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_DEV_URL;
-export const targetDate =
-  process.env.NODE_ENV === 'development' ? '2025-03-15' : new Date().toISOString().split('T')[0];
+
+export const getTargetDate = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return '2025-03-15';
+  } else {
+    return new Date().toISOString().split('T')[0];
+  }
+};
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
