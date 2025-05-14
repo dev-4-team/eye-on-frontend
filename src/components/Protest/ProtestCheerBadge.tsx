@@ -6,9 +6,11 @@ interface Props {
   protestId: string;
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
-  const { cheerCount, cheerCountIsLoading } = useProtestCheerCount({ protestId });
+  const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
+    protestId,
+  });
   const { effect } = useCheerEffect(cheerCount);
-  if (!protestId || cheerCountIsLoading) return;
+  if (!protestId || cheerCountIsError || cheerCountIsLoading) return null;
 
   return (
     <div className='flex flex-col justify-center items-center'>
