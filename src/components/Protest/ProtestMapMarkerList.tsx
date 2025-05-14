@@ -6,7 +6,7 @@ interface ProtestMapMarkerListProps {
   currentZoomLevel: number;
   clusterMinLevel: number;
   protests: Protest[];
-  mapInstance: kakao.maps.Map;
+  mapInstance: kakao.maps.Map | null;
   router: AppRouterInstance;
 }
 
@@ -17,7 +17,7 @@ const ProtestMapMarkerList = ({
   mapInstance,
   router,
 }: ProtestMapMarkerListProps) => {
-  if (currentZoomLevel >= clusterMinLevel) return null;
+  if (currentZoomLevel >= clusterMinLevel || !mapInstance) return null;
   return (
     <>
       {protests.map(protest => (

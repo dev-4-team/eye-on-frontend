@@ -70,7 +70,7 @@ const KakaoMap = ({ protests }: Props) => {
           currentZoomLevel={currentZoomLevel}
           clusterMinLevel={CLUSTER_MIN_LEVEL}
           protests={protests}
-          mapInstance={mapInstance!}
+          mapInstance={mapInstance}
           router={router}
         />
         <KakaoMapClusterer protests={protests} />
