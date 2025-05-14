@@ -15,5 +15,5 @@ export const useProtestCheerCount = ({ protestId }: Props) => {
     refetchInterval: query => (query.state.error ? false : 3000),
     enabled: !isDetail || (isDetail && currentProtestId === String(protestId)),
   });
-  return { data: data, isLoading, isError };
+  return { cheerCount: data, cheerCountIsLoading: isLoading, cheerCountIsError: isError };
 };
