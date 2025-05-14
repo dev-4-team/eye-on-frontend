@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { EMOJI } from '@/constants/emojis';
-import { useConfetti } from '@/hooks/useConfetti';
 import { numberTransfer } from '@/lib/utils';
 import { useCheerEffect } from '@/hooks/useCheerEffect';
 import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
@@ -14,29 +13,25 @@ interface Props {
 }
 
 const ProtestDetailCheer = ({ protestId }: Props) => {
-  const { data, isLoading, isError } = useProtestCheerCount({ protestId });
-  const { effect } = useCheerEffect(data);
-  const { mutate } = useSendCheerMutation({ protestId });
-  const { getConfetti } = useConfetti();
-  const handleConffeti = () => {
-    getConfetti().addConfetti({
-      emojis: [EMOJI.FIRE, EMOJI.CHECK, EMOJI.HEART],
-      emojiSize: 80,
-      confettiNumber: 30,
-    });
+  const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
+    protestId,
+  });
+  const { effect } = useCheerEffect(cheerCount);
+  const { cheerProtest, cheerError } = useSendCheerMutation({ protestId });
+
+  const handleCheerButtonClick = () => {
+    cheerProtest();
   };
+
   return (
     <div className='flex flex-col justify-center items-center  '>
       <ProtestActionButton
-        onClick={() => {
-          handleConffeti();
-          mutate();
-        }}
-        disabled={isLoading || isError || !data}
+        onClick={handleCheerButtonClick}
+        disabled={cheerCountIsLoading || cheerCountIsError || cheerError}
       >
-        {isLoading ? (
+        {cheerCountIsLoading ? (
           <div className='animate-spin'>{EMOJI.LOADDING}</div>
-        ) : isError || !data ? (
+        ) : cheerCountIsError ? (
           <div>{EMOJI.WARNING}</div>
         ) : (
           <>
@@ -45,7 +40,9 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
             ) : (
               <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
             )}
-            <span className='text-sm text-white'>{numberTransfer(data.cheerCount)} 응원하기</span>
+            <span className='text-sm text-white'>
+              {numberTransfer(cheerCount?.cheerCount ?? 'X')} 응원하기
+            </span>
           </>
         )}
       </ProtestActionButton>

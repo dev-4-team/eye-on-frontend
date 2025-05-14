@@ -12,8 +12,10 @@ interface Props {
 }
 
 const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
-  const { data, isLoading, isError } = useProtestCheerCount({ protestId: protest.id });
-  const { effect } = useCheerEffect(data);
+  const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
+    protestId: protest.id,
+  });
+  const { effect } = useCheerEffect(cheerCount);
   const location = protest.locations[0];
 
   const onMarkerClick = (id: string, lat: number, long: number) => {
@@ -43,11 +45,11 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
         >
           {effect && <div className='absolute bottom-10'>{EMOJI.FIRE}</div>}
           <span className='text-xs pb-2 font-sans font-bold'>
-            {isLoading
+            {cheerCountIsLoading
               ? `${EMOJI.FIRE}...`
-              : isError || !data
+              : cheerCountIsError || !cheerCount
                 ? '0'
-                : withSafe({ arg: data.cheerCount, callback: numberTransfer, fallback: 'X' })}
+                : withSafe({ arg: cheerCount.cheerCount, callback: numberTransfer, fallback: 'X' })}
           </span>
         </div>
       </CustomOverlayMap>

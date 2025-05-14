@@ -22,7 +22,7 @@ const ProtestList = async () => {
         <SheetHeader className='gap-1'>
           <SheetTitle className='hidden'>ProtestList</SheetTitle>
           <SheetDescription className='hidden'>ProtestList</SheetDescription>
-          {protests?.map((protest: Protest, idx: number) => <ProtestCard key={idx} {...protest} />)}
+          {protests?.map((protest: Protest) => <ProtestCard key={protest.id} {...protest} />)}
         </SheetHeader>
       </SheetContent>
     </Sheet>

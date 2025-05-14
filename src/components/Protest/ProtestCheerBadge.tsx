@@ -6,9 +6,11 @@ interface Props {
   protestId: string;
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
-  const { data, isLoading } = useProtestCheerCount({ protestId });
-  const { effect } = useCheerEffect(data);
-  if (!protestId || isLoading) return;
+  const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
+    protestId,
+  });
+  const { effect } = useCheerEffect(cheerCount);
+  if (!protestId || cheerCountIsError || cheerCountIsLoading) return null;
 
   return (
     <div className='flex flex-col justify-center items-center'>
@@ -18,7 +20,7 @@ const ProtestCheerBadge = ({ protestId }: Props) => {
             {EMOJI.FIRE}
           </div>
         )}
-        <div>{data?.cheerCount}</div>
+        <div>{cheerCount?.cheerCount}</div>
       </>
     </div>
   );

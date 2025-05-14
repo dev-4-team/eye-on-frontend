@@ -13,7 +13,11 @@ export const useProtestCheerCount = ({ protestId }: Props) => {
     queryKey: ['cheer', protestId],
     queryFn: () => getProtestCheerCount({ protestId }),
     refetchInterval: query => (query.state.error ? false : 3000),
-    enabled: !isDetail || (isDetail && currentProtestId === String(protestId)),
+    enabled: !isDetail || (isDetail && currentProtestId === protestId),
   });
-  return { data: data, isLoading, isError };
+  return {
+    cheerCount: data,
+    cheerCountIsLoading: isLoading,
+    cheerCountIsError: isError,
+  };
 };
