@@ -1,9 +1,10 @@
-import { SERVER_URL, targetDate } from '@/lib/utils';
+import { SERVER_URL, getTargetDate } from '@/lib/utils';
 import type { ApiResponse } from '@/types/api';
 import type { Protest } from '@/types/protest';
 import { notFound } from 'next/navigation';
 
 export const getProtestList = async (): Promise<Protest[]> => {
+  const targetDate = getTargetDate();
   const response = await fetch(`${SERVER_URL}/api/protest?date=${targetDate}`, {
     next: { revalidate: 3600, tags: ['protestList'] },
   });
