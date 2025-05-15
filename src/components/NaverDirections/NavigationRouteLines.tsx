@@ -8,7 +8,7 @@ interface Props {
   routeData: RouteData[];
 }
 const NavigationRouteLines = ({ currentZoomLevel, mapIsDragging, routeData }: Props) => {
-  if (currentZoomLevel > 8 && !mapIsDragging) return null;
+  if (currentZoomLevel > 8 || mapIsDragging) return null;
   return routeData.map((data: RouteData, index: number) => (
     <Polyline
       key={index}
