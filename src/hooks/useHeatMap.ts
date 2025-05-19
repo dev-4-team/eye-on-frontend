@@ -46,7 +46,6 @@ export const useHeatMap = ({ mapInstance, protests }: Props) => {
 
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/heatmap.js';
-    script.async = true;
     script.onload = () => {
       const container = document.getElementById('map');
       if (!container) return;
