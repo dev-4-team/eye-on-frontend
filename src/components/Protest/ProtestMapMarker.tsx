@@ -16,7 +16,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
     protestId: protest.id,
   })
   const { effect } = useCheerEffect(cheerCount)
-  const location = protest.locations[0]
+  const location = protest.locations?.[0]
 
   const onMarkerClick = (id: string, lat: number, long: number) => {
     if (mapInstance) {

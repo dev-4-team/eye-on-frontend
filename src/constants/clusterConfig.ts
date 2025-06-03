@@ -1,4 +1,4 @@
-export const clusterCalculator = [5, 10, 15];
+export const clusterCalculator = [5, 10, 15]
 export const clusterStyles = [
   {
     width: '30px',
@@ -17,6 +17,7 @@ export const clusterStyles = [
     height: '40px',
     background: 'rgba(255, 165, 0, 0.8)',
     border: '2px solid white',
+    borderRadius: '50%',
     color: '#fff',
     fontWeight: 'bold',
     fontSize: '14px',
@@ -35,6 +36,6 @@ export const clusterStyles = [
     textAlign: 'center',
     lineHeight: '50px',
   },
-];
+]
 
-export const CLUSTER_MIN_LEVEL = 11;
+export const CLUSTER_MIN_LEVEL = 11
