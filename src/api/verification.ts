@@ -1,57 +1,57 @@
-import { SERVER_URL, getTargetDate } from '@/lib/utils';
-import type { ApiResponse } from '@/types/api';
-import type { VerificationNumber } from '@/types/protest';
-import { notFound } from 'next/navigation';
+import { SERVER_URL, getTargetDate } from '@/lib/utils'
+import type { ApiResponse } from '@/types/api'
+import type { VerificationNumber } from '@/types/protest'
+import { notFound } from 'next/navigation'
 
 interface getVerificationNumberRequest {
-  protestId: string;
+  protestId: string
 }
 
 export const getVerificationNumber = async ({
   protestId,
 }: getVerificationNumberRequest): Promise<VerificationNumber> => {
-  const targetDate = getTargetDate();
+  const targetDate = getTargetDate()
   const response = await fetch(
     `${SERVER_URL}/api/protest/verifications?protestId=${protestId}&date=${targetDate}`,
     {
       cache: 'no-store',
     },
-  );
+  )
 
   if (!response.ok) {
     if (response.status === 404) {
-      notFound();
+      notFound()
     }
-    throw new Error(response.statusText);
+    throw new Error(response.statusText)
   }
 
-  const protest = (await response.json()) as ApiResponse<VerificationNumber[]>;
+  const protest = (await response.json()) as ApiResponse<VerificationNumber[]>
   if (!protest.data[0] || protest.data.length === 0) {
-    notFound();
+    notFound()
   }
-  return protest.data[0];
-};
+  return protest.data[0]
+}
 
 interface getVerificationRequest {
-  paramId: string;
-  longitude: number;
-  latitude: number;
-  accessToken: string;
+  paramId: string
+  longitude: number
+  latitude: number
+  accessToken: string
 }
 
 export type getVerificationResponse = {
-  success: boolean;
-  message: string;
-  status?: number;
-  code?: string;
-};
+  success: boolean
+  message: string
+  status?: number
+  code?: string
+}
 
 export const getVerifyLocation = async ({
   paramId,
   longitude,
   latitude,
   accessToken,
-}: getVerificationRequest) => {
+}: getVerificationRequest): Promise<getVerificationResponse> => {
   const response = await fetch(`${SERVER_URL}/api/protest/${paramId}/participate/verify`, {
     method: 'POST',
     headers: {
@@ -59,10 +59,10 @@ export const getVerifyLocation = async ({
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({ latitude, longitude }),
-  });
+  })
   if (!response.ok) {
-    throw new Error(`인증하기 실패 ${response.status}`);
+    throw new Error(`인증하기 실패 ${response.status}`)
   }
-  const data = await response.json();
-  return data;
-};
+  const data = await response.json()
+  return data
+}
