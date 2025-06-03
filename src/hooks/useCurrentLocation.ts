@@ -73,7 +73,10 @@ export const useCurrentLocation = ({ mapInstance }: Props) => {
   const handleResetCurrentLocation = () => {
     if (mapInstance) {
       const destLatLng = new kakao.maps.LatLng(SEOUL_CENTER_LATITUDE, SEOUL_CENTER_LONGITUDE)
-      setCurrentPositionMarkerCoordinate({ lat: 0, lng: 0 })
+      setCurrentPositionMarkerCoordinate({
+        lat: SEOUL_CENTER_LATITUDE,
+        lng: SEOUL_CENTER_LONGITUDE,
+      })
       mapInstance.setLevel(5)
       mapInstance.panTo(destLatLng)
       toast.success('초기 위치로 이동!')
