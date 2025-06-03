@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import React from 'react';
-import MarkdownPreview from '@uiw/react-markdown-preview';
+import React from 'react'
+import MarkdownPreview from '@uiw/react-markdown-preview'
 
 interface Props {
-  content: string;
+  content: string
 }
 
 const MarkdownWrapper = ({ content }: Props) => {
@@ -18,12 +18,12 @@ const MarkdownWrapper = ({ content }: Props) => {
           width: '100%',
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
-          fontSize: '	0.8rem',
+          fontSize: '0.8rem',
         }}
         className='overflow-hidden md:text-base p-2 sm:w-[85%] text-zinc-600 '
       />
     </div>
-  );
-};
+  )
+}
 
-export default MarkdownWrapper;
+export default MarkdownWrapper
