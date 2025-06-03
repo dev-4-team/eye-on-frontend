@@ -14,6 +14,10 @@ export const useCurrentLocation = ({ mapInstance }: Props) => {
 
   const handleMoveCurrentLocation = () => {
     if (!mapInstance) return
+    if (!navigator.geolocation) {
+      toast.error('이 브라우저에서는 위치 서비스를 지원하지 않습니다.')
+      return
+    }
     setIsFetchingLocation(true)
     navigator.geolocation.getCurrentPosition(
       position => {
