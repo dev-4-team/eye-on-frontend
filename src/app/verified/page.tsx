@@ -1,28 +1,32 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function Page() {
-  const router = useRouter();
-  const [isValid, setIsValid] = useState(false);
+  const router = useRouter()
+  const [isValid, setIsValid] = useState(false)
 
   useEffect(() => {
-    const cameFromValidRoute = sessionStorage.getItem('fromValidRoute');
+    const cameFromValidRoute = sessionStorage.getItem('fromValidRoute')
 
     if (!cameFromValidRoute) {
-      router.replace('/');
+      router.replace('/')
     } else {
-      setIsValid(true);
+      setIsValid(true)
     }
-  }, [router]);
+  }, [router])
 
   const handleGobackButton = () => {
-    sessionStorage.setItem('fromValidRoute', 'false');
-    router.back();
-  };
+    sessionStorage.setItem('fromValidRoute', 'false')
+    if (window.history.length > 1) {
+      router.back()
+    } else {
+      router.push('/')
+    }
+  }
 
   if (!isValid) {
     return (
@@ -31,7 +35,7 @@ export default function Page() {
           <span>잘못 된 접근입니다</span>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -46,5 +50,5 @@ export default function Page() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

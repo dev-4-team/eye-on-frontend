@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import KakaoMap from '@/components/KakaoMaps/KakaoMap';
-import { getProtestList } from '@/api/protest';
+import type { Metadata } from 'next'
+import KakaoMap from '@/components/KakaoMaps/KakaoMap'
+import { getProtestList } from '@/api/protest'
 
 const keywords = [
   '집회',
@@ -20,7 +20,7 @@ const keywords = [
   '헌법재판소 시위',
   '촛불시위',
   '오늘의 집회/시위',
-].join(', ');
+].join(', ')
 
 export const metadata: Metadata = {
   title: '주변 시위 Now | 오늘의 시위 정보와 집회 정보',
@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     icon: '/images/favicon.ico',
   },
   keywords,
-};
+}
 
 export default async function Home() {
-  const protests = await getProtestList();
-  const filteredProtests = protests.filter(p => p.locations?.length > 0);
-  return <KakaoMap protests={filteredProtests} />;
+  const protests = await getProtestList()
+  const filteredProtests = protests.filter(p => p.locations?.length > 0)
+  return <KakaoMap protests={filteredProtests} />
 }

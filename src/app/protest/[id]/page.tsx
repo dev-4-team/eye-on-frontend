@@ -1,27 +1,27 @@
-import type { Metadata } from 'next';
-import Verification from '@/components/Verification/Verification';
-import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap';
-import MarkdownWrapper from '@/components/Protest/MarkdownWrapper';
-import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo';
-import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer';
-import ProtestShareButton from '@/components/Protest/ProtestShareButton';
-import { formatDate, withSafe } from '@/lib/utils';
-import { getProtestDetail, getProtestList } from '@/api/protest';
+import type { Metadata } from 'next'
+import Verification from '@/components/Verification/Verification'
+import StaticKakaoMap from '@/components/KakaoMaps/StaticKakaoMap'
+import MarkdownWrapper from '@/components/Protest/MarkdownWrapper'
+import ProtestDetailInfo from '@/components/Protest/ProtestDetailInfo'
+import ProtestDetailCheer from '@/components/Protest/ProtestDetailCheer'
+import ProtestShareButton from '@/components/Protest/ProtestShareButton'
+import { formatDate, withSafe } from '@/lib/utils'
+import { getProtestDetail, getProtestList } from '@/api/protest'
 
 export async function generateStaticParams() {
-  const protests = await getProtestList();
+  const protests = await getProtestList()
   return protests.map(protest => ({
     id: protest.id.toString(),
-  }));
+  }))
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>
 }): Promise<Metadata> {
-  const { id } = await params;
-  const protest = await getProtestDetail({ protestId: id });
+  const { id } = await params
+  const protest = await getProtestDetail({ protestId: id })
 
   const keywords = [
     '집회',
@@ -41,7 +41,7 @@ export async function generateMetadata({
     '헌법재판소 시위',
     '촛불시위',
     '오늘의 집회/시위',
-  ].join(', ');
+  ].join(', ')
 
   return {
     title: `${protest.title} | 오늘의 시위 정보와 집회 정보`,
@@ -55,12 +55,12 @@ export async function generateMetadata({
       icon: '/images/favicon.ico',
     },
     keywords,
-  };
+  }
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id: paramId } = await params;
-  const protest = await getProtestDetail({ protestId: paramId });
+  const { id: paramId } = await params
+  const protest = await getProtestDetail({ protestId: paramId })
 
   const {
     title,
@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     organizer,
     declaredParticipants,
     locations,
-  } = protest;
+  } = protest
 
   return (
     <section className='flex flex-col'>
@@ -130,5 +130,5 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
     </section>
-  );
+  )
 }

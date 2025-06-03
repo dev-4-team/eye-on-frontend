@@ -1,27 +1,27 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 interface Props {
-  mapInstance: kakao.maps.Map | null;
+  mapInstance: kakao.maps.Map | null
 }
 
 export const useMapState = ({ mapInstance }: Props) => {
-  const [currentZoomLevel, setCurrentZoomLevel] = useState<number>(0);
-  const [isMapDragging, setIsMapDragging] = useState(false);
+  const [currentZoomLevel, setCurrentZoomLevel] = useState<number>(0)
+  const [isMapDragging, setIsMapDragging] = useState(false)
 
   const handleDragStart = () => {
-    if (!mapInstance) return null;
-    setIsMapDragging(true);
-  };
+    if (!mapInstance) return null
+    setIsMapDragging(true)
+  }
 
   const handleDragEnd = () => {
-    if (!mapInstance) return null;
-    setIsMapDragging(false);
-  };
+    if (!mapInstance) return null
+    setIsMapDragging(false)
+  }
 
   const handleZoomChange = (map: kakao.maps.Map) => {
-    if (!mapInstance) return null;
-    setCurrentZoomLevel(map.getLevel());
-  };
+    if (!map) return null
+    setCurrentZoomLevel(map.getLevel())
+  }
 
-  return { currentZoomLevel, isMapDragging, handleDragStart, handleDragEnd, handleZoomChange };
-};
+  return { currentZoomLevel, isMapDragging, handleDragStart, handleDragEnd, handleZoomChange }
+}

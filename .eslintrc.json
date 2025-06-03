@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "prettier/prettier"],
+  "extends": ["react-app", "prettier"],
   "plugins": ["react-hooks", "simple-import-sort", "prettier"],
   "rules": {
     "prettier/prettier": "error",

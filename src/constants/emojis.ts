@@ -3,5 +3,5 @@ export const EMOJI = {
   CHECK: '✔️',
   HEART: '❤️',
   WARNING: '⚠️',
-  LOADDING: '⟳',
+  LOADING: '⟳',
 };

@@ -1,27 +1,27 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import { EMOJI } from '@/constants/emojis';
-import { numberTransfer } from '@/lib/utils';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { useSendCheerMutation } from '@/hooks/useSendCheerMutation';
-import ProtestActionButton from '@/components/Button/ProtestActionButton';
-import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+import Image from 'next/image'
+import { EMOJI } from '@/constants/emojis'
+import { numberTransfer } from '@/lib/utils'
+import { useCheerEffect } from '@/hooks/useCheerEffect'
+import { useSendCheerMutation } from '@/hooks/useSendCheerMutation'
+import ProtestActionButton from '@/components/Button/ProtestActionButton'
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount'
 
 interface Props {
-  protestId: string;
+  protestId: string
 }
 
 const ProtestDetailCheer = ({ protestId }: Props) => {
   const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
     protestId,
-  });
-  const { effect } = useCheerEffect(cheerCount);
-  const { cheerProtest, cheerError } = useSendCheerMutation({ protestId });
+  })
+  const { effect } = useCheerEffect(cheerCount)
+  const { cheerProtest, cheerError } = useSendCheerMutation({ protestId })
 
   const handleCheerButtonClick = () => {
-    cheerProtest();
-  };
+    cheerProtest()
+  }
 
   return (
     <div className='flex flex-col justify-center items-center  '>
@@ -30,7 +30,7 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
         disabled={cheerCountIsLoading || cheerCountIsError || cheerError}
       >
         {cheerCountIsLoading ? (
-          <div className='animate-spin'>{EMOJI.LOADDING}</div>
+          <div className='animate-spin'>{EMOJI.LOADING}</div>
         ) : cheerCountIsError ? (
           <div>{EMOJI.WARNING}</div>
         ) : (
@@ -41,13 +41,13 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
               <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
             )}
             <span className='text-sm text-white'>
-              {numberTransfer(cheerCount?.cheerCount ?? 'X')} 응원하기
+              {numberTransfer(cheerCount?.cheerCount ?? 0)} 응원하기
             </span>
           </>
         )}
       </ProtestActionButton>
     </div>
-  );
-};
+  )
+}
 
-export default ProtestDetailCheer;
+export default ProtestDetailCheer

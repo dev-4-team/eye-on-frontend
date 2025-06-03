@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 const MapErrorFallback = () => {
   return (
@@ -30,6 +30,7 @@ const MapErrorFallback = () => {
       <button
         onClick={() => window.location.reload()}
         className='mt-4 px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors shadow-md flex items-center gap-2'
+        aria-label='오류 아이콘'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -38,6 +39,7 @@ const MapErrorFallback = () => {
           strokeWidth={1.5}
           stroke='currentColor'
           className='w-5 h-5'
+          aria-hidden='true'
         >
           <path
             strokeLinecap='round'
@@ -48,7 +50,7 @@ const MapErrorFallback = () => {
         다시 시도하기
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default MapErrorFallback;
+export default MapErrorFallback
