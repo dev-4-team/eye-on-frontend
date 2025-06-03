@@ -46,6 +46,8 @@ export const useHeatMap = ({ mapInstance, protests }: Props) => {
 
     const script = document.createElement('script')
     script.src = 'https://unpkg.com/heatmap.js'
+    script.integrity = 'sha384-tLePpf4PHidkVkEG3jqgIZ+1FDUABra8dS48LJvD0zRN3ru9BqEaDlP2ouWduZNF'
+    script.crossOrigin = 'anonymous'
     script.onload = () => {
       const container = document.getElementById('map')
       if (!container) return
@@ -69,6 +71,13 @@ export const useHeatMap = ({ mapInstance, protests }: Props) => {
 
     return () => {
       document.head.removeChild(script)
+      try {
+        if (script.parentNode) {
+          document.head.removeChild(script)
+        }
+      } catch (error) {
+        console.error(`heatmap 스크립트 제거 실패 ${error}`)
+      }
     }
   }, [mapInstance, heatmapInstance])
 }
