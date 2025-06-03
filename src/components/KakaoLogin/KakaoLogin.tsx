@@ -28,11 +28,19 @@ const KakaoLogin = () => {
   return (
     <div>
       {accessToken === '' ? (
-        <button onClick={onLoginClick} className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'>
+        <button
+          onClick={onLoginClick}
+          className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'
+          aria-label='카카오 계정 로그인'
+        >
           login
         </button>
       ) : (
-        <button onClick={onLogoutClick} className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'>
+        <button
+          onClick={onLogoutClick}
+          className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'
+          aria-label='로그아웃'
+        >
           logout
         </button>
       )}
