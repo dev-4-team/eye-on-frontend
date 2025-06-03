@@ -2,13 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { MdGpsFixed } from 'react-icons/md';
 
-export const CurrentLocationButton = ({
-  onClick,
-  isLoading,
-}: {
+interface Props {
   onClick: () => void;
   isLoading: boolean;
-}) => {
+}
+
+const CurrentLocationButton = ({ onClick, isLoading }: Props) => {
   return (
     <Button
       className='absolute bottom-7 left-3 z-30'
@@ -20,3 +19,5 @@ export const CurrentLocationButton = ({
     </Button>
   );
 };
+
+export default CurrentLocationButton;

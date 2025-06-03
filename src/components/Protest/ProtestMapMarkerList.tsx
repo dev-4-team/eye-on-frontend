@@ -1,22 +1,35 @@
 import ProtestMapMarker from '@/components/Protest/ProtestMapMarker';
-import { ProtestData } from '@/types';
+import type { Protest } from '@/types/protest';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export const ProtestMapMarkerList = ({
+interface ProtestMapMarkerListProps {
+  currentZoomLevel: number;
+  clusterMinLevel: number;
+  protests: Protest[];
+  mapInstance: kakao.maps.Map | null;
+  router: AppRouterInstance;
+}
+
+const ProtestMapMarkerList = ({
+  currentZoomLevel,
+  clusterMinLevel,
   protests,
   mapInstance,
   router,
-}: {
-  protests: ProtestData[];
-  mapInstance: any;
-  router: any;
-}) => {
+}: ProtestMapMarkerListProps) => {
+  if (currentZoomLevel >= clusterMinLevel || !mapInstance) return null;
   return (
-    <div>
+    <>
       {protests.map(protest => (
-        <div key={protest.id} className='flex justify-center items-center'>
-          <ProtestMapMarker protest={protest} mapInstance={mapInstance} router={router} />
-        </div>
+        <ProtestMapMarker
+          key={protest.id}
+          protest={protest}
+          mapInstance={mapInstance}
+          router={router}
+        />
       ))}
-    </div>
+    </>
   );
 };
+
+export default ProtestMapMarkerList;

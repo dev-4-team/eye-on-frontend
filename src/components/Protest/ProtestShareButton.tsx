@@ -1,10 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { IoIosLink } from 'react-icons/io';
+import { Button } from '@/components/ui/button';
 
-export const ProtestShareButton = () => {
+interface Props {
+  className?: string;
+}
+
+const ProtestShareButton = ({ className }: Props) => {
   const [currentUrl, setCurrentUrl] = useState('');
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -24,10 +28,12 @@ export const ProtestShareButton = () => {
 
   return (
     <Button
-      className='w-9 bg-white text-black border-2  border-black rounded-full shadow-2xl flex items-center justify-center gap-2 shadow-2xl'
+      className={`w-9 bg-white text-black border-2 border-black rounded-full shadow-2xl flex items-center justify-center gap-2 ${className}`}
       onClick={handleCopyUrl}
     >
       <IoIosLink />
     </Button>
   );
 };
+
+export default ProtestShareButton;

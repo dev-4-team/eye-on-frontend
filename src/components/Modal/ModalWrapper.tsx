@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,11 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useCallback } from 'react';
 
-export default function ModalWrapper({ children }: { children: React.ReactNode }) {
+interface Props {
+  children: React.ReactNode;
+}
+
+const ModalWrapper = ({ children }: Props) => {
   const router = useRouter();
   const [open, setOpen] = useState(true);
 
@@ -27,7 +31,7 @@ export default function ModalWrapper({ children }: { children: React.ReactNode }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4/5 max-w-lg bg-white rounded-lg shadow-lg overflow-y-auto'>
+      <DialogContent className='w-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] max-h-[85vh] sm:max-h-[90vh] overflow-y-auto overflow-x-hidden break-words bg-white rounded-lg shadow-lg p-2 sm:p-4 md:p-6'>
         <DialogHeader className='hidden'>
           <DialogTitle>Protest detail dialog</DialogTitle>
           <DialogDescription>Protest detail dialog</DialogDescription>
@@ -36,4 +40,6 @@ export default function ModalWrapper({ children }: { children: React.ReactNode }
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default ModalWrapper;

@@ -1,41 +1,51 @@
-'use client';
+'use client'
 
-import useUserInfo from '@/hooks/useUserInfo';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+import { useUserInfoStore } from '@/store/useUserInfoStore'
 
-export default function KakaoLogin() {
-  const accessToken = useUserInfo(state => state.userInfo.accessToken);
-  const { deleteUserInfo } = useUserInfo();
-  const router = useRouter();
+const KakaoLogin = () => {
+  const accessToken = useUserInfoStore(state => state.userInfo.accessToken)
+  const { deleteUserInfo } = useUserInfoStore()
+  const router = useRouter()
 
   const onLoginClick = async () => {
-    const previous_page = window.location.href;
+    const previous_page = window.location.href
 
     if (!previous_page.includes('oauth2/callback')) {
-      localStorage.setItem('previous_page', previous_page);
+      localStorage.setItem('previous_page', previous_page)
     }
 
-    const LOCAL_DEV_URL = process.env.NEXT_PUBLIC_LOCAL_DEV_URL;
+    const LOCAL_DEV_URL = process.env.NEXT_PUBLIC_LOCAL_DEV_URL
 
-    window.location.replace(`${LOCAL_DEV_URL}/oauth2/authorization/kakao`);
-  };
+    window.location.replace(`${LOCAL_DEV_URL}/oauth2/authorization/kakao`)
+  }
 
   const onLogoutClick = () => {
-    deleteUserInfo();
-    router.push('/');
-  };
+    deleteUserInfo()
+    router.push('/')
+  }
 
   return (
-    <div className='absolute top-2 right-0 z-50'>
+    <div>
       {accessToken === '' ? (
-        <button onClick={onLoginClick} className='p-2 text-[#D44646]'>
+        <button
+          onClick={onLoginClick}
+          className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'
+          aria-label='카카오 계정 로그인'
+        >
           login
         </button>
       ) : (
-        <button onClick={onLogoutClick} className='p-2 text-[#D44646]'>
+        <button
+          onClick={onLogoutClick}
+          className='text-[#D44646] text-xl sm:text-2xl md:text-3xl'
+          aria-label='로그아웃'
+        >
           logout
         </button>
       )}
     </div>
-  );
+  )
 }
+
+export default KakaoLogin

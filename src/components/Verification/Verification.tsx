@@ -1,10 +1,9 @@
 'use client';
 
-import { useGeoLocation } from '@/hooks/useGeoLocation';
-import VerifyLocation from '@/lib/API/VerifyLocation';
-import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useGeoLocation } from '@/hooks/useGeoLocation';
 import {
   Drawer,
   DrawerClose,
@@ -14,19 +13,27 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import useUserInfo from '@/hooks/useUserInfo';
-import { toast } from 'sonner';
-import { VerificationResponse } from '@/lib/API/VerifyLocation';
+import ProtestActionButton from '@/components/Button/ProtestActionButton';
 import { getIsMobile, isDesktopOS } from '@/lib/utils';
-import { ProtestActionButton } from '@/components/Button';
 
-export default function Verification({ paramId }: { paramId: string }) {
+import { useUserInfoStore } from '@/store/useUserInfoStore';
+import { useLocationVerification } from '@/hooks/useLocationVerification';
+
+interface Props {
+  paramId: string;
+}
+
+export default function Verification({ paramId }: Props) {
   const [agreed, setAgreed] = useState(false);
   const [open, setOpen] = useState(false);
-  const [verificationResult, setVerificationResult] = useState<VerificationResponse | null>(null);
   const { curLocation, isLoading, errorMsg } = useGeoLocation(agreed);
-  const accessToken = useUserInfo(state => state.userInfo.accessToken);
+  const accessToken = useUserInfoStore(state => state.userInfo.accessToken);
   const isMobile = getIsMobile() && !isDesktopOS();
+  useLocationVerification({
+    agreed,
+    curLocation,
+    protestId: paramId,
+  });
 
   const onVerificationClick = () => {
     if (!isMobile) {
@@ -38,7 +45,6 @@ export default function Verification({ paramId }: { paramId: string }) {
         `${process.env.NEXT_PUBLIC_LOCAL_DEV_URL}/oauth2/authorization/kakao`,
       );
     else setOpen(true);
-    setOpen(true);
   };
 
   const handleAgree = () => {
@@ -46,24 +52,12 @@ export default function Verification({ paramId }: { paramId: string }) {
     setOpen(false);
   };
 
-  useEffect(() => {
-    if (!agreed || !curLocation) return;
-
-    const verifyUserLocation = async () => {
-      const result = await VerifyLocation({
-        paramId: paramId,
-        longitude: curLocation.longitude,
-        latitude: curLocation.latitude,
-        accessToken: accessToken,
-      });
-      setVerificationResult(result);
-      toast(result.message);
-    };
-    verifyUserLocation();
-  }, [agreed, curLocation]);
-
   if (agreed && errorMsg) {
-    return <div>{errorMsg}</div>;
+    return (
+      <ProtestActionButton variant={'signature'} className='w-full' disabled={true}>
+        <span>{errorMsg}</span>
+      </ProtestActionButton>
+    );
   }
 
   return (

@@ -16,7 +16,7 @@ interface UserInfoActions {
 
 const defaultState = { accessToken: '' };
 
-const useUserInfo = create<UserInfoState & UserInfoActions>()(
+export const useUserInfoStore = create<UserInfoState & UserInfoActions>()(
   persist(
     set => ({
       userInfo: defaultState,
@@ -33,5 +33,3 @@ const useUserInfo = create<UserInfoState & UserInfoActions>()(
     },
   ),
 );
-
-export default useUserInfo;
