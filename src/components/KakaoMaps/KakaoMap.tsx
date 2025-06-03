@@ -1,45 +1,45 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
-import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback';
-import CurrentMapMarker from '@/components/KakaoMaps/CurrentMapMarker';
-import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer';
-import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback';
-import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList';
-import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines';
-import CurrentLocationControls from '@/components/KakaoMaps/MapControls';
-import type { Protest } from '@/types/protest';
-import { useHeatMap } from '@/hooks/useHeatMap';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
-import { useNavigationRoutes } from '@/hooks/useNavigationRoutes';
-import { INITIAL_MAP_CENTER, INITIAL_ZOOM_LEVEL } from '@/constants/map';
-import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig';
-import { useCurrentLocation } from '@/hooks/useCurrentLocation';
-import { useMapState } from '@/hooks/useMapState';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Map, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk'
+import MapErrorFallback from '@/components/KakaoMaps/MapErrorFallback'
+import CurrentMapMarker from '@/components/KakaoMaps/CurrentMapMarker'
+import KakaoMapClusterer from '@/components/KakaoMaps/KakaoMapClusterer'
+import MapLoadingFallback from '@/components/KakaoMaps/MapLoadingFallback'
+import ProtestMapMarkerList from '@/components/Protest/ProtestMapMarkerList'
+import NavigationRouteLines from '@/components/NaverDirections/NavigationRouteLines'
+import CurrentLocationControls from '@/components/KakaoMaps/MapControls'
+import type { Protest } from '@/types/protest'
+import { useHeatMap } from '@/hooks/useHeatMap'
+import useKakaoLoader from '@/hooks/useKakaoLoader'
+import { useNavigationRoutes } from '@/hooks/useNavigationRoutes'
+import { INITIAL_MAP_CENTER, INITIAL_ZOOM_LEVEL } from '@/constants/map'
+import { CLUSTER_MIN_LEVEL } from '@/constants/clusterConfig'
+import { useCurrentLocation } from '@/hooks/useCurrentLocation'
+import { useMapState } from '@/hooks/useMapState'
 
 interface Props {
-  protests: Protest[];
+  protests: Protest[]
 }
 
 const KakaoMap = ({ protests }: Props) => {
-  const router = useRouter();
-  const { mapIsLoading, mapIsError } = useKakaoLoader();
-  const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null);
-  const { routesData } = useNavigationRoutes({ protests });
+  const router = useRouter()
+  const { mapIsLoading, mapIsError } = useKakaoLoader()
+  const [mapInstance, setMapInstance] = useState<kakao.maps.Map | null>(null)
+  const { routesData } = useNavigationRoutes({ protests })
   const {
     currentPositionMarkerCoordinate,
     isFetchingLocation,
-    handleMoveCurrentLoacation,
+    handleMoveCurrentLocation,
     handleResetCurrentLocation,
-  } = useCurrentLocation({ mapInstance });
-  useHeatMap({ mapInstance, protests });
+  } = useCurrentLocation({ mapInstance })
+  useHeatMap({ mapInstance, protests })
   const { currentZoomLevel, isMapDragging, handleDragEnd, handleDragStart, handleZoomChange } =
-    useMapState({ mapInstance });
+    useMapState({ mapInstance })
 
-  if (mapIsLoading || !routesData) return <MapLoadingFallback />;
-  if (mapIsError) return <MapErrorFallback />;
+  if (mapIsLoading || !routesData) return <MapLoadingFallback />
+  if (mapIsError) return <MapErrorFallback />
 
   return (
     <div className='relative'>
@@ -78,12 +78,12 @@ const KakaoMap = ({ protests }: Props) => {
         <ZoomControl position={'LEFT'} />
       </Map>
       <CurrentLocationControls
-        onLocationCurrent={handleMoveCurrentLoacation}
+        onLocationCurrent={handleMoveCurrentLocation}
         onLocationReset={handleResetCurrentLocation}
         isLoadingCurrentLocation={isFetchingLocation}
       />
     </div>
-  );
-};
+  )
+}
 
-export default KakaoMap;
+export default KakaoMap
