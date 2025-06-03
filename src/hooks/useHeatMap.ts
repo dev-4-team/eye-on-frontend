@@ -46,7 +46,7 @@ export const useHeatMap = ({ mapInstance, protests }: Props) => {
 
     const script = document.createElement('script')
     script.src = 'https://unpkg.com/heatmap.js'
-    script.integrity = 'sha384-tLePpf4PHidkVkEG3jqgIZ+1FDUABra8dS48LJvD0zRN3ru9BqEaDlP2ouWduZNF'
+    script.integrity = process.env.NEXT_PUBLIC_HEATMAP_SHI || ''
     script.crossOrigin = 'anonymous'
     script.onload = () => {
       const container = document.getElementById('map')
