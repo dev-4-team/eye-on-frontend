@@ -45,8 +45,8 @@ export const useHeatMap = ({ mapInstance, protests }: Props) => {
     if (!mapInstance || heatmapInstance) return
 
     const script = document.createElement('script')
-    script.src = 'https://unpkg.com/heatmap.js'
-    script.integrity = process.env.NEXT_PUBLIC_HEATMAP_SHI || ''
+    script.src = 'https://unpkg.com/heatmap.js@2.0.5/build/heatmap.min.js'
+    script.integrity = process.env.NEXT_PUBLIC_HEATMAP_SRI || ''
     script.crossOrigin = 'anonymous'
     script.onload = () => {
       const container = document.getElementById('map')
