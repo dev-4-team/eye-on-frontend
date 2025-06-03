@@ -1,14 +1,15 @@
-import { Polyline } from 'react-kakao-maps-sdk';
-import type { RouteData } from '@/types/naverRoute';
-import { generateColorFromIndex } from '@/lib/utils';
+import { Polyline } from 'react-kakao-maps-sdk'
+import type { RouteData } from '@/types/naverRoute'
+import { generateColorFromIndex } from '@/lib/utils'
+import { INITIAL_ZOOM_LEVEL } from '@/constants/map'
 
 interface Props {
-  currentZoomLevel: number;
-  mapIsDragging: boolean;
-  routeData: RouteData[];
+  currentZoomLevel: number
+  mapIsDragging: boolean
+  routeData: RouteData[]
 }
 const NavigationRouteLines = ({ currentZoomLevel, mapIsDragging, routeData }: Props) => {
-  if (currentZoomLevel > 8 || mapIsDragging) return null;
+  if (currentZoomLevel > INITIAL_ZOOM_LEVEL || mapIsDragging) return null
   return routeData.map((data: RouteData, index: number) => (
     <Polyline
       key={index}
@@ -19,7 +20,7 @@ const NavigationRouteLines = ({ currentZoomLevel, mapIsDragging, routeData }: Pr
       strokeOpacity={0.7}
       strokeStyle='solid'
     />
-  ));
-};
+  ))
+}
 
-export default NavigationRouteLines;
+export default NavigationRouteLines
