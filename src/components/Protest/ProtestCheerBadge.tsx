@@ -1,16 +1,16 @@
-'use client';
-import { EMOJI } from '@/constants/emojis';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
+'use client'
+import { EMOJI } from '@/constants/emojis'
+import { useCheerEffect } from '@/hooks/useCheerEffect'
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount'
 interface Props {
-  protestId: string;
+  protestId: string
 }
 const ProtestCheerBadge = ({ protestId }: Props) => {
   const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
     protestId,
-  });
-  const { effect } = useCheerEffect(cheerCount);
-  if (!protestId || cheerCountIsError || cheerCountIsLoading) return null;
+  })
+  const { effect } = useCheerEffect({ protestId, cheerCount: cheerCount?.cheerCount ?? 0 })
+  if (!protestId || cheerCountIsError || cheerCountIsLoading) return null
 
   return (
     <div className='flex flex-col justify-center items-center'>
@@ -23,7 +23,7 @@ const ProtestCheerBadge = ({ protestId }: Props) => {
         <div>{cheerCount?.cheerCount}</div>
       </>
     </div>
-  );
-};
+  )
+}
 
-export default ProtestCheerBadge;
+export default ProtestCheerBadge
