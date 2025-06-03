@@ -1,34 +1,34 @@
-import { CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { EMOJI } from '@/constants/emojis';
-import { numberTransfer, withSafe } from '@/lib/utils';
-import { useCheerEffect } from '@/hooks/useCheerEffect';
-import { useProtestCheerCount } from '@/hooks/useProtestCheerCount';
-import type { Protest } from '@/types/protest';
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { CustomOverlayMap } from 'react-kakao-maps-sdk'
+import { EMOJI } from '@/constants/emojis'
+import { numberTransfer, withSafe } from '@/lib/utils'
+import { useCheerEffect } from '@/hooks/useCheerEffect'
+import { useProtestCheerCount } from '@/hooks/useProtestCheerCount'
+import type { Protest } from '@/types/protest'
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 interface Props {
-  protest: Protest;
-  mapInstance: kakao.maps.Map;
-  router: AppRouterInstance;
+  protest: Protest
+  mapInstance: kakao.maps.Map
+  router: AppRouterInstance
 }
 
 const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
   const { cheerCount, cheerCountIsLoading, cheerCountIsError } = useProtestCheerCount({
     protestId: protest.id,
-  });
-  const { effect } = useCheerEffect(cheerCount);
-  const location = protest.locations[0];
+  })
+  const { effect } = useCheerEffect(cheerCount)
+  const location = protest.locations[0]
 
   const onMarkerClick = (id: string, lat: number, long: number) => {
     if (mapInstance) {
-      mapInstance.setLevel(4);
-      const destLatLng = new kakao.maps.LatLng(lat, long);
-      mapInstance.panTo(destLatLng);
+      mapInstance.setLevel(4)
+      const destLatLng = new kakao.maps.LatLng(lat, long)
+      mapInstance.panTo(destLatLng)
     }
-    router.push(`/protest/${id}`);
-  };
+    router.push(`/protest/${id}`)
+  }
   if (!location) {
     // TODO: 위치 정보가 없는 경우에 대한 예외 처리 (예: 로그, fallback UI 등)
-    return null;
+    return null
   }
   return (
     <div>
@@ -54,7 +54,7 @@ const ProtestMapMarker = ({ protest, mapInstance, router }: Props) => {
         </div>
       </CustomOverlayMap>
     </div>
-  );
-};
+  )
+}
 
-export default ProtestMapMarker;
+export default ProtestMapMarker

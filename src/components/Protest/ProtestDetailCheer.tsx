@@ -41,7 +41,7 @@ const ProtestDetailCheer = ({ protestId }: Props) => {
               <Image src='/images/torch.png' alt='torch image' width={10} height={10} />
             )}
             <span className='text-sm text-white'>
-              {numberTransfer(cheerCount?.cheerCount ?? 'X')} 응원하기
+              {numberTransfer(cheerCount?.cheerCount ?? 0)} 응원하기
             </span>
           </>
         )}
