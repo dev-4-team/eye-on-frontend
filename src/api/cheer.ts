@@ -25,7 +25,7 @@ export const postProtestCheer = async ({ protestId }: ProtestCheerCountRequest) 
     method: 'POST',
   })
   if (!response.ok) {
-    throw new Error(`시위별 응원수 가져오기 error ${response.status}`)
+    throw new Error(`응원하기 error ${response.status}`)
   }
   return response.json()
 }
