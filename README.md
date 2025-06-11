@@ -1,208 +1,177 @@
-# 주변시위 Now 프로젝트 컨벤션
+## 소개 👋
 
-> 해당 컨벤션은 프로젝트 진행 상황에 따라 지속적으로 업데이트됩니다.
+**주변시위 Now**는 서울 시내 곳곳에서 벌어지는 시위 정보를 한눈에 확인할 수 있는 지도 기반 서비스입니다. 흩어져 있는 시위 정보를 통합해 제공함으로써, 시위명, 주최 단체, 참여 규모, 위치, 행진 경로 등 다양한 세부 사항을 쉽게 확인할 수 있도록 도와줍니다.
 
-## 디렉토리 구조
+## 역할 👥
 
-- **폴더 네이밍**
-  - 기본: 카멜 케이스 (`camelCase`)
-  - 컴포넌트 폴더: 파스칼 케이스 (`PascalCase`)
-- **파일 네이밍**
-  - 컴포넌트: `.tsx`
-  - 그 외: `.ts`
-- **구조 원칙**
-  - 컴포넌트 위치는 명확하게
-  - 과도한 책임을 가지지 않도록 역할 분리
-  - 이해하기 쉬운 구조와 충분한 주석 작성
+프론트엔드 2인, 백엔드 2인 중 `프론트엔드`
 
-```
-my-app/
-│
-├── src/
-│   ├── components/             # 재사용 가능한 컴포넌트
-│   │   ├── common/             # 전역적으로 사용되는 컴포넌트 (버튼, 헤더, 푸터 등)
-│   │   └── BlogContainer/      # 블로그 컨테이너 컴포넌트
-│   │       ├── index.tsx
-│   │       ├── BlogContainer.tsx
-│   │       └── BlogContainer.stories.tsx
-│   │
-│   ├── store/                  # 전역 상태 관리 (Context API, Redux, recoil, zustand 등)
-│   │
-│   ├── app/                    # Next.js app 라우팅
-│   │   ├── page.tsx
-│   │   └── layout.tsx
-│   │
-│   ├── api/                    # API 관련 로직
-│   │
-│   ├── hooks/                  # 커스텀 React 훅
-│   │
-│   ├── constants/              # 상수 값 관리
-│   │
-│   ├── types/                  # 타입 (TypeScript)
-│   │
-│   │
-│   └── utils/                  # 유틸리티 함수
-│
-└── ... (생략)
-```
+## 서비스 사진 📸
 
-## 네이밍 규칙
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/77f33a56-3960-49ea-8a7e-3ce8b0b1750c alt="메인 지도 화면" width="250"/><br/>
+      <sub>메인 지도 화면</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/9d9d7ab8-6a00-45db-9886-55416ef5706e" alt="메인 지도 스카이뷰 화면" width="250"/><br/>
+      <sub>메인 지도 스카이뷰 화면</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/5cd4713e-6060-45a2-b032-06835fbe8aa8" alt="시위 리스트 화면" width="250"/><br/>
+      <sub>시위 리스트 화면</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/ca806ac2-6c8a-47f1-86c9-2fb33900aeff" alt="시위 상세 화면" width="250"/><br/>
+      <sub>시위 상세 화면</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/557c5cb0-7cac-4840-8e82-f97f7fb01b1c" alt="시위 상세 화면2" width="250"/><br/>
+      <sub>시위 상세 화면2</sub>
+    </td>
+  </tr>
+</table>
 
-### 상수
+## 프로젝트 컨벤션 🧠
 
-- 영어 대문자 + 스네이크 케이스 (`UPPER_SNAKE_CASE`)
-- 예: `MAX_DISTANCE`, `EMOJI`, `DEFAULT_LOCATION`
+[컨벤션](ProjectConvention.md)
 
-### 변수 및 함수
+## 주요 기능 ✨
 
-- 카멜 케이스 (`camelCase`)
-- 일반 함수: 역할이 명확한 이름
-- 이벤트 핸들러: `handle[Target][Action]` 형태
-- prop 콜백 함수: `on[Target][Action]` 형태
+#### 시위 위치 확인
 
-### 예시
+- 지도를 통해 시위의 위치를 시각적으로 확인 가능
+- 이동하는 행진의 경우 경로를 표시하여 확인 가능
+- 시위 참여 인원을 마커, 히트맵을 통해서 직관적으로 확인 가능
 
-```ts
-const handleLoginSubmit = () => { ... };
+#### 시위 상세 정보
 
-<MyModal onModalClose={handleModalClose} />;
-```
+- 각 시위별로 시위의 정보, 주체, 일시, 규모를 한 눈에 확인 가능
 
----
+## 사용 기술 및 언어 ⚒️
 
-## 컴포넌트 작성 방식
+- Next.js
+- Zustand
+- ShadCN
+- Tailwind CSS
+- TypeScript
 
-- 컴포넌트는 `화살표 함수 + default export`를 원칙으로 한다.
-- props 타입은 컴포넌트 내부에서 `Props`라는 이름으로 작성한다.
-- props 타입이 재사용되거나 복잡한 경우 `types/`에 별도 분리
+## 기능 💪
 
-```tsx
-interface Props {
-  protestId: string;
-}
+### 클라이언트-서버 컴포넌트 사용 전략
 
-const ProtestCard = ({ protestId }: Props) => {
-  return <div>{protestId}</div>;
-};
+- 클라이언트와 서버 컴포넌트를 목적에 맞게 구분하고, 정적 생성이 가능한 페이지는 사전 렌더링하여 초기 로딩 속도와 사용자 경험을 개선
 
-export default ProtestCard;
-```
+### 카카오 맵 적용 및 시위 데이터 시각화
 
----
+- react-kakao-maps-sdk를 사용하여 시위 위치를 마커로 시각화
+- heatmap.js를 사용해 시위 규모를 히트맵으로 표현
+- 네이버 길찾기 API를 활용하여 시위 행진 경로를 지도 위에 시각적으로 표시
 
-## 커스텀 훅 및 Zustand store
+### 지도 드래그 시 heatmap 및 행진 경로 업데이트 최적화
 
-- 커스텀 훅 파일은 반드시 `use` 접두어를 붙인다. (`useSendCheerMutation.ts`)
-- 전역 상태 훅은 `store/`에 위치시키고, 이름에 `Store`를 붙인다. (`useUserInfoStore.ts`)
-- 비즈니스 로직 관련 훅은 `hooks/`에 위치시킨다.
+- requestAnimationFrame과 throttle을 조합하여 heatmap의 업데이트 성능을 최적화
+- 방대한 경로 데이터를 고려해, 지도 드래그 시 행진 경로는 일시적으로 숨김 처리하여 렌더링 성능과 사용자 경험의 균형을 맞춤
 
----
+### 시위 상세 페이지 구현
 
-## 타입 네이밍
+- Intercepting Routes와 Parallel Routes를 활용하여, 초기 접속 시에는 모달로, 새로고침 시에는 페이지로 자연스럽게 전환되도록 구현
 
-- 간단하고 지역적인 타입은 컴포넌트 내 인라인으로 작성
-- 도메인 개념이 뚜렷하거나 재사용 가능한 타입은 `types/` 디렉토리로 분리
-- 제네릭은 의미 있는 타입 이름으로 작성
+### fetch API의 캐싱 전략
 
-  ```ts
-  // 나쁜 예시
-  const customFetch = <T, U>(url: T, options: U) => {};
+- revalidateTag를 사용해 특정 데이터를 타깃으로 캐시 무효화
+- 시위 데이터의 낮은 변경 주기를 고려해 revalidate 속성으로 일정 주기마다 자동 캐싱 갱신
+- DB 수정 시를 대비해 수동으로 캐시를 무효화할 수 있는 별도 API 구현
 
-  // 좋은 예시
-  const customFetch = <URL, OPTIONS>(url: URL, options: OPTIONS) => {};
-  ```
+### Google Analytics(GA) 적용과 SEO 최적화
 
----
+- Google Analytics(GA)를 활용해 사용자 행동 패턴과 주요 페르소나를 분석
+- 메타 태그, OG 태그, 키워드 전략 등을 적용하여 구글 및 네이버 검색 결과에 노출되도록 SEO 최적화 수행
 
-## Next.js 시스템 파일 규칙
+### 위치 기반 인증 로직 구현
 
-다음 파일들은 반드시 `export default`를 사용하고 명명도 아래와 같이 해야 정상 동작합니다.
+- Geolocation API를 활용해 사용자의 현재 위치를 확인하고, 시위 현장과의 거리 기반으로 참여 인증 로직을 구현
 
-| 파일명          | 설명                       |
-| --------------- | -------------------------- |
-| `page.tsx`      | 라우트 페이지              |
-| `layout.tsx`    | 레이아웃 컴포넌트          |
-| `not-found.tsx` | 404 페이지                 |
-| `error.tsx`     | 에러 핸들링 컴포넌트       |
-| `loading.tsx`   | 로딩 중 표시할 UI (권장됨) |
+### AI 툴을 활용한 개발 환경 개선
 
-```tsx
-// 올바른 예
-export default function Page() {
-  return <div>페이지입니다</div>;
-}
-```
+- codeRabbitAI를 도입하여, 동료학습 단위로 코드 리뷰 리소스가 제한된 환경에서 코드 품질 개선을 유도
 
----
+## Trouble Shooting 🔎
 
-## GitHub 협업 규칙
+### fetchAPI 캐싱 이슈
 
-### PR 승인
+#### 문제 상황
 
-- 동일 파트 팀원이 최소 1명 이상 승인 후 merge 가능
+- DB의 데이터가 바뀌었음에도 시위 데이터가 갱신되지 않음
+- 하루가 지나도 시위 데이터 자동 갱신(revalidate)이 작동하지 않음
 
-### 이슈 관리
+#### 해결 방안([관련 이슈 정리 문서](https://github.com/dev-4-team/eye-on-frontend/issues/131))
 
-- 긴급 이슈는 실시간 공유
-- 모든 작업은 GitHub Issues를 통해 기록 및 공유
+- revalidateTag를 사용하여 **fetch 결과의 캐시를 무효화**
+- revalidatePath를 사용하여 **해당 데이터를 보여주는 서버 컴포넌트 페이지의 캐시도 함께 무효화**
+- 모듈 캐싱으로 인해 **빌드 시점의 날짜로 고정되는 문제**를 **동적 함수 호출로 변경**하여 해결
 
----
+#### 결과
 
-## 브랜치 네이밍
+- 날짜에 맞는 최신 데이터를 정상적으로 반영할 수 있었음
+- 사용하는 기술에 대한 근본적인 이해의 중요성을 체감했으며, **기본에 충실한 개발의 자세**를 다짐하게 됨
 
-형식: `{타입}/{기능명}-#{이슈번호}`  
-예시: `feature/login-#12`
+### heatmap 업데이트 로직 최적화
 
-| 타입     | 설명                    |
-| -------- | ----------------------- |
-| feat     | 새로운 기능 추가        |
-| fix      | 버그 수정               |
-| docs     | 문서 수정               |
-| style    | 스타일 및 포맷 수정     |
-| refactor | 기능 변경 없는 리팩토링 |
-| test     | 테스트 코드             |
-| chore    | 기타 설정, 빌드 등      |
-| comment  | 주석 추가/수정          |
-| remove   | 파일 삭제               |
-| rename   | 이름 변경               |
+#### 문제상황
 
----
+- 지도 드래그 시 heatmap 이 이벤트마다 과도하게 업데이트되어 성능 저하 발생
+- throttle 함수를 구현해 최적화하려 했으나, 클로저 상태 관리 방식에서 시행착오 발생
 
-### 애매한 경우 가이드
+#### 해결 방안([관련 이슈 정리 문서](https://github.com/dev-4-team/eye-on-frontend/issues/86))
 
-| 상황                             | 타입    |
-| -------------------------------- | ------- |
-| console.log 삭제, dead code 정리 | chore   |
-| import 경로 정리만 한 경우       | chore   |
-| 에러가 나던 코드 수정            | fix     |
-| 단순 주석만 추가                 | comment |
-| 파일 삭제                        | remove  |
+- requestAnimationFrame과 throttle을 조합해 업데이트 빈도 제한
+- throttle이 고차 함수로, 반환된 함수가 내부 상태(lastcall)를 클로저로 유지하기 때문에,
 
-## 🗂️ 전체 예시
+  **useCallback이 아닌 useMemo를 사용**해 한 번 실행된 결과(함수)를 재사용하도록 구성
 
-### 커밋 예시
+#### 결과
 
-```tsx
-// Header
-${커밋 타입}/#${이슈 넘버} : 버튼을 클릭해도 작동하지 않는 문제를 해결한다
+- 빠르게 지도를 드래그해도 `heatmap`이 부드럽게 렌더링되어 사용자 경험 향상
 
-// Body
-- 내용 ~~~~~
-- 내용 ~~~~~
-```
+### heatmap 렌더 시 drawImage 이슈
 
-### PR
+#### 문제상황
 
-```tsx
-제목 : [FE] ${커밋 타입} : 버튼을 클릭해도 작동하지 않는 문제를 해결한다
+- 지도를 줌아웃 하거나, 지도가 처음 렌더 될 때 등 특정 상황에서 heatmap의 drawImage 호출 시 에러가 발생
+- 여러 차례 디버깅을 시도했으나 원인을 정확히 파악하지 못해 임시로 해결해 놓던 상황
 
-아래는 템플릿대로 필요하면 커스텀하기
-```
+#### 해결방안([관련 이슈 정리 문서](https://github.com/dev-4-team/eye-on-frontend/pull/124))
 
-### 이슈
+- 벡엔드 데이터 구조가 변경되면서, 이전에는 없던 예외 상황이 발생(참가인원 수가 0이거나, 시위 반경이 10 인경우)
+- heatmap을 그리기 시 protest.radius / realXDistance 통해 계산결과가 0에 수렴하여 drawImage가 에러를 발생시킴
+- 이를 해결하기 위해 시위 반경과 참가 인원 수에 최소값을 설정하여 안정적인 계산이 가능하도록 보장
 
-```tsx
-제목 : [FE] ${커밋 타입} : 버튼을 클릭해도 작동하지 않는 문제를 해결한다
+#### 결과
 
-아래는 템플릿대로 필요하면 커스텀하기
-```
+- 단순한 증상 대응이 아닌 원인 기반의 근본적 해결
+- 디버깅 과정에서 가능한 원인을 나열하고, 우선순위를 두어 순차적으로 검증한 경험을 통해 디버깅에 대한 자신감 상승
+
+## 회고 🤔
+
+- 정재욱 🙋‍♂️
+
+  ### 사용하는 기술에 대한 `이해`와 `기본`에 충실함의 중요성을 다시금 느낀 계기
+
+  - 프로젝트를 되돌아보며 발생한 대부분의 버그는 Next.js나 JavaScript의 기본 동작에 대한 이해 부족에서 비롯된 것이었습니다.
+  - 문제를 해결해 나가는 과정에서 다시 한 번 기술의 기본 개념을 되짚어보며, **`기본에 충실`한 개발자의 태도가 얼마나 중요한지** 체감할 수 있었습니다.
+
+  ### 디버깅에 대한 자신감을 가지게 된 프로젝트
+
+  - 이번 프로젝트에서는 디버깅 시 가능한 원인을 나열하고, **가능성이 높은 것부터 `가지치기 하며 검증`을**하는 전략을 문서화해 적용했습니다.
+  - 그 결과 디버깅 시간이 크게 단축되었고, 단순한 증상 해결이 아니라 **문제의 근본 원인에 다가가는 경험**을 할 수 있었습니다.
+  - 이를 통해 디버깅에 대한 부담이 줄었고, 자신감도 함께 얻게 되었습니다.
+
+  ### 협업에서 `컨벤션과 커밋 관리`의 중요성을 체감한 프로젝트
+
+  - 초기에는 혼자 시작한 프로젝트였지만, 팀원이 합류하면서 **명확한 컨벤션 없이 작업을 진행한 데서 오는 의사소통 비용**이 발생했습니다.
+  - 이후 회의를 통해 `컨벤션`을 수립하자 **회의 시간과 빈도가 눈에 띄게 줄고**, **버그 발생률도 감소**하는 효과를 체감할 수 있었습니다.
+  - 또한 디버깅 중 과거 커밋을 자주 참조했는데, 앞서 정의한 **`두괄식 커밋 메시지`와 명확한 `커밋 규칙` 덕분에** 원하는 내역을 빠르게 찾아 문제 해결에 큰 도움이 되었습니다.
