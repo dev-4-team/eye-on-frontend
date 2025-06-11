@@ -11,25 +11,25 @@
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/77f33a56-3960-49ea-8a7e-3ce8b0b1750c" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/77f33a56-3960-49ea-8a7e-3ce8b0b1750c alt="메인 지도 화면" width="250"/><br/>
       <sub>메인 지도 화면</sub>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/9d9d7ab8-6a00-45db-9886-55416ef5706e" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/9d9d7ab8-6a00-45db-9886-55416ef5706e" alt="메인 지도 스카이뷰 화면" width="250"/><br/>
       <sub>메인 지도 스카이뷰 화면</sub>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/5cd4713e-6060-45a2-b032-06835fbe8aa8" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/5cd4713e-6060-45a2-b032-06835fbe8aa8" alt="시위 리스트 화면" width="250"/><br/>
       <sub>시위 리스트 화면</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/ca806ac2-6c8a-47f1-86c9-2fb33900aeff" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/ca806ac2-6c8a-47f1-86c9-2fb33900aeff" alt="시위 상세 화면" width="250"/><br/>
       <sub>시위 상세 화면</sub>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/557c5cb0-7cac-4840-8e82-f97f7fb01b1c" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/557c5cb0-7cac-4840-8e82-f97f7fb01b1c" alt="시위 상세 화면2" width="250"/><br/>
       <sub>시위 상세 화면2</sub>
     </td>
   </tr>
