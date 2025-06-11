@@ -11,7 +11,7 @@
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/77f33a56-3960-49ea-8a7e-3ce8b0b1750c alt="메인 지도 화면" width="250"/><br/>
+      <img src="https://github.com/user-attachments/assets/77f33a56-3960-49ea-8a7e-3ce8b0b1750c" alt="메인 지도 화면" width="250"/><br/>
       <sub>메인 지도 화면</sub>
     </td>
     <td align="center">
